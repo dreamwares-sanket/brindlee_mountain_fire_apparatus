@@ -1,0 +1,26 @@
+<apex:page standardController="Comment_Generation__c" extensions="CommentGenerationController">
+    <apex:sectionHeader title="Comment Generation" subtitle="{!comment.Name}"/>
+    <apex:form id="theForm">
+        <apex:pageblock title="Comment Generation Edit">
+            <apex:pageMessages />
+            <apex:pageBlockSection columns="1">            
+            <apex:inputField value="{!comment.Name}"/>
+            <apex:inputField value="{!comment.Include__c}"/>
+            <apex:inputField value="{!comment.Trigger_Word_Phrase__c}"/>
+            
+            <apex:selectList value="{!comment.Field_API_Name__c}"  multiselect="false" size="1" label="Field Label">
+                <apex:selectOptions value="{!listProductFields }"></apex:selectOptions>
+            </apex:selectList>
+            <apex:inputField value="{!comment.Condition__c}"/>
+            
+            <apex:inputField value="{!comment.Comment__c}"/>
+            <apex:inputField value="{!comment.Link__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageblockButtons >
+                <apex:commandButton value="Save" action="{!saveComment}"/>
+                <apex:commandButton value="Save & New" action="{!saveAndNewComment}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>                                
+            </apex:pageblockButtons>            
+        </apex:pageblock>
+    </apex:form>    
+</apex:page>

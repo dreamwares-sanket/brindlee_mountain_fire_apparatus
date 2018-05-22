@@ -1,0 +1,95 @@
+<apex:page sidebar="false" showheader="false">
+    <head>
+        <title>About Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="About Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/AboutUs" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+       <!-- Header-->
+       <c:BrindleeMountainHeader />
+       <!--Menu-->
+       <c:BrindleeMountainMenu />
+       <!--Body -->
+       <div class="mobile-margin" >
+          <div class="pagebody">
+             <div class="top-left">
+                <div class="top-right">
+                   <div class="pagetop">
+                      <div class="page-banner">
+                         <div class="page-banner-inner">
+                            <div class="page-banner-image">
+                               <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_aboutus.jpg')}" alt="firetrucks"/>
+                               <div class="bannertitle"> About Us </div>
+                            </div>
+                         </div>
+                      </div>
+                      <!--  end page-banner  -->
+                      <div class="hometopright">
+                         <c:BrindleeMountainRightSideMenu />
+                      </div>
+                   </div>
+                   <!--  end pagetop  -->
+                </div>
+             </div>
+             <!-- Content -->
+             <div class="page-content" id="contentdiv">
+                <div class="horizontalbar">&nbsp;</div>
+                <div class="pageleft">
+                      <p>Brindlee Mountain Fire Apparatus is one of the world's largest used fire truck sales and service companies. 
+                         Based just outside of Huntsville, Alabama, the company has forty-five full-time personnel occupying over 
+                         12,000 square feet which includes office space and fourteen apparatus <a href="{!URLFOR($Page.Service)}">service</a> 
+                         bays, dedicated to the refurbishment of used fire apparatus. Our campus houses the Nation's largest on-site inventory 
+                         of used fire trucks, used rescue trucks, used aerial trucks, including ladders and platforms, as well as other emergency 
+                         fire apparatus. We have two on-site pump testing facilities, and welcome all visitors who would like to inspect any used
+                          fire trucks! <br/>In addition to fire truck sales, BMFA's mechanics, who are EVT certified, perform pump tests, general 
+                          repairs, preventative maintenance, and body, collision, and paint work on over 500 used fire trucks every year. Another 
+                          thing that sets Brindlee Mountain Fire Apparatus apart – in addition to the dedicated used fire apparatus refurbishment 
+                          operation, our employees staff an Advanced Life Support Engine, Rescue, and Battalion Chief's vehicle during each 
+                          business day.</p>
+                      <p>If you are in the market for a used fire truck, please take a moment check out our 
+                         <a href="{!URLFOR($Page.AvailableTrucks)}">inventory</a> page, showing all of our fire trucks for sale.</p>
+                      <p>You may also check out our most recently added 
+                          <a href="{!URLFOR($Page.default)}" target="_self">used fire trucks</a> on our home page.</p>
+                      <div class="mapdivvirtual">
+                          <iframe src="https://www.google.com/maps/embed?pb=!1m0!3m2!1sen!2sus!4v1440676381880!6m8!1m7!1s-RP4qoF1LYMAAAQJOF30bw!2m2!1d34.46208858072827!2d-86.55564910736706!3f89.8!4f0!5f0.7820865974627469" width="600" height="450" frameborder="0" style="border:0" allowfullscreen="true"></iframe></div>
+                      <div class="mapaction">
+                          <div class="enlargemap">
+                             <a href="https://www.google.com/maps/place/Brindlee+Mountain+Fire+Apparatus/@34.4620886,-86.5556491,3a,75y,89.8h,90t/data=!3m7!1e1!3m5!1s-RP4qoF1LYMAAAQJOF30bw!2e0!3e2!7i13312!8i6656!4m2!3m1!1s0x0:0xd61e8f6406c106ce!6m1!1e1?hl=en-US" target="_blank">View Larger Map</a>
+                          </div>                               
+                     </div>
+                </div>
+                <div class="sidebar">
+                   <c:BrindleeMountainEndorsementsBlock />
+                </div>
+             </div>
+             <div class="bottom-left">
+                <div class="bottom-right"></div>
+             </div>
+          </div>
+          
+       </div>
+       <!--Footer -->
+       <c:BrindleeMountainFooter />
+   </body>
+</apex:page>

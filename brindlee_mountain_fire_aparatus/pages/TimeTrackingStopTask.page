@@ -1,0 +1,115 @@
+<apex:page controller="Time_Tracking_Controller" action="{!fetchStopTaskData}"  standardStylesheets="false" sidebar="false" showHeader="false" cache="false">
+    <style>
+        #table1{
+            margin-left: 18px;
+            margin-top: 10px;
+            text-align:left;
+        }
+        #table1 th{
+            color: grey;
+            font-weight:bold !important;
+            font-size: 18px;            
+        }
+        /* 6 Oct 2015 : Added this css below here for labels. */
+        .other-label{
+           color: grey;
+            font-size: 15px;
+            font-weight: bolder;
+            margin-top:10px;
+        }
+        
+        .footer{
+            padding-top:30px !important;
+        }
+        .body { width:650px !important;}
+        .pro-desc{
+            border: 1px solid lightgrey;
+            border-radius: 5px;       
+            height: 125px;
+            /*margin-left: 4px;*/
+            margin-top: 6px;
+            overflow-y: scroll;
+            width: 91%;
+            
+        }
+        .custPopup{position: fixed !important;}
+        .popupBackground{position: fixed !important;} 
+        .desc-text{
+            text-align: justify;
+            color: black;
+            font-size:14px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="{!URLFOR($Resource.Time_Tracking_Style,'style.css')}"/>   
+    <apex:form id="theStopTaskForm">
+        <apex:actionFunction name="showWeeklyTimeJS" action="{!showWeeklyTime}" reRender="theStopTaskForm" status="status"/> 
+        <apex:actionStatus id="status">
+            <apex:facet name="start"> 
+                <apex:outputPanel id="tstpopup"> 
+                    <apex:outputPanel styleClass="popupBackground" layout="block"/>
+                    <apex:outputPanel styleClass="custPopup" layout="block">
+                        <img src="/img/loading24.gif" style="vertical-align:middle; horizontal-align:middle"/>
+                        <span>Please wait...</span>                        
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <div class="main">
+            <div class="container"> 
+                <center>
+                    <div class="heading">
+                        <img src="{!URLFOR($Resource.Time_Tracking_Style,'logo.png')}"/>
+                        <h3>Stop Task</h3>
+                    </div>
+                    <apex:pageMessages ></apex:pageMessages>
+                    <br/>
+                    <br/>
+                </center>          
+                <div class="body">
+                    <table id="table1">
+                        <tr>
+                        <th>Employee</th>
+                            <td style="vertical-align: top;">
+                                <apex:selectList size="1" value="{!selectedEmp}" styleClass="picklist old" onchange="showWeeklyTimeJS();">
+                                    <apex:selectOption itemLabel="Select Employee"  itemValue=""></apex:selectOption>
+                                    <apex:selectOptions value="{!SelectEmployee}"></apex:selectOptions>
+                                </apex:selectList>
+                                
+                                <apex:outputPanel style=" position: absolute;">
+                                   
+                                    <apex:outputPanel rendered="{!IF(selectedEmployee.Round_Off_Task_Time_Entry_This_Week__c != null, true,false)}" id="hourlyHoursWorked" style="padding-left: 10px;">
+                                        <apex:outputText value="{!selectedEmployee.Round_Off_Task_Time_Entry_This_Week__c + totalSpendDuration}"></apex:outputText>   
+                                         Hours Logged This Week
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(selectedEmployee.Round_Off_Remaining_Hours_This_Week__c != null, true,false)}" id="hourlyHoursRemaining" style="padding-left: 10px;display: block;margin-top: 4px;">
+                                        <apex:outputText value="00.00" rendered="{!if(ABS(selectedEmployee.Round_Off_Remaining_Hours_This_Week__c) <= totalSpendDuration, true, false)}"/>
+                                        <apex:outputText value="{!ABS(selectedEmployee.Round_Off_Remaining_Hours_This_Week__c - totalSpendDuration) }" rendered="{!if(ABS(selectedEmployee.Round_Off_Remaining_Hours_This_Week__c) > totalSpendDuration, true, false)}"></apex:outputText>  Remaining Hours This Week
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Stop Task Reason</th>
+                            <td style="text-align: left;">
+                                <apex:inputField value="{!timeTrackingRecordContainer.Stop_Task_Reason__c}" styleClass="picklist old" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>End of Day?</th>
+                            <td>
+                                <apex:inputCheckbox value="{!isEndOfDay}" id="endOfDayChk" />
+                            </td>
+                        </tr>
+                    </table>
+                </div> 
+                <div class="footer">
+                    <apex:commandButton value="Next" styleClass="btn first" action="{!stopTaskNext}"/>
+                    <apex:commandButton value="Cancel" styleClass="btn second" action="{!cancelTask}"/>                        
+                </div>
+            </div>
+        </div>
+    </apex:form>  
+</apex:page>

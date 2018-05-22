@@ -1,0 +1,17 @@
+<apex:component >
+    <!-- right side menu -->
+        <a class="usedfiretruckbtn" href="{!URLFOR($Page.Buying_a_Used_Fire_Truck)}">
+            <span class="displace"> Used Fire Truck</span>
+        </a>
+        <a class="sellfiretruckbtn" href="{!URLFOR($Page.Selling_your_Used_Fire_Truck)}">
+            <span class="displace">Selling Your Used Fire Truck</span></a>
+        <a class="workontruckbtn" href="{!URLFOR($Page.Need_Work_on_Your_Used_Fire_Truck)}">
+            <span class="displace">Need Work on Fire Truck</span>
+        </a>
+        <a class="companydirectbtn" href="{!URLFOR($Page.CompanyDirectory)}">
+            <span class="displace">Company Directory </span>
+        </a>
+        <a class="notifyfiretruckbtn" href="{!URLFOR($Page.FireTruckFinder)}">
+            <span class="displace"> Be Notified of Listed Trucks</span>
+        </a>
+</apex:component>

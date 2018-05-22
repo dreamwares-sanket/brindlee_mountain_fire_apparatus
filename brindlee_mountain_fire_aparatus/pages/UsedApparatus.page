@@ -1,0 +1,50 @@
+<apex:page standardStylesheets="false" controller="UsedApparatusCtrl" showheader="false" sidebar="false">
+    <head>
+           <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources2,'/css/usedApparatus.css')}"/>
+    </head>
+    <body>
+        <!--Processing status Spinner -->
+    <apex:actionStatus id="ProcessStatus" layout="block">
+               <apex:facet name="start">
+                   <div id="assign-action-spinner-main">
+                       <div id="assign-action-spinner-content" style="text-align:center;">
+                           <img src="{!URLFOR($RESOURCE.WebportalResources2,'/images/loadinBlack.gif')}" alt="Processing..." title="Processing..."/>&nbsp;&nbsp;
+                       </div>
+                   </div>
+               </apex:facet>
+   </apex:actionStatus>
+       
+        <div id="container">
+            <div id="promoblview">
+                <div class="section">
+                    <p align="center"><img src="{!URLFOR($Resource.WebportalResources2,'images/BMFA-logo-lg.gif')}" /></p>
+                    
+                    <apex:outputpanel id="productlist">
+                    <div class="section-two">
+                        <ul class="list">
+                            <apex:repeat value="{!Products}" var="product">
+                        
+                                <li><a href="{!product.Truck_Public_URL__c}" target="_parent">{!product.VF_Main_Title__c}</a></li>
+                                
+                            </apex:repeat>
+                        </ul>
+                    </div>
+                    
+                    <div class="btns" align="center">
+                            <apex:form >
+                                        <apex:commandbutton disabled="{!NOT(setCon.HasPrevious)}" value="<<" action="{!setCon.previous}" rerender="productlist" status="ProcessStatus" />
+                                        &nbsp;&nbsp;
+                                        <apex:commandbutton disabled="{!NOT(setCon.HasNext)}" value=">>" action="{!setCon.next}"  rerender="productlist" status="ProcessStatus"/>
+                             </apex:form>
+                        </div>
+                    </apex:outputpanel>
+                    <ul class="bottom-list">
+                        <li><a href="{!URLFOR($Page.Default)}" target="_parent">See All Trucks</a></li>
+                    </ul>
+                </div>
+                        
+                </div>
+            </div>
+        
+    </body>
+</apex:page>

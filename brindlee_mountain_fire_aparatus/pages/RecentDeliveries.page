@@ -1,0 +1,169 @@
+<apex:page Controller="RecentDeliveriesController"  action="{!initializeProductList}" sidebar="false" showHeader="false" applyBodyTag="false">
+    <head>
+        <title>Recent Deliveries - Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="Recent Deliveries - Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/RecentDeliveries" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+
+        <!--Processing status Spinner -->
+        <apex:actionStatus id="ProcessStatus" layout="block">
+                   <apex:facet name="start">
+                       <div id="assign-action-spinner-main">
+                           <div id="assign-action-spinner-content">
+                               <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." title="Processing..." />&nbsp;&nbsp;
+                           </div>
+                       </div>
+                   </apex:facet>
+       </apex:actionStatus>
+    
+       <!-- Header -->
+       <c:BrindleeMountainHeader />
+       <!-- Menu -->
+       <c:BrindleeMountainMenu />
+    
+        <!--Body -->
+        <div class="mobile-margin" >
+            <div class="pagebody">
+                <div class="top-left">
+                 <div class="top-right">
+                    <div class="pagetop">
+                       <div class="page-banner">
+                          <div class="page-banner-inner">
+                             <div class="page-banner-image">
+                                <!--Insert image from SF-->
+                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_deliveries.jpg')}" alt="firetrucks"/>
+                                <div class="bannertitle"> Recent Deliveries </div>
+                             </div>
+                          </div>
+                       </div>
+                       <!--  end page-banner  -->
+                       <div class="hometopright">
+                           <c:BrindleeMountainRightSideMenu />
+                       </div>
+                    </div>
+                    <!--  end pagetop  -->
+                 </div>
+              </div>
+              <br/>
+              
+              <!-- Content -->
+              <div class="page-content" id="contentdiv">
+              
+                  <!-- list of recently sold trucks -->
+                  <apex:outputPanel id="productsPanel" layout="block">
+                  <apex:repeat value="{!Products}" var="prod">
+                  
+                      <span>
+                          <div class="deliveries">
+                             <div class="delivered-image">
+                                <a href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=prod.Id])}" >
+                                <apex:outputPanel rendered="{!AND(prod.Cloud_Documents__r.size>0,NOT(ISBLANK(prod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                    <img src="{!prod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" /></apex:outputPanel>
+                                <apex:outputPanel rendered="{!NOT(AND(prod.Cloud_Documents__r.size>0,NOT(ISBLANK(prod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))))}">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/NoImage.jpg')}" /></apex:outputPanel>
+                                </a>
+                             </div>
+                             <h2>
+                                <a href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=prod.Id])}" class="trucktitle">
+                                <span >{!prod.VF_Main_Title__c}</span></a>
+                             </h2>
+                             <h4><br/>
+                                <span ><b>Sold to:</b> {!prod.Sold_to_Customer_Account__r.Name}<br />
+                                    {!prod.Sold_to_Customer_Account__r.BillingCity}
+                                    <apex:outputText style="font-weight:bold;" value="," rendered="{!AND(NOT(ISBLANK(prod.Sold_to_Customer_Account__c)),NOT(ISBLANK(prod.Sold_to_Customer_Account__r.BillingCity)))}"/>
+                                    {!prod.Sold_to_Customer_Account__r.BillingState}
+                                </span>
+                             </h4><br/><br/>
+                             <span class="truckdesc">{!prod.Description}</span>
+                          </div>
+                       </span>
+               
+                  </apex:repeat>
+                  <div style="clear:both"></div>
+                  <!-- Page buttons for pagination -->
+                  
+                </apex:outputPanel>
+                <apex:form rendered="{!AND(NOT(ISBLANK(Products)),Products.size>0)}" id="pagebuttons">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                   <tbody>
+                      <tr>
+                         <td style="text-align:center;">
+                             <apex:commandButton action="{!showFirstPage}" value="<<" oncomplete="scrollToBeginning();" disabled="{!NOT(hasPrevious)}" reRender="productsPanel,pagebuttons" status="ProcessStatus" styleClass="changePage_btn" title="Show first page"/>
+                             &nbsp;
+                             <apex:commandButton action="{!showPreviousPage}" value="<" oncomplete="scrollToBeginning();" disabled="{!NOT(hasPrevious)}" reRender="productsPanel,pagebuttons" status="ProcessStatus" styleClass="changePage_btn" title="Show previous page"/>
+                             &nbsp;
+                             <span> Showing page :<select id="pageSelect" onchange="gotoPage(this.value)"></select> of {!TotalPages} </span>
+                             &nbsp;
+                             <apex:commandButton action="{!showNextPage}" value=">" oncomplete="scrollToBeginning();" disabled="{!NOT(hasNext)}" reRender="productsPanel,pagebuttons" status="ProcessStatus" styleClass="changePage_btn" title="Show next page"/>
+                             &nbsp;
+                             <apex:commandButton action="{!showLastPage}" value=">>" oncomplete="scrollToBeginning();" disabled="{!NOT(hasNext)}" reRender="productsPanel,pagebuttons" status="ProcessStatus" styleClass="changePage_btn" title="Show last page"/>
+                         </td>
+                      </tr>
+                      
+                   </tbody>
+                </table> 
+                    <apex:actionFunction action="{!gotoPageNumber}" reRender="productsPanel,pagebuttons" status="ProcessStatus" oncomplete="scrollToBeginning();" Name="gotoPage">
+                        <apex:param name="pagenumber" value=""/>
+                    </apex:actionFunction>
+               <script>
+                   // populate the list of pagenumbers
+                   function populatePagesList(){
+                       var selectList = document.getElementById('pageSelect');
+                       var totalpages = {!TotalPages};
+                       var option;
+                       for(var i=1;i<=totalpages;i++){
+                           option = document.createElement('option');
+                           option.textContent = i;
+                           option.value = i;
+                           selectList.appendChild(option);
+                       }
+                       selectList.value = {!pageNumber};
+                   }
+                   
+                   window.onload = populatePagesList();
+                   
+                   // scroll view to beginning of grid
+                   function scrollToBeginning(){
+                       document.querySelector('#contentdiv').scrollIntoView();
+                   }
+               </script>
+                </apex:form>
+                
+                <div align="right">
+                    </div>
+              </div>
+              <!--  end innerpages  -->
+              <div class="bottom-left">
+                 <div class="bottom-right">
+                 </div>
+              </div>
+            </div>
+        </div>
+        
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

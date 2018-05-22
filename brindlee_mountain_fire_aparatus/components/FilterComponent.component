@@ -1,0 +1,135 @@
+<apex:component controller="FilterComponent_Controller">
+    <div class="filterBox">
+        <h1>Filter</h1>
+        <apex:form id="form">
+            <div>
+                <b>Minimum Price:</b>
+                <apex:selectList value="{!selBudgetMin}" id="min-price" size="1">
+                    <apex:selectOptions value="{!PriceOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Maximum Price:</b>
+                <apex:selectList value="{!selBudgetMax}" id="max-price" size="1">
+                    <apex:selectOptions value="{!PriceOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Category:</b>
+                <apex:selectList value="{!selCategory}" size="1">
+                    <apex:selectOptions value="{!Categories}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Brand:</b>
+                <apex:selectList value="{!listSelBrands}" id="brandsPicklist" size="1" multiselect="true">
+                    <apex:selectOptions value="{!Brands}" />
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Mileage:</b>
+                <apex:selectList value="{!selMileageOption}" size="1">
+                    <apex:selectOptions value="{!MileageOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Minimum Year:</b>
+                <apex:selectList value="{!selYearMin}" size="1">
+                    <apex:selectOptions value="{!YearOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Maximum Year:</b>
+                <apex:selectList value="{!selYearMax}" size="1">
+                    <apex:selectOptions value="{!YearOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Chassis:</b>
+                <apex:selectList value="{!selChassis}" size="1">
+                    <apex:selectOptions value="{!ChassisTypes}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Pump Size:</b>
+                <apex:selectList value="{!selPumpSize}" size="1">
+                    <apex:selectOptions value="{!PumpSizeRanges}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Tank Size:</b>
+                <apex:selectList value="{!selTankSize}" size="1">
+                    <apex:selectOptions value="{!TankSizeRanges}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Warranty:</b>
+                <apex:selectList value="{!selWarrantyOption}" size="1">
+                    <apex:selectOptions value="{!WarrantyOptions}"/>
+                </apex:selectList>
+            </div>
+            <div>
+                <b>Regions:</b>
+                <apex:selectList value="{!listSelRegions}" id="regionsPicklist" size="1" multiselect="true">
+                    <apex:selectOptions value="{!GeographicRegions}"/>
+                </apex:selectList>
+            </div>
+            <apex:commandButton value="Apply Selections" action="{!redirectToAvailableTrucksPageWithUrlParams}"/>
+        </apex:form>
+    </div>
+    <script>
+        $('[id*=brandsPicklist]').multiselect({    // bootstrap multiselect for brand and geographic region picklists
+                    enableFiltering: false,
+                    maxHeight: 200,
+                    numberDisplayed: 1,
+                    onChange: function(option, checked) {
+                        if( checked && $(option).val() != 'All' ){
+                            $('[id*=brandsPicklist]').multiselect('deselect','All');
+                        }
+                        if( checked && $(option).val() == 'All' ){                            
+                            $('[id*=brandsPicklist] option').each(function(index,option){
+                                $('[id*=brandsPicklist]').multiselect('deselect',option.text);
+                            });                            
+                            $('[id*=brandsPicklist]').multiselect('select','All');
+                        }
+                    }
+                });
+            
+            $('[id$=regionsPicklist]').multiselect({    // bootstrap multiselect for brand and geographic region picklists
+                    enableFiltering: false,
+                    maxHeight: 200,
+                    numberDisplayed: 1,
+                    onChange: function(option, checked) {
+                        if( checked && $(option).val() != 'All' ){
+                            $('[id*=regionsPicklist]').multiselect('deselect','All');
+                        }
+                        if( checked && $(option).val() == 'All' ){                            
+                            $('[id*=regionsPicklist] option').each(function(index,option){
+                                $('[id*=regionsPicklist]').multiselect('deselect',option.text);
+                            });                            
+                            $('[id*=regionsPicklist]').multiselect('select','All');
+                        }
+                    }
+                    
+            });
+        
+        $(document).ready(function () {
+            addCommasToPriceOptions();           
+        });
+        
+        function addCommasToPriceOptions(){
+            formatPriceList($("[id*=min-price] option"));
+            formatPriceList($("[id*=max-price] option"));
+        }
+        
+        function formatPriceList(options){
+            $(options).each(function () {
+                $(this).text(numberWithCommas($(this).text()));
+            });
+        }
+        
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</apex:component>

@@ -1,0 +1,30 @@
+<apex:page controller="TrucksForSale_RSSFeeds_Controller" sidebar="false" showHeader="false" applyHtmlTag="false" contentType="text/xml" readOnly="true">
+    <rss version="2.0">        
+        <channel>
+            <title>Fireapparatus.com RSS Feed</title>
+            <link>https://www.firetruckmall.com</link>
+            <description>Firetruckmall.com Trucks for Sale</description>
+            
+            <apex:repeat value="{!ListProducts}" var="truck">
+                <item>
+                    <title>{!HTMLENCODE(truck.FT_Main_Title__c)}</title>
+                    <link>{!HTMLENCODE(truck.Truck_Public_URL__c)}</link>
+                    <description>{!HTMLENCODE(truck.Description)}</description>
+                    <category>{!HTMLENCODE(truck.apparatusType__c)}</category>
+                    <guid isPermaLink="true">{!HTMLENCODE(truck.Truck_Public_URL__c)}</guid>
+                    
+                    <apex:outputText rendered="{!truck.Cloud_Documents__r.size!=0}" escape="false">
+                        <enclosure type="image/jpg" url="{!truck.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}" length="0"></enclosure>
+                    </apex:outputText>
+                    
+                    <pubDate>
+                        <apex:outputText value="{0, date, EEE, d MMM yyyy hh:mm:ss z}" >
+                            <apex:param value="{!truck.Posting_Date__c}"></apex:param>
+                        </apex:outputText>
+                    </pubDate>
+                </item>
+            </apex:repeat>
+        
+        </channel>
+    </rss>
+</apex:page>

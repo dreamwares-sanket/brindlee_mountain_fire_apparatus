@@ -1,0 +1,47 @@
+<apex:component Controller="ITRequestServices" allowDML="true">
+
+<!-- Requested Services Related List -->
+    <apex:form >
+        <apex:pageBlock title="Requested Services" id="ServiceGridForm">
+        
+                <apex:pageBlockButtons location="top">
+                        <apex:commandButton action="{!cancelServiceRequest}" value="Cancel" id="CancelServiceRequestButton" rerender="ServiceGridForm" status="ServiceStatus" rendered="{!ServiceInsertFlag}" style="margin:5px 0 0 0"/>                                
+                        <apex:commandButton action="{!cancelServiceRequest}" value="Refresh" id="RefreshServiceRequestButton" rerender="ServiceGridForm" status="ServiceStatus" rendered="{!IF(ServiceInsertFlag == 'true',false,true)}" style="margin:5px 0 0 0"/>                                
+                        <apex:commandButton action="{!addServiceRequest}" value="Add service item to request" id="AddServiceRequestButton" rerender="ServiceGridForm" status="ServiceStatus"/>
+                </apex:pageBlockButtons>
+                <apex:pageBlockTable value="{!ServiceGridData}" var="ServiceGridPos" id="ServiceDataTable" rowClasses="odd,even" styleClass="list" width="100%" rules="rows" columnsWidth="60px, 110px, 300px">
+                        <apex:column headerValue="Action" rendered="{!IF(ServiceGridPos.Name == null,false,true)}">
+                                <b><apex:outputLink value="/{!ServiceGridPos.id}/e" id="editLink">Edit</apex:outputLink>
+                                <apex:outputText value=" | "/>
+                                <apex:outputLink id="delLink" onclick="if ((Modal.confirm && Modal.confirm('Are you sure?')) || (!Modal.confirm && window.confirm('Are you sure?'))) navigateToUrl('/setup/own/deleteredirect.jsp?delID={!ServiceGridPos.Id}&retURL=/{!requestId}');">Del</apex:outputLink></b>
+                        </apex:column>                                
+                        <apex:column headerValue="Action" rendered="{!IF(ServiceGridPos.Name == null,true,false)}">
+                                <apex:commandButton action="{!saveServiceRequest}" value="Save" id="SaveServiceRequestButton" rerender="ServiceGridForm" status="ServiceStatus" style="margin:5px 0 0 0"/>
+                        </apex:column>
+                        <apex:column headerValue="Pos.">
+                                <apex:OutputLink id="ServiceGridPos_Col1" value="/{!ServiceGridPos.id}">{!ServiceGridPos.Name}</apex:OutputLink>
+                                <!--<apex:outputText value="Select item:" rendered="{!IF(ServiceGridPos.Name == null,true,false)}" style="color: red; font-weight:bold; font-size:12pt; margin:5px 0 0 0" />-->
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Service_Request__c.fields.IT_Service__c.label}">
+                                <apex:inputField id="ServiceGridPos_Col2edit" value="{!ServiceGridPos.IT_Service__c}" style="width: 200px" rendered="{!IF(ServiceGridPos.Name == null,true,false)}"/>
+                                <apex:outputField id="ServiceGridPos_Col2desplay" value="{!ServiceGridPos.IT_Service__c}" rendered="{!IF(ServiceGridPos.Name == null,false,true)}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Service_Request__c.fields.Price__c.label}">
+                                <apex:outputField id="ServiceGridPos_Price" value="{!ServiceGridPos.Price__c}" rendered="{!IF(ServiceGridPos.Name == null,false,true)}"/>
+                                <!-- <apex:commandButton action="{!saveServiceRequest}" value="Save" id="SaveServiceRequestButton2" rerender="ServiceGridForm" status="ServiceStatus" style="margin:5px 0 0 0" rendered="{!IF(ServiceGridPos.Name == null,true,false)}"/>  -->
+                        </apex:column>
+                        <apex:column headerValue="Asset Group">
+                                <apex:outputField id="ServiceGridPos_Group" value="{!ServiceGridPos.IT_Service__r.IT_Asset_Group__c}" rendered="{!IF(ServiceGridPos.Name == null,false,true)}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Service_Request__c.fields.CreatedDate.label}">
+                                <apex:outputField id="ServiceGridPos_Col3" value="{!ServiceGridPos.CreatedDate}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Service_Request__c.fields.LastModifiedById.label}">
+                                <apex:outputField id="ServiceGridPos_Col4" value="{!ServiceGridPos.LastModifiedById}"/>
+                        </apex:column>
+                        
+                </apex:pageBlockTable>
+                <apex:actionStatus id="ServiceStatus" startText="Requesting..."/>&nbsp;{!ServiceStatusText}
+         </apex:pageBlock>  
+    </apex:form>
+</apex:component>

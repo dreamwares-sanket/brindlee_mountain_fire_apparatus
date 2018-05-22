@@ -1,0 +1,5 @@
+<apex:component access="global" controller="FTFCriteria_MatchingTrucksHTMLController">
+    <apex:attribute name="FTFCriteria" assignTo="{!FTFCriteriaId}" type="Id"
+            description="Provide the Id of the FTF Criteria record for whom the matching trucks HTML is to be created" ></apex:attribute>
+    <apex:outputText value="{!matchingTrucksHTML}" escape="false" ></apex:outputText>
+</apex:component>

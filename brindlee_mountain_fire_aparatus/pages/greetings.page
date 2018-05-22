@@ -1,0 +1,157 @@
+<apex:page showHeader="false" sidebar="false">
+  <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+    <!-- End Google Tag Manager -->
+
+    <head>
+        <title>Homepage - Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="Recent Deliveries - Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/RecentDeliveries" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/colorbox.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/homepage.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>   
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery.colorbox.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap-multiselect.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap.min.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <!-- Header -->
+   <c:BrindleeMountainHeader />
+   
+   <div class="topbanner">
+        <div class="banner-inner"></div>
+    </div>
+   <!-- Menu -->
+   <c:BrindleeMountainMenu />
+
+    <!--Body -->
+    <div class="mobile-margin" >
+        <div class="pagebody">
+            <div class="top-left">
+             <div class="top-right">
+                <div class="pagetop">
+                   <div class="page-banner">
+                      <div class="page-banner-inner">
+                         <div class="page-banner-image">
+                             <h1 class="big-txt"></h1>
+                             <h1 class="sml-txt">Welcome to the #1 Location For Used Fire Trucks!</h1>
+                             
+                             <div class="borderBox" style="border:none; text-align:justify;">
+                                 <p>Brindlee Mountain Fire Apparatus is the nation’s largest buyer and seller of used fire apparatuses. We offer used 
+                                 fire trucks for all your needs, including used engines and pumpers, used aerials, ladders and quints, used rescues 
+                                 and squads, and even used brush trucks and mini pumpers. We have the largest inventory of used fire apparatuses in the nation.</p>
+                                     
+                                 <p>Our 43 acre campus is a destination for fire fighters nationwide, and internationally, who are looking to upgrade their 
+                                 equipment. We are able to match your budget and equipment needs.</p>
+                                     
+                                 <p>Our inventory is updated hourly. If you can't find the perfect truck, take 30 seconds to sign up for the 
+                                 <a href="{!URLFOR($Page.FireTruckFinder)}">FIRE TRUCK FINDER</a> and we'll contact you as soon as a truck is added that matches 
+                                 your needs. You may also call our staff with any questions at <a href="tel:866-285-9305">866-285-9305</a>.</p>
+                                 
+                                 <!--
+                                 <p style="text-align:center;">
+                                     <a href="https://www.google.com/maps/@34.4617838,-86.5560477,3a,75y,28.84h,88.46t/data=!3m6!1e1!3m4!1sI6jigjx7QlwAAAQJOF4eqQ!2e0!7i13312!8i6656?hl=en-US" target="_blank" onClick="_gaq.push(['_trackEvent', '360tourofcampus', 'clickedlink', '360tourofcampushomepage', 1, false]);">
+                                         <img src="{!URLFOR($Resource.WebportalResources,'/images/Virtual_Tour_CTA.gif')}" width="350px" style="width:350px !important;"></img>
+                                     </a>
+                                 </p>
+                                 -->
+                                 
+                                 <p style="width:100%;">
+                                     <a href="https://drive.google.com/file/d/0BwsPschsRV0Pc1N4cDZ0RE5Rbm8/preview" class="group1 cboxElement largeImgUrl desktop" style="display:block; line-height:1.8em; text-decoration:none; text-align:center; width:100%; color:#000; font-weight:bold; font-size:1.5em; border:1px solid #000;  background-color:#e5bc00;" target="_blank">Aerial Tour of Campus
+                                     
+                                     </a>
+                                 </p>                                   
+                             </div>
+                         
+                         
+                         
+                             <!--
+                             <h1 class="big-txt">Welcome to America’s #1</h1>
+                             <h1 class="sml-txt">Seller &amp; Buyer of Used Fire Trucks!</h1>
+                             
+                             <div class="borderBox" style="border:none; text-align:justify;">
+                                 <p>We are committed to fulfilling your department’s fire truck, equipment, and service needs.
+                                    We have proudly provided services to fire departments in 49 states and a handful of countries.</p>
+                                     
+                                 <p>Our 43-acre campus is constantly acquiring new trucks, enabling us to offer a wide variety of 
+                                    vehicles and equipment to match your budget and equipment needs.</p>
+                                     
+                                 <p>Our inventory is updated every 24 hours. If you can’t find the perfect truck you’re looking for, fill out the <a href="{!URLFOR($Page.FireTruckFinder)}">Fire Truck Finder form</a>
+                                     and we’ll contact you as soon as a truck arrives that matches your described needs. You may also call us with any questions at 
+                                    <b>866-285-9305</b>.</p>
+                                 <p style="text-align:center;">
+                                     <a href="https://www.google.com/maps/@34.4617838,-86.5560477,3a,75y,28.84h,88.46t/data=!3m6!1e1!3m4!1sI6jigjx7QlwAAAQJOF4eqQ!2e0!7i13312!8i6656?hl=en-US" target="_blank" onClick="_gaq.push(['_trackEvent', '360tourofcampus', 'clickedlink', '360tourofcampushomepage', 1, false]);">
+                                         <img src="{!URLFOR($Resource.WebportalResources,'/images/Virtual_Tour_CTA.gif')}" width="350px" style="width:350px !important;"></img>
+                                     </a>
+                                 </p>
+                             </div>
+                             -->
+                             
+                             
+                         </div>
+                      </div>
+                   </div>
+                   
+                   <!--  end page-banner  -->
+                   <div class="hometopright">
+                        <a class="usedfiretruckbtn" href="{!URLFOR($Page.Buying_a_Used_Fire_Truck)}"></a>
+                        <a class="sellfiretruckbtn" href="{!URLFOR($Page.Selling_your_Used_Fire_Truck)}"></a>
+                        <a class="workontruckbtn" href="{!URLFOR($Page.Need_Work_on_Your_Used_Fire_Truck)}"></a>
+                        <a class="companydirectbtn" href="{!URLFOR($Page.CompanyDirectory)}"></a>
+                        <a class="notifyfiretruckbtn" href="{!URLFOR($Page.FireTruckFinder)}"></a>
+                   </div>
+                </div>
+                <!--  end pagetop  -->
+             </div>
+          </div>
+          <br/>
+          
+          <!-- Content -->
+          <div class="page-content" id="contentdiv">
+              <div class="section-title" style="margin-bottom:2px;"><h1>Shop By Category</h1></div>  
+              <div class="horizontalbar">&nbsp;</div>
+              
+              <div id="truckTypes" class="content-left">
+                  <c:TruckTypeLinks ></c:TruckTypeLinks>
+              </div>
+               
+            <div class="content-right">
+               <c:FilterComponent ></c:FilterComponent>
+            </div>
+          </div>
+          <!--  end innerpages  -->
+          <div class="bottom-left">
+             <div class="bottom-right">
+             </div>
+          </div>
+        </div>
+    </div>
+    
+    <c:BrindleeMountainFooter />
+    <site:googleAnalyticsTracking />
+         <script>
+          $(document).ready(function(){ 
+              $(".group1").colorbox({iframe:true, scalePhotos:!0,innerWidth:"90%",innerHeight:"75%",maxWidth:597,maxHeight:450})
+          });
+         </script>
+</apex:page>

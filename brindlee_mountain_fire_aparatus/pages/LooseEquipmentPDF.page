@@ -1,0 +1,76 @@
+<apex:page standardController="Product2" renderAs="pdf" extensions="TruckDetailsPDFController" showHeader="false" sidebar="false" applyBodyTag="false">
+    <head>
+        <style>
+          .columnList{padding: 0!important; width: 100%; margin:0!important;}
+          .columnList li{display:inline-block; width:33%; padding:0 0 0 0; margin:0!important; font-size:12px; vertical-align:top; box-sizing:border-box;}
+           @page { margin:20px 18px 10px; }
+           body { font-family: Arial Unicode MS; font-size:12px;}
+           .mainTitle{font-size:20px; }
+           h3{font-size:18px;}
+           .alignTop {vertical-align:top}
+           .main-description { height: 20%; margin-bottom:2%; }
+        </style>
+        <title>{!product2.VF_Main_Title__c} | Used Truck PDF</title>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <div align="left"><img  alt="Truck" src="{!URLFOR($RESOURCE.PdfHeader, '/BrindleeLogo.png')}" width="650" /></div>
+        <table width="100%" style="table-layout:fixed; margin-top:20px;">
+            <tr>
+                <td style="margin:0; padding:0;" valign="middle">
+                    <apex:outputPanel rendered="{!!ISBLANK(strMainImageURL)}">
+                        <img width="100%" alt="Truck" src="{!strMainImageURL}"  />
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!ISBLANK(strMainImageURL)}">
+                        <img width="100%" alt="Truck" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}"/>
+                    </apex:outputPanel>
+                </td>
+                <td valign="top" style="padding:0 0 0 20px;">
+                        
+                  <div id="ContactUs" style="padding:0; margin:0;" >
+                    <h3 style="padding:0 0 20px ;margin:0;">Contact Us</h3>
+                
+                    <div style=" font-size:14px; padding:15px; background:#f2f2f2;  ">
+                        <apex:outputLabel escape="false">
+                            <b>{!$Label.Office}</b> : {!companyContactInfo.Toll_Free__c} <br/>
+                            <apex:outputText Value="Email : {!companyContactInfo.Sales_Email__c}" escape="false"/>
+                            <br/><apex:outputText Value="{!$Label.Website}" escape="false"/>
+                            <br/><br/><apex:outputText Value="<b>{!companyContactInfo.Address__c}</b>" escape="false"/>
+                        </apex:outputLabel>
+                        <apex:outputText style="font-weight:bold;" value="{!product2.VF_Stock_Number__c}" rendered="{!NOT(ISBLANK(product2.VF_Stock_Number__c))}" escape="false"></apex:outputText>    
+                        <apex:outputText style="font-weight:bold; display:block;" value="Price: {!product2.VF_Website_Price__c}"/>
+                    </div> 
+                  </div> 
+                </td>
+            </tr>
+        </table>  
+       
+        <div class="mainTitle" style="padding:10px 0 0;">        
+            <apex:outputText value="{!product2.Name}" />       
+        </div>
+        
+        <div class="main-description">
+            {!product2.Description}
+        </div>
+        
+        <table width="100%" style="border-top:1px solid #000; margin-top:5px;">
+            <tr>
+                <td valign="top" style="padding:10px 0;">
+                    <img src="{!URLFOR($Resource.WebportalResources,'/images/thumbnail.jpg')}" width= "130" />    
+                </td>
+                <td valign="top" style="padding:10px 0 10px 15px;">
+                    <apex:outputText Value="{!$Label.About_brindlee_mountain_fire_apparatus}" escape="false"/>
+                </td>
+            </tr>
+        </table>
+    </body>
+</apex:page>

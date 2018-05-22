@@ -1,0 +1,58 @@
+<apex:page sidebar="false" showheader="false">
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+    <!-- End Google Tag Manager -->
+
+    <head>
+        <title>Brindlee Mountain Fire Apparatus | Fire Truck Finder</title>
+        <meta id="meta_description" name="Description" content="Simply the most used fire trucks for sale anywhere; Brindlee Mountain is the largest buyer and seller of used fire engines, used ladders, used brush trucks, and used rescue trucks.  Visit our 43 acre campus in Alabama, or watch our inventory on-line!" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/FireTruckFinder" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+    </head>
+    
+    <!-- Header-->
+    <c:BrindleeMountainHeader />
+    
+    <!--Menu-->
+    <c:BrindleeMountainMenu />
+
+    <div class="mobile-margin">
+        <div class="pagebody">
+            
+            <div class="registration-head">
+                <h1>
+                    FIRE TRUCK FINDER REGISTRATION
+                </h1>
+                <p>
+                    Take 30 seconds to fill out the form below, and get immediate updates when a truck
+                    meeting your wishes is listed!
+                </p>
+                <br />
+                <iframe src="https://go.pardot.com/l/68872/2015-09-10/2dffw1" width="100%" height="1200" type="text/html" frameborder="0" allowTransparency="true" style="border: 0"></iframe>
+            </div>
+            
+            <!--  end innerpages  -->
+            <div class="bottom-left">
+                <div class="bottom-right"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!--Footer -->
+    <c:BrindleeMountainFooter />
+  
+</apex:page>

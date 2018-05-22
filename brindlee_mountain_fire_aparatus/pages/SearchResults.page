@@ -1,0 +1,106 @@
+<apex:page controller="SearchResultsController" showHeader="false" sidebar="false" applyBodyTag="false" cache="false">
+    <head>
+       <title>Used Fire Trucks | Search Results</title>
+        <meta id="meta_description" name="Description" content="Used Fire Trucks | Search Results" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://http://www.firetruckmall.com/apex/SearchResults" />
+
+         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <style>
+            .truck-for-sale { margin: 0 10px 10px 10px; }
+            .more-results { text-align: right; padding-right: 20px; }
+        </style>
+    </head>
+    <body>
+        
+        <!--Processing status Spinner -->
+        <apex:actionStatus id="ProcessStatus" layout="block">
+                   <apex:facet name="start">
+                       <div id="assign-action-spinner-main">
+                           <div id="assign-action-spinner-content">
+                               <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." title="Processing..." />&nbsp;&nbsp;
+                           </div>
+                       </div>
+                   </apex:facet>
+       </apex:actionStatus>
+        
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+        
+        <div class="mobile-margin" style="min-height:500px; !important">
+            <div class="pagebody" height="500px">
+                <div class="searchmsg" style="display: {!IF(ISNULL(strMessage), 'none', 'block')} ">
+                    <apex:outputText value="{!strMessage}" escape="false"></apex:outputText>
+                </div>
+                
+                                                                    
+                <apex:outputPanel id="allProductsPanel" rendered="{!OR( AND(NOT(ISNULL(listProducts)),listProducts.size>0), AND(NOT(ISNULL(listLooseEquipments)),listLooseEquipments.size>0))}">
+                    
+                    <c:firetruckproductslist products="{!listProducts}" />
+                    <c:looseequipmentproductslist products="{!listLooseEquipments}" />
+                   
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="additionalResults">
+                
+                    <apex:form rendered="{!showMoreRecsLink}">
+                        <div class="more-results">
+                            <apex:commandLink action="{!invokeFetchMoreResults}" value="Want to see more results?" rerender="additionalResults" status="ProcessStatus"/>
+                        </div>
+                    </apex:form>
+                    
+                    <div class="searchmsg">
+                        <apex:outputText value="{!strExtraResultsMsg}" rendered="{!NOT(ISNULL(strExtraResultsMsg))}" escape="false"></apex:outputText>
+                    </div>
+                    
+                    <apex:outputPanel >
+                        <c:firetruckproductslist products="{!listExtraProducts}" />
+                        <c:looseequipmentproductslist products="{!listExtraLooseEquipments}" />
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <!-- Fill empty page with white bg-->
+                <apex:outputPanel StyleClass="blankpanel" rendered="{!AND(
+                                                                        OR(ISNULL(listProducts), listProducts.size=0),
+                                                                        OR(ISNULL(listLooseEquipments), listLooseEquipments.size=0),
+                                                                        OR(ISNULL(listExtraProducts), listExtraProducts.size=0),
+                                                                        OR(ISNULL(listExtraLooseEquipments), listExtraLooseEquipments.size=0)
+                                                                    )}" />
+                
+                <!--  end innerpages  -->
+                <div class="bottom-left" >
+                    <div class="bottom-right"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

@@ -1,0 +1,243 @@
+<!--
+ /**
+    @PageName : PhotoGuide    
+  **/
+-->
+<apex:page controller="PhotoGuideController" showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" applyBodyTag="false">
+    
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+    <!-- End Google Tag Manager -->
+
+    <head>
+        <title>Photo Guide</title>
+        <meta id="meta_description" name="Description" content="Recent Deliveries - Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/RecentDeliveries" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/homepage.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>        
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap-multiselect.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap.min.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        
+        <style>
+        @media all{ 
+            div.tab {overflow: hidden;border: 1px solid #ccc;background-color: #f1f1f1;}
+            /* Style the buttons inside the tab */
+            div.tab button {background-color: #eaeaea;float: left;border: none;outline: none;cursor: pointer;padding: 14px 16px;transition: 0.3s; margin-right: 15px;}
+
+            /* Change background color of buttons on hover */
+            div.tab button:hover {background-color: #ddd;}
+
+            /* Create an active/current tablink class */
+            div.tab button.active {background-color: #7a0303;color:#fff;}
+
+            /* Style the tab content */
+            .tabcontent {display: none;padding: 6px 12px;border: 1px solid #eaeaea; overflow: hidden;  margin-top: -1px;}
+            
+            .tabButton{font: 600 1.0em/1.5em Georgia,Times New Roman,Times,serif;color:#6e6e6e;}
+            
+            .imgDesc{font: 600 1.0em/1.5em Georgia,Times New Roman,Times,serif; color: #999; text-align: center;}
+            
+            
+            
+            
+            ul.listboxImg{list-style:none;}
+            ul.listboxImg > li img { width: 100%; height: 125px; display: block;}
+            div.tab{border:0 none; background-color:#fff;}
+            ul.tabList {  list-style: none;}
+            ul.listboxImg > li { width: 25%; display: inline-block; padding: 12px; height: 235px; list-style: none; vertical-align: top; text-align: center; overflow: hidden; float: left; }
+            ul.listboxImg > li div { border: 1px solid #eaeaea; height: 100%; background: #fff; padding: 10px; }
+            p.imgDesc { display: block; font-weight: 500; font-size: 13px; margin: 0; padding:10px 5px 5px;  color: #6e6e6e; }
+        }
+        
+        @media screen and (max-width: 768px){
+            ul.listboxImg > li{width:33.33%;}
+            .tabList { display: table; margin: 0;}
+            .tabList li{ display:table-cell;}
+        }
+        
+        @media screen and (max-width: 750px){
+            ul.listboxImg > li{width:100%;}
+        }
+        </style>
+    </head>
+    <!-- Header -->
+   <c:BrindleeMountainHeader />
+   
+   <div class="topbanner">
+        <div class="banner-inner"></div>
+    </div>
+   <!-- Menu -->
+   <c:BrindleeMountainMenu />
+
+    <!--Body -->
+    <div class="mobile-margin" >
+        <div class="pagebody">
+            <div class="top-left">
+             <div class="top-right">
+                <div class="pagetop">
+                   <div class="page-banner">
+                      <div class="page-banner-inner">
+                            <div class="page-banner-image">
+                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_photoguide.jpg')}" alt="firetrucks"/>
+                            </div>                             
+                        </div>
+                    </div>
+                                      
+                   <!--  end page-banner  -->
+                   <div class="hometopright">
+                        <a class="usedfiretruckbtn" href="{!URLFOR($Page.Buying_a_Used_Fire_Truck)}"></a>
+                        <a class="sellfiretruckbtn" href="{!URLFOR($Page.Selling_your_Used_Fire_Truck)}"></a>
+                        <a class="workontruckbtn" href="{!URLFOR($Page.Need_Work_on_Your_Used_Fire_Truck)}"></a>
+                        <a class="companydirectbtn" href="{!URLFOR($Page.CompanyDirectory)}"></a>
+                        <a class="notifyfiretruckbtn" href="{!URLFOR($Page.FireTruckFinder)}"></a>
+                   </div>
+                </div>
+                <!--  end pagetop  -->
+             </div>
+          </div>
+          <br/>          
+          <!-- Content -->
+          <div class="page-content" id="contentdiv">
+          
+             <div class="horizontalbar">&nbsp;</div>
+                  
+                <div class="pageleft">                   
+                    <h1 style="font-size: xx-large;">Brindlee Mountain Picture Guide</h1><br/>
+                    
+                    <p>Help us help you sell your fire truck faster by providing us with multiple specifications and good pictures.We want anyone shopping for your truck to feel like they get a great look at it when seeing it on the website.</p>
+
+                    <p>Our data shows that having at least 25 photos of your turck will help it sell most effectively.Having less than 10 photos will dramatically afect your truck's ability to be sold,as people are more comfortable asking questions about something which they have seen more thoroughly.This is what potential customers are seeing so why not make the best first impression possible.</p>
+                    
+                    
+                    <h1>5 Tips for Taking Pictures of Fire Apparatus</h1>
+                    
+                    1. Take overall pictures of the truck from all sides.<br />
+                    2. Interior pictures of the cab, include driver and passenger side.<br />
+                    3. All exterior compartments with the doors open.<br />
+                    4. A close-up of the pump panel.<br />
+                    5. All other special features.<br />
+                    
+                    <br/>                   
+                
+                    <div class="tab">
+                    <ul class="tabList">
+                        <li>
+                            <button class="tablinks tabButton active" name="RescueTab" onclick="openTab(event, this.name)">Rescue Pictures</button>
+                        </li>
+                        <li>
+                            <button name="PumperTab" class="tablinks tabButton" onclick="openTab(event, this.name)">Pumper Pictures</button>
+                        </li>
+                        <li>
+                            <button name="AerialTab" class="tablinks tabButton" onclick="openTab(event, this.name)">Aerial Pictures</button>
+                        </li>
+                    </ul>
+                    </div>
+
+                    <div id="RescueTab" class="tabcontent" style="display:block;">
+                        <div><a href=""><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699581-icon-70-document-file-pdf-128.png" height="30" width="30" /></a>&nbsp; <a href="https://brindlee--c.na78.content.force.com/servlet/servlet.FileDownload?file=0151N000003fQno" target="_blank">Download Rescue Picture Guide PDF</a></div>
+                        <apex:outputPanel rendered="{!listOfRescuePictures.size!=0}">
+                            <ul class="listboxImg">
+                                <apex:repeat value="{!listOfRescuePictures}" var="recordRescue">
+                                    <li>
+                                        <div class=""> 
+                                            <img src="{!recordRescue.Image_URL__c}" alt="firetrucks"  />                                      
+                                            <p  class="imgDesc"><span class="truckDesc">{!recordRescue.Image_Description__c}</span></p>
+                                        </div>
+                                    </li>                           
+                                </apex:repeat>
+                            </ul>   
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!listOfRescuePictures.size==0}">
+                            <p  class="imgDesc"><span class="truckDesc">No Images Available</span></p>
+                        </apex:outputPanel>
+                    </div>
+                    
+                    <div id="PumperTab" class="tabcontent">
+                        <div><a href=""><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699581-icon-70-document-file-pdf-128.png" height="30" width="30" /></a>&nbsp; <a href="https://brindlee--c.na78.content.force.com/servlet/servlet.FileDownload?file=0151N000003fQnt" target="_blank">Download Pumper Picture Guide PDF</a></div>
+                        <apex:outputPanel rendered="{!listOfPumperPictures.size!=0}">
+                            <ul class="listboxImg">
+                                <apex:repeat value="{!listOfPumperPictures}" var="recordPumper">
+                                    <li>
+                                        <div class=""> 
+                                            <img src="{!recordPumper.Image_URL__c}" alt="firetrucks" />                                      
+                                            <p  class="imgDesc"><span class="truckDesc">{!recordPumper.Image_Description__c}</span></p>
+                                        </div>
+                                    </li>                           
+                                </apex:repeat>
+                            </ul>   
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!listOfPumperPictures.size==0}">
+                            <p  class="imgDesc"><span class="truckDesc">No Images Available</span></p>
+                        </apex:outputPanel>
+                    </div>
+
+                    <div id="AerialTab" class="tabcontent">
+                        <div><a href=""><img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/699581-icon-70-document-file-pdf-128.png" height="30" width="30" /></a>&nbsp; <a href="https://brindlee--c.na78.content.force.com/servlet/servlet.FileDownload?file=0151N000003fQnj" target="_blank">Download Aerial Picture Guide PDF</a></div>
+                        <apex:outputPanel rendered="{!listOfAerialPictures.size!=0}">
+                            <ul class="listboxImg">
+                                <apex:repeat value="{!listOfAerialPictures}" var="recordAerial">
+                                    <li>
+                                        <div class="" > 
+                                            <img src="{!recordAerial.Image_URL__c}" alt="firetrucks" />                                      
+                                            <p  class="imgDesc"><span class="truckDesc">{!recordAerial.Image_Description__c}</span></p>
+                                        </div>
+                                    </li>                           
+                                </apex:repeat>
+                            </ul>   
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!listOfAerialPictures.size==0}">
+                            <p  class="imgDesc"><span class="truckDesc">No Images Available</span></p>
+                        </apex:outputPanel>
+                    </div>
+                </div>               
+          </div>
+          <!--  end innerpages  -->
+          <div class="bottom-left">
+             <div class="bottom-right">
+             </div>
+          </div>
+        </div>
+    </div> 
+    <c:BrindleeMountainFooter />
+    <site:googleAnalyticsTracking />
+    
+    <script>
+    
+    function openTab(evt, tabName) {        
+        var i, tabcontent, tablinks;        
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    </script>
+
+</apex:page>

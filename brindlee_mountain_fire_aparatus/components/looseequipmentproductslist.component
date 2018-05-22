@@ -1,0 +1,38 @@
+<!-- Used on the Search Results page -->
+<apex:component >
+    <apex:attribute name="products"  type="Product2[]" description="Loops over list of products to display Loose Equipments (products record type). Used in firetruckmall pages"/>
+    <!--
+    <div class="searchmsg">
+        Loose Equipments
+    </div>-->
+    
+    <apex:repeat value="{!products}" var="looseEqpmnt">
+        <div class="truck-for-sale">
+            <div class="truck-image">
+                <apex:outputPanel rendered="{!AND(looseEqpmnt.Cloud_Documents__r.size>0,NOT(ISBLANK(looseEqpmnt.Cloud_Documents__r[0].Amazon_S3_Image_URL__c)))}">
+                    <a class="group1" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=looseEqpmnt.Id])}">
+                        <img src="{!looseEqpmnt.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}" /></a></apex:outputPanel>
+                <apex:outputPanel rendered="{!OR(ISBLANK(looseEqpmnt.Cloud_Documents__r),looseEqpmnt.Cloud_Documents__r.size=0,ISBLANK(looseEqpmnt.Cloud_Documents__r[0].Amazon_S3_Image_URL__c))}">
+                    <a class="group1" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=looseEqpmnt.Id])}">
+                        <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" /></a></apex:outputPanel>
+            </div>
+            <div class="truck-description">
+                <h2>
+                    <a href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=looseEqpmnt.Id])}">
+                        <span>{!looseEqpmnt.Name}</span></a>
+                </h2>
+                <span class="resultsDesc">{!looseEqpmnt.Description}</span><br/>
+                <span class="red-text"></span>
+            </div>
+            <div class="note-price">
+                <div class="price">
+                    <span>
+                        <apex:outputText value="{0, number, $###,###,##0}">
+                            <apex:param value="{!looseEqpmnt.Equipment_Price__c}" />        
+                        </apex:outputText>
+                    </span>
+                </div>
+            </div>
+        </div> 
+    </apex:repeat>
+</apex:component>

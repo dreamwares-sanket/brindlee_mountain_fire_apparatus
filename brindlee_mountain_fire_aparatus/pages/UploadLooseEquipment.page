@@ -1,0 +1,381 @@
+<apex:page controller="UploadLooseEquipmentController" sidebar="false" showheader="false">
+<head>
+    <title>Brindlee Mountain Fire Apparatus | Upload Loose Equipment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/FTF_Style.css')}"/>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+    <style>
+        .terms-txt { padding-top:10px; display:none; }
+    </style>
+</head>
+<body>
+    <apex:remoteObjects jsNamespace="SobjectModel">
+        <apex:remoteObjectModel name="Product2" fields="Id,Name,Loose_Equipment_Type__c,Equipment_Price__c,Description,Equipment_Owner__c,Equipment_Status__c,Loose_Equipment_Listing_Edit_Link__c,Loose_Equipment_Secret__c" />
+        <apex:remoteObjectModel name="Contact" fields="Id,FirstName,LastName,Phone,Email,AccountId" />
+        <apex:remoteObjectModel name="Account" fields="Id,Name,Website,BillingState" />
+        <apex:remoteObjectModel id="cloudDocRemoteId" name="DragDropToCloud__Cloud_Documents__c" jsShorthand="getCloudDocs" fields="Id,Name,Product__c,Show_Online__c,Main_Image__c,Main_Thumbnail__c,DragDropToCloud__Bucket_Name__c,DragDropToCloud__Folder_Id__c,Amazon_S3_Main_Thumbnail_URL__c"/>
+    </apex:remoteObjects>
+        
+       <div id="assign-action-spinner-main" style="display:none;" >
+           <div id="assign-action-spinner-content">
+               <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />
+               <div id="spinner-txt"></div>
+           </div>
+        </div>
+        
+       <!-- Header-->
+       <c:BrindleeMountainHeader />
+       <!--Menu-->
+       <c:BrindleeMountainMenu />
+       
+       <!--Body -->
+       <div class="mobile-margin" >
+          <div class="pagebody">
+             <div class="top-left">
+                <div class="top-right">
+                   <div class="pagetop">
+                       <div id="reg-head">
+                           <div class="errorText"><div class="errMsg" style="display:none;" id="page-msg"></div></div>
+                           <div>
+                               <div class="heading" id="heading" align="center">
+                                   <h1>LIST YOUR LOOSE EQUIPMENT</h1>
+                                   <p class="psgTxt">Post your Loose Equipment for only
+                                       <apex:outputText value="{0, number, $###,###,##0}" rendered="{!IF(LooseEquipmentPricing != null, true, false)}">
+                                           <apex:param value="{!LooseEquipmentPricing.Price__c}" />        
+                                       </apex:outputText> until it sells
+                                   </p>
+                               </div>
+                               <hr class="breaKLine"/>
+                               
+                               <div id="contactDetails" class="equipementF bodytopSpce">
+                                  <div class="fL halfBlck rSpace noSpace">
+                                     <div>
+                                         <label for="fireDept" class="smlLabel">Fire Department</label>
+                                         <input id="fireDept" required="true" maxlength="40"></input>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                     <div>
+                                         <label for="website" class="smlLabel">Fire Department's Website (optional)</label>
+                                         <input id="website" maxlength="250"></input>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                     <div>
+                                         <label for="deptState" class="smlLabel">Fire Dept. State/Province</label>
+                                         <select id="deptState">
+                                            <option value="AB">AB</option>
+                                            <option value="AK">AK</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AR">AR</option>
+                                            <option value="AZ">AZ</option>
+                                            <option value="BC">BC</option>
+                                            <option value="CA">CA</option>
+                                            <option value="CO">CO</option>
+                                            <option value="CT">CT</option>
+                                            <option value="DC">DC</option>
+                                            <option value="DE">DE</option>
+                                            <option value="FL">FL</option>
+                                            <option value="GA">GA</option>
+                                            <option value="HI">HI</option>
+                                            <option value="IA">IA</option>
+                                            <option value="ID">ID</option>
+                                            <option value="IL">IL</option>
+                                            <option value="IN">IN</option>
+                                            <option value="KS">KS</option>
+                                            <option value="KY">KY</option>
+                                            <option value="LA">LA</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MB">MB</option>
+                                            <option value="MD">MD</option>
+                                            <option value="ME">ME</option>
+                                            <option value="MI">MI</option>
+                                            <option value="MN">MN</option>
+                                            <option value="MO">MO</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="NB">NB</option>
+                                            <option value="NC">NC</option>
+                                            <option value="ND">ND</option>
+                                            <option value="NE">NE</option>
+                                            <option value="NF">NF</option>
+                                            <option value="NH">NH</option>
+                                            <option value="NJ">NJ</option>
+                                            <option value="NM">NM</option>
+                                            <option value="NS">NS</option>
+                                            <option value="NT">NT</option>
+                                            <option value="NU">NU</option>
+                                            <option value="NV">NV</option>
+                                            <option value="NY">NY</option>
+                                            <option value="OH">OH</option>
+                                            <option value="OK">OK</option>
+                                            <option value="ON">ON</option>
+                                            <option value="OR">OR</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PE">PE</option>
+                                            <option value="QC">QC</option>
+                                            <option value="RI">RI</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SK">SK</option>
+                                            <option value="TN">TN</option>
+                                            <option value="TX">TX</option>
+                                            <option value="UT">UT</option>
+                                            <option value="VA">VA</option>
+                                            <option value="VT">VT</option>
+                                            <option value="WA">WA</option>
+                                            <option value="WI">WI</option>
+                                            <option value="WV">WV</option>
+                                            <option value="WY">WY</option>
+                                            <option value="YT">YT</option>
+                                        </select>
+                                        <span class="blankSpan"></span>
+                                    </div>
+                                 </div>
+                                 
+                                 <div class="fR halfBlck lSpace noSpace">
+                                     <div class="fL twoBox rSpace">
+                                         <div>
+                                             <label for="firstName" class="smlLabel">First Name</label>
+                                             <input id="firstName" required="true" maxlength="40"></input>
+                                             <span class="blankSpan"></span>
+                                         </div>
+                                     </div>
+                                     <div class="fR twoBox lSpace">
+                                         <div>
+                                             <label for="lastName" class="smlLabel">Last Name</label>
+                                             <input id="lastName" required="true" maxlength="80"></input>
+                                             <span class="blankSpan"></span>
+                                         </div>
+                                     </div>
+                                     <div class="clr"></div>
+                                     <div>
+                                         <label for="phone" class="smlLabel">Phone Number</label>
+                                         <input id="phone" required="true"></input>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                     <div>
+                                         <label for="email" class="smlLabel">Email Address</label>
+                                         <input id="email" type="email" required="true"></input>
+                                         <span class="validnErr">*Please enter a valid email!</span>
+                                     </div>
+                                 </div>
+                                 <div class="clr"></div>
+                             </div>
+                             <hr class="breaKLine" />
+                             
+                             <div class="heading">
+                                 <h2 class="secHeading">Provide Equipment Listing Details</h2>    
+                             </div>
+                             
+                             <div class="equipementF" id="contactDetails">
+                                 <div id="sold-block">    <!-- Displayed only in update view -->
+                                     <input id="sold" type="checkbox" style=" margin-right: 5px; vertical-align: middle;" />
+                                     <label for="sold" class="soldBox">Sold</label>
+                                 </div>
+                                 
+                                 <div class="fL halfBlck rSpace noSpace">
+                                     <div>
+                                         <label for="eqpmntName" class="smlLabel">Loose Equipment Title</label>
+                                         <input id="eqpmntName" required="true" maxlength="250"></input>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                     <div>
+                                         <label for="eqpmntCategory" class="smlLabel">Loose Equipment Category</label>
+                                         <select id="eqpmntCategory" required="true"></select>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                 </div>
+                                 
+                                 <div class="fR halfBlck lSpace noSpace fifSpace">
+                                     <div>
+                                         <label for="eqpmntPrice" class="smlLabel">Loose Equipment Price ( USD )</label>
+                                         <input id="eqpmntPrice" type="number" required="true" maxlength="18"></input>
+                                         <span class= "validnErr">*Please enter a valid amount!</span>
+                                         <span class="blankSpan"></span>
+                                     </div>
+                                 </div>
+                                 <div class="clr"></div>
+                                 <div class="">
+                                     <label for="eqpmntDesc" class="smlLabel">Description (optional)</label>
+                                     <textarea id="eqpmntDesc" maxlength="4000"></textarea>
+                                     <span class="blankSpan"></span>
+                                 </div>
+                             </div>
+                             
+                             <div>
+                                 <div id="image-upload-section">
+                                     <div id="upload-components">
+                                         <span class="attachTxt">
+                                             <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/Pin.png')}" class="pinImg" />Photo Attachment <i>(Select up to 5 photos and select your main image)</i>
+                                         </span>
+                                         
+                                         <button class="add-btn" onclick="$('#fileInId').trigger('click');">Select images</button>
+                                     </div>
+                                     <span class="img-alert-txt"><i><b>Note:</b> Images are not editable after creating the account.</i></span>
+                                     
+                                     <span class="validnErr"></span>
+                                     <div id="fileCount"></div>
+                                     
+                                     <div>
+                                         <div id="imgs-container" class="img-thumbs"><!-- uploaded images here --> </div>
+                                     </div>
+                                     <input id="fileInId" type="file" accept="Image/*" multiple="multiple" style="display:none;"/>
+                                     <!--<button onclick="submitData();">Submit</button>-->
+                                 </div>
+                                 
+                                 <div id="operationalDiv" style="display: none;">
+                                    <canvas id="smallImg" width="100px"/>
+                                    <canvas id="mainMediumImg" width="208px"/>
+                                    <canvas id="mainLargeImg" width="597px"/>
+                                </div>
+                             </div>
+                             
+                             <hr class="breaKLine"/>
+                             
+                             <div id="payment-block">
+                                 <div class="heading">
+                                     <h2 class="secHeading">Provide Payment and Billing Information</h2>    
+                                 </div>
+                                 <div>
+                                     <div class="threeblck-box fifSpace">
+                                         <div class="fL threee-box">
+                                             <label for="cardOwner" class="smlLabel">Name on the card</label>
+                                             <input id="cardOwner" required="true" maxlength="250"></input>
+                                         </div>
+                                         <div class="fL threee-box">
+                                             <label for="ccnumber" class="smlLabel">Credit card number</label>
+                                             <input id="ccnumber" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required="true" maxlength="16"></input>
+                                         </div>
+                                         <div class="fL threee-box">
+                                             <div class="fL halfBlck cardblk">
+                                                 <label for="exp-month" class="smlLabel">Expiration Date</label>
+                                                 <input id="exp-month" type="number" min="1" max="12" value="1"/>
+                                                 <input id="exp-year" type="number" min="2016" max="2099" value=""/>
+                                                 <span class="validnErr">*Please enter valid values!</span>
+                                             </div>
+                                             <div class="fL halfBlck cardblk">
+                                                 <label for="cvc" class="smlLabel">Card cvc</label>
+                                                 <input id="cvc" required="true" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="4"></input>
+                                             </div>
+                                         </div>
+                                         <div class="clr"></div>
+                                     </div>
+                                     
+                                     
+                                     <div class="threeblck-box fifSpace">
+                                         <div class="fL threee-box">
+                                             <label for="street1" class="smlLabel">Street Address 1 (optional)</label>
+                                             <input id="street1" maxlength="255"></input>
+                                         </div>
+                                         <div class="fL threee-box">
+                                             <label for="street2" class="smlLabel">Street Address 2 (optional)</label>
+                                             <input id="street2" maxlength="255"></input>
+                                         </div>
+                                         <div class="clr"></div>
+                                     </div>
+                                     
+                                     <div class="threeblck-box fifSpace">
+                                         <div class="fL threee-box">
+                                             <label for="city" class="smlLabel">City</label>
+                                             <input id="city" required="true" maxlength="255"></input>
+                                         </div>
+                                         <div class="fL threee-box">
+                                             <label for="state" class="smlLabel">State</label>
+                                             <select id="state"></select>
+                                         </div>
+                                         <div class="fL threee-box">
+                                             <label for="zip" class="smlLabel">Zip/Postal code</label>
+                                             <input id="zip" required="true" maxlength="255"></input>
+                                         </div>
+                                         <div class="clr"></div>
+                                     </div>
+                                  </div>
+                                 
+                                 <hr class="breaKLine" />
+                             </div>
+                             
+                             <div id="agreemnt-block">
+                                 <input id="agreemnt" type="checkbox"></input>
+                                 <label><a onclick="$('.terms-txt').slideToggle()">I AGREE TO THE TERMS AND CONDITIONS</a></label>
+                                 <div class="terms-txt">
+                                     Thanks for listing your fire equipment with Brindlee Mountain Fire Apparatus. By accepting
+                                     these terms and conditions, you agree you are the owner of the equipment being advertised,
+                                     and that you are authorized to make payment for the advertisement of that equipment. Brindlee
+                                     Mountain cannot guarantee a sale of the equipment, but agrees to leave the equipment on our
+                                     website until notified by you to remove it.
+                                 </div>
+                             </div>
+                             <button id="create-btn" class="sign-up btn" onclick="submitUserAndProductDetails();">Complete Loose Equipment Listing</button>
+                             <button id="update-btn" class="sign-up btn" onclick="updateLooseEquipmentListing();">Update Loose Equipment Listing</button>
+                          </div>
+                      </div>
+                      <div id="reg-confirmation">
+                          <h1>Thank you!</h1>
+                          <p>We have included your Loose Equipment details into our website.
+                              An email with a link to edit your Loose Equipment Details will be sent to you promptly.</p>
+                      </div>
+                      <div id="update-confirmation">
+                          <h1>Thank you!</h1>
+                          <p>We have updated your Loose Equipment details.</p>
+                      </div>
+                   </div>
+              </div>
+          </div>
+          <div class="bottom-left">
+             <div class="bottom-right"></div>
+          </div>
+       </div>
+    </div>
+    
+   <script>          
+        // STRICTLY STAYS HERE
+        
+        function getProductIdFromUrl(){
+           return '{!$CurrentPage.parameters.Id}';
+        }
+        
+        function getEqpmntIdFromUrl(){
+            return '{!$CurrentPage.parameters.equipmentId}';
+        }
+        
+        function getAWSCredentials(){
+            try{
+                return JSON.parse('{!JSENCODE(LoginCredentials)}');
+            }
+            catch(e){
+                console.error('Exception while fetching AWS settings:', e);
+            }
+        }
+        
+        function getLooseEqpmntTypes(){
+            try{
+                return JSON.parse('{!JSENCODE(LooseEquipmentTypes)}');
+            }
+            catch(e){
+                console.error('Exception while fetching AWS settings:', e);
+            }
+        }
+        
+        function getBillingStates(){
+            try{
+                return JSON.parse('{!JSENCODE(ChargentBillingStateValues)}');
+            }
+            catch(e){
+                console.error('Exception while fetching Billing states:', e);
+            }
+        }
+        
+        function getListingPrice(){
+            var price = '{!LooseEquipmentPricing.Price__c}';
+            return price ? Number(price) : null;
+        }
+    </script>
+    <script src="{!URLFOR($Resource.ImageSwiper,'aws-sdk-2.1.24.js')}"/>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/uploadLooseEqpmnt.js')}"/>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+</body>
+</apex:page>

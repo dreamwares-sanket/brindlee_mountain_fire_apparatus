@@ -1,0 +1,129 @@
+<apex:page sidebar="false" showheader="false" applyBodyTag="false">
+    <head>
+        <title>Brindlee Mountain Fire Apparatus History</title>
+        <meta id="meta_description" name="Description" content="Brindlee Mountain Fire Apparatus History" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/BrindleeHistory" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+    
+         <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+        
+        <!--Body -->
+        <div class="mobile-margin" >
+            <div class="pagebody">
+                <div class="top-left">
+                 <div class="top-right">
+                    <div class="pagetop">
+                       <div class="page-banner">
+                          <div class="page-banner-inner">
+                             <div class="page-banner-image">
+                                <!--Insert image from SF-->
+                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_history.jpg')}" alt="Banner image"/>
+                                <div class="bannertitle"> The History of Brindlee Mountain Fire Apparatus </div>
+                             </div>
+                          </div>
+                       </div>
+                       <!--  end page-banner  -->
+                       <div class="hometopright">
+                           <c:BrindleeMountainRightSideMenu />
+                       </div>
+                    </div>
+                    <!--  end pagetop  -->
+                 </div>
+              </div>
+               <!-- Content -->
+             <div class="page-content" id="contentdiv">
+                <div class="horizontalbar">&nbsp;</div>
+                  
+                <div class="pageleft">
+                    <p>Brindlee Mountain Volunteer Fire Department<br/>
+                       In the summer of 1999, James Wessel, then a 24 year old volunteer firefighter/EMT with the Brindlee Mountain
+                       Volunteer Fire Department chaired the apparatus purchasing committee as the department began their search for
+                       a used pumper to be housed at their Station 3. By October of that year, James and the BMVFD has selected a 1988
+                       Simon Duplex pumper from a used apparatus dealer. They chose to purchase from a dealer because having the warranty
+                       that was offered was so important, due to the department's limited funds. The truck arrived in November and was
+                       immediately placed in service.</p>
+                    <h1>Buying a Used Fire Truck</h1><br/><br/>
+                    <p>Before Thanksgiving, the engine received is first alarm, for a working house fire in Station 2?s area near Union Hill.
+                       James was the driver operator that day and was full of pride and excitement to be the driver on the first run for the
+                       "new" engine! As he neared the intersection of Union Hill road and Pine Ridge road, the engine lost all power and shut
+                       down. Nothing could be done to re-start it despite multiple attempts. Mutual aid departments were notified to send 
+                       additional equipment due to the failure of Engine 3 to make it to the fire.</p>
+                    <p>James had Engine 3 towed to a diesel truck shop in Decatur, AL. They evaluted the engine and reported that it had spun
+                       a main bearing in the engine and the repair cost would be over $22,000! Obviously the BMVFD would not be able to come up
+                       with those kinds of funds, but that is why they had selected a vendor that offered a warranty with the apparatus. Or so
+                       they thought. It turned out the dealer had no intention of honoring the warranty and for over a year the truck sat out of
+                       service at the diesel shop while the BMVFD was misled by the dealer who continued to say they were going to honor the warranty,
+                       but never sent the payment. Eventually, there was no choice but for a local attorney to handle the matter for the BMVFD.
+                       Once the legal system got involved, the dealer quickly honored the warranty and sent the funds to repair the engine.
+                       In early 2001, Engine 3 returned to service.</p>
+                    <h1>Vision for Brindlee Mountain Fire Apparatus</h1><br/><br/>
+                    <p>As an active volunteer firefighter at the local and state level, James was furious that someone like this dealer would take
+                       advantage of volunteer fire departments. Fire Departments are the backbone of our communities and are staffed by some of the
+                       finest men and women in America. To see someone intentionally mislead them and put communties at risk was a tragedy. Having 
+                       been raised in a Christian home, James decided to pray about his anger and how upset he was over how his department had been 
+                       treated. After praying about it, James felt God leading him to get into the used firetruck business for himself to serve other 
+                       departments like his. James shared his dream with his friends and his Mom, who all agreed that it sounded like a wonderful idea! 
+                       James had always had a passion for business and for firetrucks, so it looked like a perfect match! James' Mom was so excited 
+                       about the idea that she agreed to loan him $10,000 to buy the first truck! And so he did…and in the summer of 2001, the first 
+                       unit arrived, and Brindlee Mountain Fire Apparatus, LLC, was open for business!</p>
+                    <p>Three short months later, a local fire department purchased the first pumper from Brindlee Mountain Fire Apparatus! BMFA then 
+                       re-invested the money in more inventory, and God provided more sales. Since that first sale, amazing things have happened at
+                       BMFA….over 2,000 fire trucks have been sold to 49 states and countries as far away as Saudi Arabia, Madagascar, Belize, Chile, 
+                       Bahrain, and others. Brindlee Mountain Fire Apparatus has grown to 44 full time employees and now staffs an engine company and 
+                       Battalion Chief's Vehicle in the daytime for the community, as well as providing 24/7 ambulance transport service for the community 
+                       through Samaritan EMS, which is housed on the same campus. Read more about Samaritan EMS 
+                       <a href="http://www.samaritanems.com/home.html" target="_blank">here</a>.</p>
+                    <h1>Today at Brindlee Mountain</h1><br/><br/>
+                    <p>In 10 years a lot has changed at Brindlee Mountain. We have gone from one firetruck parked in James' driveway at his house to a 43 
+                       acre campus, 12,000 square feet of buildings, and over 100 firetrucks on the campus! Firefighters from all over the world have come 
+                       to Brindlee Mountain to purchase used fire apparatus.</p>
+                    <p>More importantly, there is a lot that hasn't changed at Brindlee Mountain. Just like day one, we remain committed to making sure other 
+                    fire departments never have to go through what we went through as a department. We warranty everything that leaves our shop and we stand 
+                    behind every single used apparatus. We remain committed to providing fire and EMS service to our community. Last year we answered over 2,000 
+                    calls. And we remain committed to <a href="{!URLFOR($Page.default)}">used firetrucks</a>. That is who we are and what we do. We buy, sell, 
+                    and fix used firetrucks. It's not fancy, but it's who we are. And we bring an unmatched level of integrity and size to the used firetruck market.</p>
+                    <p>We are Brindlee Mountain. We are <a href="{!URLFOR($Page.default)}">used firetrucks</a>.</p>
+                    <p>Thank you for visiting our website and taking the time to learn more about us. Please give us a call – we would love to learn more about you!</p>
+                </div>                
+                
+                <div class="sidebar">
+                    <c:BrindleeMountainEndorsementsBlock />
+                </div>
+             </div>
+             <div class="bottom-left">
+             <div class="bottom-right"></div>
+          </div>
+          </div>
+     </div>   
+      
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+    </body> 
+</apex:page>

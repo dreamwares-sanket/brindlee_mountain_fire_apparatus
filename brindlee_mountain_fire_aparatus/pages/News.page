@@ -1,0 +1,93 @@
+<!--
+ /**
+  *  pageName  News
+  *  createdBy Amol[Dreamwares]
+  *  createdOn  22-08-2015
+  *  purpose display News
+  **/
+-->
+<apex:page sidebar="false" action="{!initializeRecentNewsList}" showHeader="false" controller="NewsController" applyBodyTag="false">
+    <head>
+        <title>Brindlee Mountain Fire Apparatus - in the News</title>
+        <meta id="meta_description" name="Description" content="Brindlee Mountain Fire Apparatus - in the News" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/News" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+    
+        <!-- Header -->
+        <header>
+            <c:BrindleeMountainHeader />  
+        </header>    
+        <!-- Menu -->
+       <c:BrindleeMountainMenu />    
+        <div class="mobile-margin">
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="pagetop">
+                            <div class="page-banner">
+                                <div class="page-banner-inner">
+                                    <div class="page-banner-image">
+                                        <!-- Insert Image from url-->
+                                        <img src="{!URLFOR($RESOURCE.webportalResources,'/banners/banner_news.jpg')}" alt="firetrucks"/>
+                                        <div class="bannertitle">
+                                            In The News</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  end page-banner  -->
+                            <div class="hometopright">
+                                <c:BrindleeMountainRightSideMenu />
+                            </div>
+                        </div>
+                        <!--  end pagetop  -->
+                    </div>
+                </div>            
+                <div class="page-content">
+                    <div class="horizontalbar">&nbsp;</div>
+                    <div class="pageleft">
+                        <h1>
+                            Brindlee Mountain Fire Apparatus in the news...
+                        </h1>
+                        <apex:outputPanel rendered="{!listRecentNews.size!=0}"> 
+                            <apex:repeat value="{!listRecentNews}" var="recentNews">
+                                <div class="newsdiv">
+                                    <apex:outputText escape="false" Value="{!recentNews.News__c}"/>
+                                </div>
+                            </apex:repeat>                   
+                        </apex:outputpanel>
+                    </div>                
+                    <!--  end pageleft  -->
+                    <div class="sidebar">
+                        <c:BrindleeMountainEndorsementsBlock />
+                    </div>               
+                </div>
+              <div class="bottom-left">
+                  <div class="bottom-right"></div>
+           </div>
+            </div>
+        </div>
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

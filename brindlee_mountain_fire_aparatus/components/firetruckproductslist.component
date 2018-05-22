@@ -1,0 +1,43 @@
+<!-- Used on the Search Results page -->
+<apex:component >
+    <apex:attribute name="products" type="Product2[]" description="Loops over list of products to display Fire trucks. Used in firetruckmall pages"/>
+    <!--
+    <div class="searchmsg">
+        Fire Trucks:
+    </div>-->
+    
+    <apex:repeat value="{!products}" var="product">
+        <div class="truck-for-sale">
+            <div class="truck-image">
+                <apex:outputPanel rendered="{!AND(product.Cloud_Documents__r.size>0,NOT(ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c)))}">
+                    <a class="group1" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                        <img src="{!product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}" />
+                    </a>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!OR(ISBLANK(product.Cloud_Documents__r),product.Cloud_Documents__r.size=0,ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c))}">
+                    <a class="group1" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                        <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" />
+                    </a>
+                </apex:outputPanel>
+            </div>
+            <div class="truck-description">
+                <h2>
+                    <a href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                        <span>{!product.VF_Main_Title__c}</span>
+                    </a>
+                </h2>
+                <span class="resultsDesc">{!product.Description}</span><br/>
+                <span class="red-text"></span>
+            </div>
+            <div class="note-price">
+                <div class="note">
+                    <span >{!product.VF_Additional_Pricing_Text__c}</span>
+                </div>
+                <div class="price">
+                    <span>{!product.VF_Website_Price__c}</span>
+                </div>
+            </div>
+        </div>
+    </apex:repeat>
+    
+</apex:component>

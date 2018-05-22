@@ -1,0 +1,84 @@
+<apex:component controller="BrindleeMountainMenuController" >
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/megamenu.js')}" />
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/megamenu_plugins.js')}" />
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/main-menu.js')}" />
+    <link href="{!URLFOR($Resource.WebportalResources,'/css/megamenu.css')}" rel="stylesheet" type="text/css"/>
+    <!-- Menu -->
+    <div class="mainmenu">
+        <div class="megamenu_container megamenu_dark_bar megamenu_dark megamenu_redtheme">
+            <ul class="megamenu">
+                <li class="megamenu_button" style="display: none;"><a href="#_">Main Menu</a></li>
+                <li style="display: list-item;"><a title="Home" href="/">Home</a></li>
+                <li style="display: list-item;">
+                    <a title="Fire Trucks For Sale" class="megamenu_drop">Fire Trucks For Sale</a>
+                        
+                    <!--DropDown list-->               
+                    <div class="dropdown_3columns dropdown_container" style="left: auto; top: auto; display: none;">
+                        <div >
+                            <ul class="dropdown_flyout">
+                                <apex:repeat value="{!listCategoryUrlCodes}" var="objWrapper">
+                                    <li><a href="{!URLFOR($Page.AvailableTrucks+'/'+objWrapper.urlCode)}" title="{!objWrapper.picklistValue}">{!objWrapper.picklistValue}</a></li>
+                                </apex:repeat>
+                            </ul>
+                        </div>
+                    </div>                                                
+                </li>
+                <!--
+                <li style="display: list-item;">
+                    <a title="Loose Equipment" class="megamenu_drop">LOOSE EQUIPMENT</a>
+                                  
+                    <div class="dropdown_3columns dropdown_container" style="left: auto; top: auto; display: none;">
+                        <div >
+                            <ul class="dropdown_flyout">
+                                <apex:repeat value="{!listEquipmentTypeUrlCodes}" var="objWrapper">
+                                    <li><a href="{!URLFOR($Page.AvailableLooseEquipments,null,[category=objWrapper.urlCode])}" title="{!objWrapper.picklistValue}">{!objWrapper.picklistValue}</a></li>
+                                </apex:repeat>
+                                <li><a href="{!URLFOR($Page.UploadLooseEquipment)}" title="List Your Loose Equipment">List Your Loose Equipment</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>-->
+                
+                <!--
+                <li style="display: list-item;">
+                    <a href="{!URLFOR($Page.Testimonials)}" title="Testimonials">Testimonials</a>
+                </li>
+                -->
+                
+                <li style="display: list-item;">
+                    <a href="{!URLFOR($Page.FireTruckFinder)}" title="Fire Truck Finder" class="regMarkRel" style="position:relative;">Fire Truck Finder
+                        <div class="regMark" style="position: absolute; right: 16px; top: 10px; font-size: 15px;">&#174;</div>
+                    </a>
+                    
+                </li>
+                
+                
+                <li style="display: list-item;">
+                    <a title="Service" href="{!URLFOR($Page.Service)}">Service</a></li>
+                <li style="display: list-item;">
+                    <a id="dropdown_about_us" title="About Us" class="megamenu_drop">About Us</a> <!--  -->
+                    <div class="dropdown_3columns dropdown_container" style="left: auto; top: auto; display: none;">
+                        <!--DropDown list-->
+                        <div >
+                            <ul class="dropdown_flyout">
+                                <li><a href="{!URLFOR($Page.AboutUs)}" title="About Us">About Us</a></li>
+                                <!--<li><a href="{!URLFOR($Page.Testimonials)}" title="Testimonials">Testimonials</a></li>-->
+                                <li><a href="{!URLFOR($Page.News)}" title="In The News">In The News</a></li>
+                                <li style="display: list-item;">
+                                    <a title="Recent Deliveries" href="{!URLFOR($Page.RecentDeliveries)}">Recent Deliveries</a>
+                                </li>
+                                <li><a href="{!URLFOR($Page.BrindleeHistory)}" title="The History of Brindlee Mountain Fire Apparatus">
+                                    The History of Brindlee Mountain Fire Apparatus</a>
+                                </li>
+                                <li><a href="{!URLFOR($Page.Testimonials)}" title="Testimonials">Testimonials</a></li>
+                                <li><a href="https://workatbrindlee.com/" target="_blank" title="Work At Brindlee">Work At Brindlee</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    </li>
+                <li style="display: list-item;"><a title="Contact" href="{!URLFOR($Page.ContactUs)}">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+    
+</apex:component>

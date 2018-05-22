@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <description>Blocks consisting of advertisements in the form of images, displayed on right side in the page Body.</description>
+    <label>BrindleeMountainEndorsementsBlock</label>
+</ApexComponent>

@@ -1,0 +1,55 @@
+<apex:component Controller="ITRequestHardware" allowDML="true">
+    <apex:attribute name="rerender" type="string" description="pass through rerender value"/>
+    <apex:attribute name="id" type="String" description="the component id"/>
+
+<!-- Requested Hardware Related List -->
+    <apex:form >
+        <apex:pageBlock title="Requested Hardware" id="HardwareGridForm">
+
+                <apex:pageBlockButtons location="top">
+                        <apex:commandButton action="{!cancelHardwareRequest}" value="Cancel" id="CancelHardwareRequestButton" rerender="HardwareGridForm, ServiceGridForm" status="HardwareStatus" rendered="{!HardwareInsertFlag}" style="margin:5px 0 0 0"/>
+                        <apex:commandButton action="{!cancelHardwareRequest}" value="Refresh" id="RefreshHardwareRequestButton" rerender="HardwareGridForm, ServiceGridForm"  status="HardwareStatus" rendered="{!IF(HardwareInsertFlag == 'true',false,true)}" style="margin:5px 0 0 0"/>
+                        <apex:commandButton action="{!addHardwareRequest}" value="Add hardware item to request" id="AddHardwareRequestButton" rerender="HardwareGridForm" status="HardwareStatus"/>
+                </apex:pageBlockButtons>
+                <apex:pageBlockTable value="{!HardwareGridData}" var="HardwareGridPos" id="HardwareDataTable" rowClasses="odd,even" styleClass="list" width="100%" rules="rows" columnsWidth="60px, 110px, 300px">
+                        <apex:column headerValue="Action" rendered="{!IF(HardwareGridPos.Name == null,false,true)}">
+                                <b><apex:outputLink value="/{!HardwareGridPos.id}/e" id="editLink">Edit</apex:outputLink>
+                                <apex:outputText value=" | "/>
+                                <apex:outputLink id="delLink" onclick="if ((Modal.confirm && Modal.confirm('Are you sure?')) || (!Modal.confirm && window.confirm('Are you sure?'))) navigateToUrl('/setup/own/deleteredirect.jsp?delID={!HardwareGridPos.Id}&retURL=/{!requestId}');">Del</apex:outputLink></b>
+                        </apex:column>
+                        <apex:column headerValue="Action" rendered="{!IF(HardwareGridPos.Name == null,true,false)}">                                
+                                <apex:commandButton action="{!saveHardwareRequest}" value="Save" id="SaveHardwareRequestButton" rerender="{!id}, {!rerender}" status="HardwareStatus" style="margin:5px 0 0 0"/>
+                        </apex:column>
+                        <apex:column headerValue="Pos.">
+                                <apex:OutputLink id="HardwareGridPos_Col1" value="/{!HardwareGridPos.id}">{!HardwareGridPos.Name}</apex:OutputLink>
+                                <!--<apex:outputText value="Select item:" rendered="{!IF(HardwareGridPos.Name == null,true,false)}" style="color: red; font-weight:bold; font-size:12pt; margin:5px 0 0 0" />-->
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Hardware_Request__c.fields.IT_Hardware__c.label}">
+                                <apex:inputField id="HardwareGridPos_Col2edit" value="{!HardwareGridPos.IT_Hardware__c}" style="width: 200px" rendered="{!IF(HardwareGridPos.Name == null,true,false)}"/>
+                                <apex:outputField id="HardwareGridPos_Col2desplay" value="{!HardwareGridPos.IT_Hardware__c}" rendered="{!IF(HardwareGridPos.Name == null,false,true)}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="{!$ObjectType.IT_Hardware_Request__c.fields.Requested_Number__c.label}">
+                                <apex:inputField id="HardwareGridNrEdit" value="{!HardwareGridPos.Requested_Number__c}" style="width: 30px" rendered="{!IF(HardwareGridPos.Name == null,true,false)}"/>
+                                <apex:outputField id="HardwareGridPos_NrDisplay" value="{!HardwareGridPos.Requested_Number__c}" rendered="{!IF(HardwareGridPos.Name == null,false,true)}" style="margin:5px 0 0 0"/>
+                        </apex:column>
+
+                        <apex:column headerValue="{!$ObjectType.IT_Hardware_Request__c.fields.Price__c.label}">
+                                <apex:outputField id="HardWareGridPos_Price" value="{!HardwareGridPos.Price__c}" rendered="{!IF(HardwareGridPos.Name == null,false,true)}"/>
+                                <!-- <apex:commandButton action="{!saveHardwareRequest}" value="Save" id="SaveHardwareRequestButton2" rerender="HardwareGridForm, ServiceGridForm" status="HardwareStatus" style="margin:5px 0 0 0" rendered="{!IF(HardwareGridPos.Name == null,true,false)}"/>  -->                  
+                        </apex:column>
+                        <apex:column headerValue="Asset Group">
+                                <apex:outputField id="HardWareGridPos_Group" value="{!HardwareGridPos.IT_Hardware__r.IT_Asset_Group__c}" rendered="{!IF(HardwareGridPos.Name == null,false,true)}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Hardware_Request__c.fields.CreatedDate.label}">
+                                <apex:outputField id="HardwareGridPos_Col3" value="{!HardwareGridPos.CreatedDate}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$ObjectType.IT_Hardware_Request__c.fields.LastModifiedById.label}">
+                                <apex:outputField id="HardwareGridPos_Col4" value="{!HardwareGridPos.LastModifiedById}"/>
+                        </apex:column>
+                        
+                </apex:pageBlockTable>
+                <apex:actionStatus id="HardwareStatus" startText="Requesting..."/>&nbsp;{!HardwareStatusText}
+        </apex:pageBlock>
+    </apex:form>
+</apex:component>

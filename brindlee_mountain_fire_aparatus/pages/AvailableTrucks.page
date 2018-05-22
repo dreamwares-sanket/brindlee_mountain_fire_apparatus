@@ -1,0 +1,361 @@
+<apex:page cache="false" controller="AvailableTrucksController" sidebar="false" showHeader="false" readOnly="true" applyBodyTag="false">
+    <head>
+        <title>{!SeoTitle}</title>
+        <meta id="meta_description" name="Description" content="{!SeoDescription}" />
+        <meta id="meta_keywords" name="Keywords" content="used fire trucks, fire trucks" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/AvailableTrucks/{!CategoryCanonicalUrl}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/availableTrucks.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap.min.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap-multiselect.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <apex:includeScript loadOnReady="true" value="{!URLFOR($Resource.WebportalResources,'/scripts/availableTrucks.js')}"/><!---->
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        
+        <style>
+            button.btn.btn-default.multiselect-clear-filter { display: none; }
+        </style>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+    
+        <!--Processing status Spinner -->
+        <apex:actionStatus id="ProcessStatus" layout="block">
+            <apex:facet name="start">
+               <div id="assign-action-spinner-main">
+                   <div id="assign-action-spinner-content">
+                       <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />&nbsp;&nbsp;
+                   </div>
+               </div>
+            </apex:facet>
+        </apex:actionStatus>
+    
+       <!-- Header -->
+       <c:BrindleeMountainHeader />
+    
+       <!-- Menu -->
+       <c:BrindleeMountainMenu />
+    
+        <div class="mobile-margin">
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="pagetop">
+                        
+                        <div class="header-page-banner-new">
+                            <apex:outputPanel id="randomProdsPanel" layout="block">
+                                  
+                                 <ul class="productList">
+                                      <apex:repeat value="{!RandomProducts}" var="randomProd">
+                                        <li>
+                                            <a class="truckUrl" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=randomProd.Id])}">
+                                                <apex:outputPanel rendered="{!AND(randomProd.Cloud_Documents__r.size>0,NOT(ISBLANK(randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                                   <img src="{!randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" /></apex:outputPanel>
+                                                <apex:outputPanel rendered="{!NOT(AND(randomProd.Cloud_Documents__r.size>0,NOT(ISBLANK(randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))))}">
+                                                   <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" /></apex:outputPanel>
+                                            </a>
+                                            <span class="productTitle">{!randomProd.VF_Main_Title__c}</span>
+                                        </li>
+                                     </apex:repeat>
+                                 </ul>
+                                 
+                               <apex:outputPanel rendered="{!AND(NOT(ISBLANK(RandomProducts)),RandomProducts.size>0,OR(ISBLANK(selCategory),selCategory='All'),OR(ISBLANK($CurrentPage.parameters.category),$CurrentPage.parameters.category=''))}">
+                                   <div class="headerbannertitle" style="position:static;">Used Fire Trucks For Sale</div>
+                               </apex:outputPanel>
+                               <apex:outputPanel rendered="{!AND(NOT(ISBLANK(RandomProducts)),RandomProducts.size>0,NOT(ISBLANK(selCategory)),selCategory!='All')}">
+                                   <div class="headerbannertitle" style="position:static;">{!selCategory} For Sale</div>
+                               </apex:outputPanel>
+                               <apex:outputPanel rendered="{!OR(ISBLANK(RandomProducts),RandomProducts.size=0)}">
+                                   <div class="headerbannertitle" style="position:static;">No Trucks found!! </div>
+                               </apex:outputPanel>
+                           </apex:OutputPanel>
+                        </div>
+                            
+                            <!-- right side menu -->
+                            <div class="hometopright">
+                                <c:BrindleeMountainRightSideMenu />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CONTENT -->
+                <div class="page-content">
+                    <apex:form >
+                        <!--Select Picklists -->
+                        <table class="criteriaTable">
+                            <tr>
+                                <td>
+                                    <b>Budget Min:</b>
+                                    <apex:selectList value="{!selBudgetMin}" size="1" label="Sort by Budget range" id="minBudget">
+                                        <apex:selectOptions value="{!PriceOptions}"/>
+                                            <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Budget Max:</b>
+                                    <apex:selectList value="{!selBudgetMax}" size="1" label="Sort by Budget range" id="maxBudget">
+                                        <apex:selectOptions value="{!PriceOptions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Brand:</b>
+                                    <apex:selectList id="brandsPicklist" value="{!listSelBrands}" size="5" label="Sort by Brand" multiselect="true">
+                                        <apex:selectOptions value="{!Brands}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                     <b>Chassis:</b>
+                                    <apex:selectList value="{!selChassis}" size="1" label="Sort by Chassis">
+                                        <apex:selectOptions value="{!ChassisTypes}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                 <td>
+                                    <b>Pump Size:</b>
+                                    <apex:selectList value="{!selPumpSize}" size="1" label="Sort by Pump Size">
+                                        <apex:selectOptions value="{!PumpSizeRanges}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Tank Size:</b>
+                                    <apex:selectList value="{!selTankSize}" size="1" label="Sort by Tank Size">
+                                        <apex:selectOptions value="{!TankSizeRanges}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>    
+                                    <b>4x4</b>
+                                    <apex:selectList value="{!sel4x4Option}" size="1">
+                                        <apex:selectOption itemLabel="All" itemValue="All"></apex:selectOption>
+                                        <apex:selectOption itemLabel="Yes" itemValue="True"></apex:selectOption>
+                                        <apex:selectOption itemLabel="No" itemValue="False"></apex:selectOption>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Year Min:</b>
+                                    <apex:selectList value="{!selYearMin}" size="1" label="Sort by Year">
+                                        <apex:selectOptions value="{!YearOptions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Year Max:</b>
+                                    <apex:selectList value="{!selYearMax}" size="1" label="Sort by Year">
+                                        <apex:selectOptions value="{!YearOptions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Category:</b>
+                                    <apex:selectList value="{!selCategory}" label="Sort by Category" size="1">
+                                        <apex:selectOptions value="{!Categories}"/>
+                                        <apex:actionSupport event="onchange" action="{!changeCategoryPage}">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                     <b>Mileage:</b>
+                                    <apex:selectList value="{!selMileageOption}" size="1" label="Sort by Mileage">
+                                        <apex:selectOptions value="{!MileageOptions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Region:</b>
+                                    <apex:selectList value="{!listSelRegions}" id="regionsPicklist" multiselect="true" size="5" label="Sort by Region">
+                                        <apex:selectOptions value="{!GeographicRegions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                     <b>Warranty:</b>
+                                    <apex:selectList value="{!selWarrantyOption}" size="1" label="Sort by Warranty">
+                                        <apex:selectOptions value="{!WarrantyOptions}"/>
+                                        <apex:actionSupport event="onchange" action="{!resetRecordsList}" oncomplete="attachHandlerForTrucksOnClickEvent(); resetIsReached({!listAllProducts.size});" rerender="allProductsPanel,randomProdsPanel,randomProdsTitle,controllerParamsPanel" status="ProcessStatus">
+                                        </apex:actionSupport>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                        </table>
+                        <apex:actionFunction action="{!fetchRelatedRecords}" name="getNextTrucksBatch" oncomplete="attachHandlerForTrucksOnClickEvent(); isRecLimitReached({!listAllProducts.size})" reRender="allProductsPanel">
+                            <apex:param name="offset" value=""/>
+                        </apex:actionFunction>
+                    </apex:form>
+                    <br/>
+                    <apex:outputPanel id="allProductsPanel">
+                        <apex:repeat value="{!listAllProducts}" var="product" >
+                                <div class="truck-for-sale">
+                                
+                                   <div class="truck-image">
+                                        <a class="truckUrl" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                                             <apex:outputPanel rendered="{!AND(product.Cloud_Documents__r.size>0,NOT(ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                                 <img src="{!product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" />
+                                             </apex:outputPanel>
+                                             <apex:outputPanel rendered="{!OR(ISBLANK(product.Cloud_Documents__r),product.Cloud_Documents__r.size=0,ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))}">
+                                                 <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" />
+                                             </apex:outputPanel>
+                                         </a>
+                                   </div>
+                                   <div class="truck-description">
+                                      <h2>
+                                        <a class="truckUrl" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                                            <span>{!product.VF_Main_Title__c}</span></a>
+                                      </h2>
+                                      <span class="resultsDesc">{!product.Description}</span><br/>
+                                      <span class="red-text">
+                                      <span ></span></span>
+                                   </div>
+                                   <div class="note-price">
+                                      <div class="note">
+                                         <span >{!product.VF_Additional_Pricing_Text__c}</span>
+                                      </div>
+                                      <div class="price">
+                                         <span>{!product.VF_Website_Price__c} {!product.VF_Website_Price_Financing_WAC__c}</span>
+                                      </div>
+                                   </div>
+                                </div>
+                        </apex:repeat>
+                        <div>
+                            <img id="load-more-img" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/ring.gif')}" />
+                        </div>
+                    </apex:outputPanel>
+                </div>
+    
+                <div class="bottom-left"><div class="bottom-right"></div></div>
+            </div>
+        </div>
+        
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+        
+        <script>
+            $('[id*=brandsPicklist]').multiselect({    // bootstrap multiselect for brand and geographic region picklists
+                    enableFiltering: false,
+                    maxHeight: 200,
+                    numberDisplayed: 1,
+                    onChange: function(option, checked) {
+                        if( checked && $(option).val() != 'All' ){
+                            $('[id*=brandsPicklist]').multiselect('deselect','All');
+                        }
+                        if( checked && $(option).val() == 'All' ){                            
+                            $('[id*=brandsPicklist] option').each(function(index,option){
+                                $('[id*=brandsPicklist]').multiselect('deselect',option.text);
+                            });                            
+                            $('[id*=brandsPicklist]').multiselect('select','All');
+                        }
+                    }
+                });
+            
+            $('[id$=regionsPicklist]').multiselect({    // bootstrap multiselect for brand and geographic region picklists
+                    enableFiltering: false,
+                    maxHeight: 200,
+                    numberDisplayed: 1,
+                    onChange: function(option, checked) {
+                        if( checked && $(option).val() != 'All' ){
+                            $('[id*=regionsPicklist]').multiselect('deselect','All');
+                        }
+                        if( checked && $(option).val() == 'All' ){                            
+                            $('[id*=regionsPicklist] option').each(function(index,option){
+                                $('[id*=regionsPicklist]').multiselect('deselect',option.text);
+                            });                            
+                            $('[id*=regionsPicklist]').multiselect('select','All');
+                        }
+                    }
+                    
+            });
+            
+            // STRICTLY STAYS ON THE PAGE
+            function getCurrentListSize(){
+                return '{!listAllProducts.size}';
+            }
+        </script>
+        
+        <apex:outputPanel id="controllerParamsPanel"><!-- Rerendered on each picklist change event -->
+            <script>        
+            // STRICTLY STAYS ON THE PAGE
+            
+            function getBudgetRange(){
+                return encodeURI('{!selBudgetMin}') +'-'+ encodeURI('{!selBudgetMax}');
+            }
+            function getYear(){
+                return encodeURI('{!selYearMin}') +'-'+ encodeURI('{!selYearMax}');
+            }
+            function getChassis(){
+                 return encodeURI('{!selChassis}');
+            }
+            function getBrand(){
+                return getValueForMultiSelect('{!listSelBrands}');
+            }
+            function getPumpSize(){
+                return encodeURI('{!selPumpSize}');
+            }
+            function getTankSize(){
+                 return encodeURI('{!selTankSize}');
+            }
+            function getCategory(){
+                return encodeURI('{!CategoryCanonicalUrl}');
+            }
+            function getWarranty(){
+                return encodeURI('{!selWarrantyOption}');
+            }
+            function getRegion(){
+                return getValueForMultiSelect('{!listSelRegions}');
+            }
+            function getMileage(){
+                return encodeURI('{!selMileageOption}');
+            }
+            function get4x4Option(){
+                return encodeURI('{!sel4x4Option}');
+            }
+            </script>
+        </apex:outputPanel>    
+
+<div id="liveagent_invite_button_573o0000000L6fb" style="display:none;">
+<span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.startChat('573o0000000L6fb')"><IMG src="https://c.na17.content.force.com/servlet/servlet.ImageServer?id=015o0000002P7D5&oid=00Do0000000JLLE&lastMod=1467658193000"></IMG></span>
+<span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.rejectChat('573o0000000L6fb')"><IMG src="https://c.na17.content.force.com/servlet/servlet.ImageServer?id=015o0000002P7DP&oid=00Do0000000JLLE&lastMod=1467658240000" height="30" width="30"></IMG></span></div>
+
+<script type='text/javascript' src='https://c.la3-c1-was.salesforceliveagent.com/content/g/js/39.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la3-c1-was.salesforceliveagent.com/chat', '572o0000000L5fL', '00Do0000000JLLE');
+</script>
+
+    </body>
+</apex:page>

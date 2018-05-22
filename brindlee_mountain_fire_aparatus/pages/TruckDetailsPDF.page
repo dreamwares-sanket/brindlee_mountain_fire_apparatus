@@ -1,0 +1,147 @@
+<apex:page standardController="Product2" renderAs="pdf" extensions="TruckDetailsPDFController" showHeader="false" sidebar="false" applyBodyTag="false">
+    <head>
+        <style>
+          .columnList{padding: 0!important; width: 100%; margin:0!important;}
+          .columnList li{display:inline-block; width:33%; padding:0 0 0 0; margin:0!important; font-size:12px; vertical-align:top; box-sizing:border-box;}
+           @page { margin:20px 18px 10px; }
+           body { font-family: Arial Unicode MS; font-size:12px;}
+           .mainTitle{font-size:20px; }
+           h3{font-size:18px;}
+           .alignTop {vertical-align:top}
+ 
+        </style>
+        <title>{!product2.VF_Main_Title__c} | Used Truck PDF</title>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <div align="left"><img  alt="Truck" src="{!URLFOR($RESOURCE.PdfHeader, '/BrindleeLogo.png')}" width="650" /></div>
+        <table width="100%" style="table-layout:fixed; margin-top:20px;">
+            <tr>
+                <td style="margin:0; padding:0;" valign="middle">
+                    <apex:outputPanel rendered="{!!ISBLANK(strMainImageURL)}">
+                        <img width="100%" alt="Truck" src="{!strMainImageURL}"  />
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!ISBLANK(strMainImageURL)}">
+                        <img width="100%" alt="Truck" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}"/>
+                    </apex:outputPanel>
+                </td>
+                <td valign="top" style="padding:0 0 0 20px;">
+                        
+                  <div id="ContactUs" style="padding:0; margin:0;" >
+                    <h3 style="padding:0 0 20px ;margin:0;">Contact Us</h3>
+                
+                    <div style=" font-size:14px; padding:15px; background:#f2f2f2;  ">
+                        <apex:outputLabel escape="false">
+                            <b>{!$Label.Office}</b> : {!companyContactInfo.Toll_Free__c} <br/>
+                            <apex:outputText Value="Email : {!companyContactInfo.Sales_Email__c}" escape="false"/>
+                            <br/><apex:outputText Value="{!$Label.Website}" escape="false"/>
+                            <br/><br/><apex:outputText Value="<b>{!companyContactInfo.Address__c}</b>" escape="false"/>
+                        </apex:outputLabel>
+                        <apex:outputText style="font-weight:bold;" value="{!product2.VF_Stock_Number__c}" rendered="{!NOT(ISBLANK(product2.VF_Stock_Number__c))}" escape="false"></apex:outputText>    
+                        <apex:outputText style="font-weight:bold; display:block;" value="Price: {!product2.VF_Website_Price__c}"/>
+                    </div> 
+                  </div> 
+                </td>
+            </tr>
+        </table>  
+       
+        <div class="mainTitle" style="padding:10px 0 0;">        
+            <apex:outputText value="{!product2.VF_Main_Title__c}" rendered="{!NOT(ISBLANK(product2.VF_Main_Title__c))}" />       
+        </div>
+        
+        <div class="main-description">
+            <table width="100%">
+                <tr>
+                    <td valign="top">
+                        <ul class="columnList" type="disc">
+                            <li style="display:{!IF(ISBLANK(product2.VF_Main_Title__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Main_Title__c}" escape="false"/></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.VF_Chassis__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Chassis__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Seating__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Seating__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Chassis_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Chassis_Info__c}"  escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Fire_Body_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Fire_Body_Info__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Aerial_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Aerial_Info__c}"  escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Current_Aerial_Certification__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Current_Aerial_Certification__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Engine__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Engine__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Transmission_Description__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Transmission_Description__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Jacobs_Engine_Brake__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Jacobs_Engine_Brake__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Engine_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Engine_Info__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Pump__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Pump__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Current_Annual_Pump_Service_Test__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Current_Annual_Pump_Service_Test__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Water_Tank__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Water_Tank__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Foam_System__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Foam_System__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Foam_Tank_1__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Foam_Tank_1__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Foam_Tank_2__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Foam_Tank_2__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Pump_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Pump_Info__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Drivers_Side_Discharges__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Drivers_Side_Discharges__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Drivers_Side_Suction__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Drivers_Side_Suction__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Officers_Side_Discharges__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Officers_Side_Discharges__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Seating__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Officers_Side_Suction__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Officers_Side_Suction__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Front_Discharges__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Front_Suction__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Front_Suction__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Rear_Discharges__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Rear_Discharges__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Rear_Suction__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Rear_Suction__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Plumbing_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Plumbing_Info__c}" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Plumbing_Info__c))}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Booster_Reel__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Booster_Reel__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Crosslays_Speedlays__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Crosslays_Speedlays__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Monitor_Description__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Monitor_Description__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Generator_Description__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Generator_Description__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Lighting_Description__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Lighting_Description__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Heated_Mirrors__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Heated_Mirrors__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Hard_Suction__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Hard_Suction__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Electric_Reels__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Electric_Reels__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Hydraulic_Reels__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Hydraulic_Reels__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Air_Reels__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Air_Reels__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Electronic_Siren__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Electronic_Siren__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Electrical_Info__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Electrical_Info__c}"  escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Cascade_System__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Cascade_System__c}"  escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Breathing_Air__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Breathing_Air__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Air_Conditioning__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Air_Conditioning__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Hydraulic_Ladder_Rack__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Hydraulic_Ladder_Rack__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Aluminum_Hose_Bed_Cover__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Aluminum_Hose_Bed_Cover__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Automatic_Tire_Chains__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Automatic_Tire_Chains__c}" escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Pump_Heat_Pan__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Pump_Heat_Pan__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Backup_Camera__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Backup_Camera__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Federal_Q2B_Siren__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Federal_Q2B_Siren__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Auto_Lube_System__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Auto_Lube_System__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Additional_Features__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Additional_Features__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Loose_Equipment_Included__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Loose_Equipment_Included__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Pump_Hours__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Pump_Hours__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Engine_Hours__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Engine_Hours__c}" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Mileage__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Mileage__c}"  escape="false"></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_Break_Text_1__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Break_Text_1__c}" style="color:red;font-weight:bold;" escape="false" ></apex:outputText></td></tr></table></li> 
+                            <li style="display:{!IF(ISBLANK(product2.VF_OAL__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_OAL__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.VF_OAH__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_OAH__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.VF_OAW__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_OAW__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.VF_GVRW__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_GVRW__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.VF_Wheelbase__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.VF_Wheelbase__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            <li style="display:{!IF(ISBLANK(product2.Fire_Truck__r.Additional_Features__c),'none','')}"><table><tr><td class="alignTop">&#10061;</td><td><apex:outputText value="{!product2.Fire_Truck__r.Additional_Features__c}" escape="false" ></apex:outputText></td></tr></table></li>
+                            
+                        </ul>
+                    </td>
+                    
+                </tr>
+            </table>        
+            
+        </div>
+        
+        <table width="100%" style="border-top:1px solid #000; margin-top:5px;">
+            <tr>
+                <td valign="top" style="padding:10px 0;">
+                    <img src="{!URLFOR($Resource.WebportalResources,'/images/thumbnail.jpg')}" width= "130" />    
+                </td>
+                <td valign="top" style="padding:10px 0 10px 15px;">
+                    <apex:outputText Value="{!$Label.About_brindlee_mountain_fire_apparatus}" escape="false"/>
+                </td>
+            </tr>
+        </table>
+    </body>
+</apex:page>

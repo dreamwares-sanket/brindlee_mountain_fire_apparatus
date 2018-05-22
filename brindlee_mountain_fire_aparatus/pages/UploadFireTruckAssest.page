@@ -1,0 +1,248 @@
+<apex:page standardController="Fire_Truck__c" extensions="AmazonS3FileUploaderController" cache="false">
+    <apex:includeScript value="{!$Resource.dropzonejs}" />
+    <apex:includeScript value="{!$Resource.jQueryMinJs}" /> 
+    <apex:includeScript value="{!$Resource.sweetAlertJs}"/>
+    
+    <apex:stylesheet value="{!$Resource.sweetAlertCss}" />   
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css"/>   
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+         *{margin:0;padding:0;}
+         .slds-card{border: none !important;}
+         body{padding:0 !important;}
+         .container *{font-family: 'Open Sans', sans-serif; font-size:13px ; margin:0; padding:0; box-sizing:border-box;}
+         .dropzone { border: 2px dashed dodgerblue; background: #fff; max-width: 500px; margin: 45px auto; }
+         .btnDiv{text-align:center;}
+         .greenBtn { cursor:pointer; padding-left: 1rem; padding-right: 1rem; text-align: center; vertical-align: middle; border: 1px solid #dddbda; transition: border 0.15s linear; background:#0070d2; border-color: #0070d2; color: white; line-height: 30px; border-radius: 3px; margin: 0 auto; }
+         .greenBtn:hover{background-color: #005fb2; border-color: #005fb2; color: white;}
+         .dz-message{font-size:15px;font-weight:600;}
+         .upload_icon{font-size: 50px !important; color: #016fd3; width: 100%;font-family: FontAwesome;}
+         .Pageloaderwrapp{background-color:rgba(0,0,0,0.6);width:100%;height:100%;left:0right:0;bottom:0;top:0;    z-index: 50;position: fixed;display:none;}
+         .loaderDisplay{width:auto;margin:0 auto;align-items: center display: flex; position: absolute; left: 0; right: 0; top: 50%; height: 100%; bottom: 0;width: 50px;}
+         .loader { border: 5px solid #f3f3f3;border-radius: 50%;border-top: 5px solid #3498db;width: 30px;height: 30px;-webkit-animation: spin 1s linear infinite; /* Safari */animation: spin 1s linear infinite;}
+         .sweet-alert[data-has-cancel-button=false] button{background:rgb(140, 212, 245);}
+         /* Safari */
+         @-webkit-keyframes spin {0% { -webkit-transform: rotate(0deg); }100% { -webkit-transform: rotate(360deg); }}
+         @keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
+        @media (max-width:580px){.dropzone{margin: 45px 20px ;}}
+         
+    </style>
+    
+    <div class="container">    
+        <div class="Pageloaderwrapp" id="loader">
+            <div class="loaderDisplay"><div class="loader"></div></div>
+        </div>   
+        <form method="post" action="UploadFireTruckAssest/upload"  class="dropzone needsclick dz-clickable" id="my-awesome-dropzone">
+             <div class="dz-message">
+                <i class="fa fa-cloud-upload upload_icon"></i>
+                Drop files here or click to upload.
+            </div>              
+        </form>
+        <div class="btnDiv">
+            <!--<input type="button" id="submit-all" name="Submit" class="greenBtn"  value="Upload" style="width:auto;" />-->
+             <button id="submit-all" name="Submit" class="greenBtn" style="width:auto;">
+                 Upload
+            </button> 
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        var fileTags = new Set();           
+        var methodName;
+
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 10, // MB
+            maxFiles : 1,
+            addRemoveLinks: true,
+            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+            accept: function(file, done) {
+                console.log('accept ready',file);
+                console.log('Successfully queued in local storage ' + file.name + ' file !!!');   
+                done();                 
+            },
+            init: function() {
+                this.on("addedfile", function(file) {
+                });
+                this.on("removedfile", function(file) {
+                    console.log('imageDetails 1',file.status);
+                    if(file.status == 'success'){
+                        imageDetails.pop(file);
+                    }
+                });
+                this.on("success", function(file) {
+                    console.log('imageDetails 2',imageDetails);
+                    imageDetails.push([file.name, file.type, file, 'slide_'+window.OriginalfileCount]);
+                });
+                this.on("complete", function(file) {
+                });
+                this.on("reset", function (file) {
+                      //this.removeAllFiles(true); 
+                });
+                 this.on("maxfilesexceeded", function(file){
+                   console.log('imageDetails 21',imageDetails);
+                    alert("You can upload only one file");
+                    this.removeFile(file);
+                    console.log('imageDetails 22',imageDetails);
+                });
+            }
+        }; 
+            
+        var submitButton = document.querySelector("#submit-all");
+        submitButton.addEventListener("click", function() {
+            if(imageDetails.length == 1){
+                $("#loader").show();
+                console.log('imageDetails '+ imageDetails);
+                AWSS3imageUploader();
+            }else{
+                alert('Please select file(s) to upload.');
+                $("#loaderId").hide();
+            }
+        });   
+    </script>
+    
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.119.0.min.js"></script>
+    
+    <script type="text/javascript">
+        
+        var AWSCredentials, imageDetails = [], fileDataTable ;
+
+        $(document).ready(function(){           
+            window.recordId = '{!$CurrentPage.parameters.Id}';
+            $("#loader").show();
+            
+            var timeoutID = setTimeout(function () {
+                // rest of code here
+                console.log("setTimeout 5 secondi");
+               $("#loader").hide(); // hide the loader graphic after 5 seconds
+            }, 2000);
+            
+            if( !window.recordId ){
+                window.recordId = '{!$User.Id}';
+            }
+            
+            AWSCredentials = getAWSCredentials();
+            console.log('AWSCredentials', AWSCredentials);
+            
+            AWS.config.update({
+                accessKeyId : AWSCredentials.AccessKeyId__c,
+                secretAccessKey : AWSCredentials.SecretAccessKey__c,
+                region_config: "us-east-2" 
+            });
+        });
+        
+        function getAWSCredentials(){
+            try{
+                return JSON.parse('{!JSENCODE(LoginCredentials)}');
+            }
+            catch(e){
+                console.error('Exception while fetching AWS settings:', e);
+            }
+        }
+            
+        function AWSS3imageUploader(){
+            var clodDocumetnList = [];
+
+            var bucket = new AWS.S3({params: {Bucket: AWSCredentials.BucketId__c}}),
+                options = { partSize: 10 * 1024 * 1024, queueSize: imageDetails.length },
+                errors = '';
+            
+            window.fileCount = 0;
+            if(imageDetails.length > 0){
+                imageDetails.forEach(function(file){  
+                    var params = {Key: '/'+ window.recordId +'/'+ file[0], ContentType: file[1], Body: file[2]};   
+                    
+                    bucket.upload(params, options).on('httpUploadProgress', function(evt){                        
+                        if(parseInt((evt.loaded * 100) / evt.total) === 100){
+                            var progressPc = Math.ceil((100*(window.fileCount+1))/(imageDetails.length-1));
+                        }            
+                    }).send(function(err, data){                    
+                        if(!err){
+                            console.log('here');
+                            var cloudDoc = createCloudDocumentsRecord(file);
+                            clodDocumetnList.push(cloudDoc);
+                            
+                            if(window.fileCount === (imageDetails.length-1)){
+                                console.log('window.fileCount',window.fileCount );
+                                console.log("Files uploaded Successfully!!",data);
+                                callUploadVFRemoting(clodDocumetnList);                                                            
+                                $("#loader").hide();                                
+                            }
+                            window.fileCount++;
+                        }else{
+                            console.error('Error in upload', err);
+                        }
+                    });
+                });
+                
+            }else{
+                alert('Please select file(s) to upload.');
+                $("#loader").hide();
+            }
+        }
+            
+        function callUploadVFRemoting(clodDocumetnList){
+            methodName = '{!$RemoteAction.AmazonS3FileUploaderController.insertCloudDoccumentRecord}';
+            console.log('clodDocumetnList insert : ', clodDocumetnList);
+            var jsonParam = JSON.stringify(clodDocumetnList);
+            console.log('jsonParam insert : ', jsonParam);
+            VFRemoting(methodName, jsonParam);
+        }
+      
+        function createCloudDocumentsRecord(file){
+            var sObjectType = '{!ObjectApiName}';
+            var cloudDocumentRecord = {
+                Name                                        : file[0],                
+                DragDropToCloud__Contact__c                 : null,
+                Fire_Truck__c                               : null,
+                DragDropToCloud__Bucket_Name__c             : AWSCredentials.BucketId__c,
+                DragDropToCloud__Hidden_File_Version_No__c  : '00',
+                DragDropToCloud__Folder_Id__c               : '/'+window.recordId+'/'+file[0],
+                DragDropToCloud__Access_Level__c            : 'public-read-write',
+                DragDropToCloud__Hidden_File_Name__c        : file[0],
+                DragDropToCloud__Actual_File_Name__c        : file[0],
+            };
+            
+            cloudDocumentRecord[sObjectType] =  window.recordId;        
+            return cloudDocumentRecord;
+        }
+        
+        // MethodName should be like class_Name.Method_Name
+        function VFRemoting(methodName, params){
+            Visualforce.remoting.Manager.invokeAction(
+                methodName,
+                params, 
+                function(result, event){
+                    $("#loader").hide();
+                    if (event.status) {
+                       console.log('result.message', result);  
+                       if(result.Success){              
+                           showToastMessage(result.Message, "success")                     
+                       }else{
+                           showToastMessage(result.Message, "error");
+                       }
+                    } else if (event.type === 'exception') {
+                        showToastMessage(result.Message, "error");
+                    } else {
+                       showToastMessage(result.Message, "error");
+                    }
+                }, 
+                {escape: true}                
+            );
+      }
+      
+      function showToastMessage(message, type) {
+         swal({ 
+             title: "",
+             text: message,
+             type: type
+          },
+          function(){
+            location.reload();
+        });    
+     }
+        
+    </script>
+</apex:page>

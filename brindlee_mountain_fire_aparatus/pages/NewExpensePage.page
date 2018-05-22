@@ -1,0 +1,616 @@
+<apex:page controller="NewExpensePageController" showHeader="false" sidebar="false" docType="HTML-5.0">
+    <head>
+        <link href="{!URLFOR($Resource.NewExpensePageResources,'css/style.css')}" rel="stylesheet"> </link>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />   
+           
+        <script src="{!URLFOR($Resource.NewExpensePageResources,'script/jquery-1.8.3.min.js')}"></script>
+        <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+        textarea{
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px 10px;
+            margin: 10px 0 0;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.14);
+            width: 100%;
+        }
+        label { display: block; color: #4e4e4e; }
+        *.unselectable {
+           -moz-user-select: -moz-none;
+           -khtml-user-select: none;
+           -webkit-user-select: none;
+        
+           /*
+             Introduced in IE 10.
+             See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+           */
+           -ms-user-select: none;
+           user-select: none;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="container unselectable">
+        <div id="assign-action-spinner-main" class="loading unselectable" style="display:none;">
+            <div id="wait">
+                <div id="assign-action-spinner-content" >                
+                    <img src="{!URLFOR($Resource.NewExpensePageResources,'images/loading.gif')}" alt="Processing..." title="Processing..." />
+                </div>
+            </div>
+        </div>  
+        <div class="errorMessage" style="display:none;">     
+            <ul style="list-style-type: none;"></ul>
+        </div>           
+        <apex:form >
+            <div>
+                <div>
+                    <form>
+                        <div class="blcks">
+                            <div class="tableLayout">
+                                <div class="tableRow">
+                                    <div class="tableCell">
+                                        <div class="merchantNameDetails">
+                                            <label class="">Merchant Name</label>                            
+                                            <c:InputLookupComponent elementInfo="merchantName" objectName="Account" 
+                                               loadingClass="loading" classesToHide="addMerchant" classesToshow="addMerchant" objectFieldsToConsider="Name"
+                                               optionDisplayField="Name" optionValueField="Id" extendedCriteria="Company_Type__c=\'Vendor\'"/>
+                                            <input type="text" style="display:none;" class="merchantName required"></input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Update -->
+                        <div id="addMerchantDivId" class="blcks">
+                            <div class="addMerchant" style="display:none;">
+                                <a href="#" onClick="addNewMerchant(); return false;" class="btnStyle">Add Merchant</a>
+                            </div> 
+                        </div>
+                        
+                        <div class="blcks">
+                            <label>Expense Date</label>
+                            <input id="expenseDate" type="Date" class="required expenseDate"/> 
+                        </div>                       
+                        
+                        <div class="blcks">
+                            <label>Expense Amount</label>
+                            <input type="number" class="expenseAmount required blueTxt" onkeypress="if(this.value.split('.')[0].length > 15 || (this.value.split('.')[1] && this.value.split('.')[1].length > 1)) return false;" title="tets"></input>
+                        </div>
+                        
+                        <div id="expPointId"/>
+                        
+                        <div class="blcks">
+                            <label>Expense Comment</label>
+                            <textarea id="expenseComment" class="expenseComment"></textarea>
+                        </div>                       
+                        <div class="blcks">
+                            <label>Category</label>
+                            <select class="category MerchantCategory">
+                                <option value=" " selected="selected" disabled="disabled">SELECT CATEGORY</option>
+                                <apex:repeat value="{!Category}" var="category">
+                                    <option value="{!category}">{!category}</option>
+                                </apex:repeat>
+                            </select>
+                            <!-- <input disabled="disabled" class="MerchantCategory" type="text" /> -->
+                        </div>
+                        <div class="blcks">
+                            <label>Expense Credit Card</label>
+                            <c:InputLookupComponent elementInfo="creditCard" objectName="Employee_Credit_Cards__c" 
+                               loadingClass="loading" objectFieldsToConsider="Credit_Cards__r.Name"
+                               optionDisplayField="Credit_Cards__r.Name,Credit_Cards__r.Credit_Card_Number_E__c" optionValueField="Credit_Cards__r.Id" extendedCriteria="User__c=\'{!$User.Id}\'"/>
+                            <input type="text" style="display:none;" class="creditCard required"></input>
+                        </div>
+                        <div class="blcks">
+                            <label>Expense Product</label>
+                            <c:InputLookupComponent elementInfo="productName" objectName="Product2" 
+                               loadingClass="loading" objectFieldsToConsider="Name,Stock_Number__c"
+                               optionDisplayField="Name" optionValueField="Id"/>
+                            <input type="text" style="display:none;" class="productName"></input>
+                        </div>
+                        <div class="blcks">
+                            <label>Expense Campaign</label>
+                            <c:InputLookupComponent elementInfo="expenseCampaign" objectName="Campaign" 
+                               loadingClass="loading" objectFieldsToConsider="Name"
+                               optionDisplayField="Name" optionValueField="Id"/>
+                            <input type="text" style="display:none;" class="expenseCampaign"></input>
+                        </div>
+                        
+                        <div class="blcks">
+                            <label>Expense Department</label>
+                            <select class="expenseDepartment">
+                                <option value=" " selected="selected" disabled="disabled">SELECT DEPARTMENT</option>
+                                <apex:repeat value="{!ExpenseDepartment}" var="department">
+                                    <option value="{!department}">{!department}</option>
+                                </apex:repeat>                                
+                            </select>
+                        </div>
+                        
+                        <div class="blcks"> 
+                            <a href="#" onClick="checkFormFilled(); return false;" class="btnStyle unselectable">Create Expense</a>
+                        </div>
+                    </form>        
+                </div>
+            </div>
+            <!-- Upload Photo Div -->
+            <div class="uploadRecieptImg popMsg" style="display:none">
+                <div class="popBox">
+                    <div class="blcks" align="center">
+                        <div style="position:relative">
+                            <input type="file" id="fileU" value="" accept="application/pdf,image/*" capture="camera" class="receiptImg" onchange="previewImgFile()"/>
+                            <label for="fileU" class="imgTxt" style=" padding-bottom: 10px;">Reciept Photo </label>
+                            <img id="previewImage" class="imgBox" style="" src="" height="auto" max-width="200" alt="" ></img>
+                        </div>
+                        <a href="#" class="btnStyle" onClick="saveToSalesforce();">Upload Reciept</a>
+                    </div> 
+                </div>
+            </div>           
+            <!-- End of Upload photo div -->
+            <!-- Add Merchant Popup -->
+            <div class="addNewMerchantDetails popMsg" style="display:none;">
+                <div class="popBox">
+                <div class="clseBtn">+</div>
+                    <div class="blcks">
+                        <label>Merchant Name</label>
+                        <input type="text" class="newMerchantName"></input>
+                    </div>
+                    <div class="blcks">
+                        <label>Mercahant Category</label>
+                        <select class="newMerchantCategory">
+                            <apex:repeat value="{!MerchantCategory}" var="merchantCategory">
+                                <option value="{!merchantCategory}">{!merchantCategory}</option>
+                            </apex:repeat>                      
+                        </select> 
+                    </div>
+                    <div class="blcks">
+                        <a href="#" onClick="createNewMerchant(); return false;" class="btnStyle unselectable">Add Merchant</a>                              
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Confiramtion Message Popup -->
+            <div class="confirm popMsg" style="display:none">
+                <div class="popBox">
+                    <div class="clseBtn">+</div>
+                    <div class="blcks" align="center">
+                        <div style="position:relative">                            
+                            <div class="confirmationMsg"></div>
+                        </div>                        
+                    </div> 
+                </div>
+            </div> 
+            <!-- End of Confiramtion Message Popup -->
+        </apex:form>
+    </div>
+    </body>
+    
+    <script>
+    var recieptPhoto = '';
+    var merchantname;
+    var expenseAmount;
+    var expenseDate;
+    var expenseComment;
+    var category;
+    var creditCard;
+    var productName;
+    var expenseCampaign;
+    var expensePoints;
+    var expenseDepartment;
+    var confirmImageName = '';
+    var appendImg;
+    
+    // Pre-populate Logged Users data on page
+    var userSelectedDepartment = JSON.parse('{!UserDefaultData}');
+    if(userSelectedDepartment) {
+        //UserSelectedDepartment,UserDefaultCreditCardName,UserDefaultCreditCardId
+        if(userSelectedDepartment.UserSelectedDepartment);
+            $('.expenseDepartment').val(userSelectedDepartment.UserSelectedDepartment);
+        if(userSelectedDepartment.UserDefaultCreditCardName);
+            $('#creditCard').val(userSelectedDepartment.UserDefaultCreditCardName);
+        if(userSelectedDepartment.UserDefaultCreditCardId);
+            $('.creditCard').val(userSelectedDepartment.UserDefaultCreditCardId);
+    }
+    
+ //To get the image file and show its preview
+
+    var maxStringSize = 6000000; //Maximum String size is 6,000,000 characters
+    var maxFileSize = 4350000; //After Base64 Encoding, this is the max file size     
+    var chunkSize = 950000; //Maximum Javascript Remoting message size is 1,000,000 characters
+    var fileSize;
+    var positionIndex;
+    var doneUploading;
+    var expenseItemId;
+    var fileName;
+    var attachmentId = null; 
+    
+    function previewImgFile(){
+                
+        var file    = document.querySelector('input[type=file]').files[0]; //sames as here                                                                         
+        fileName = file.name;
+        var extension = fileName .substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+
+        if( extension == "png" || extension == "bmp" || extension == "jpeg" || extension == "jpg"){
+            readFile(file, true, /^data:image\/(png|jpg|jpeg|svg);base64,/)
+        }
+        else if(extension == "pdf"){
+            readFile(file, false, /^data:application\/pdf;base64,/)
+        }       
+        else{
+            alert('Upload file can either be an  image/pdf only...!!!');
+        }
+    } 
+    
+    
+    //function to read file
+    function readFile(file, showImage, replacementString){
+        var preview = document.querySelector('#previewImage'); //selects the query named img
+                
+        if (file != undefined) {
+            if (file.size <= maxFileSize) {
+                //console.log(file.name);
+                var fileReader = new FileReader();
+                
+                fileReader.onloadend = function () {
+                    preview.src = fileReader.result;
+                    recieptPhoto = preview.src;
+                    positionIndex = 0;
+                    fileSize = recieptPhoto.length;
+                    doneUploading = false;
+                    if (fileSize < maxStringSize) {
+                        if($.trim(recieptPhoto).length > 0){
+                            recieptPhoto = recieptPhoto.replace(replacementString, ""); 
+                            //recieptPhoto = '<img src="data:image/jpeg;base64,' + recieptPhoto + ' "/>';                                        
+                        }               
+                    } else {
+                        alert("Base 64 Encoded file is too large.  Maximum size is " + maxStringSize + " your file is " + fileSize + ".");
+                    }
+                }
+                fileReader.onerror = function(e) {
+                    alert("There was an error reading the file.  Please try again.");
+                };
+                fileReader.onabort = function(e) {
+                    alert("There was an error reading the file.  Please try again.");
+                };
+                
+                
+                if (file) {
+                    fileReader.readAsDataURL(file); //reads the data as a URL
+                } else {
+                    preview.src = "";
+                } 
+                
+                if(showImage){
+                    $('#previewImage').attr('src', preview.src);
+                    $('#previewImage').show();                 
+                }
+                else{
+                    preview.src = "";
+                    $('.imgBox').hide();
+                    $('.imgTxt').after('<label>Please click on Upload Reciept Button, to upload the pdf file</label>');
+                } 
+        
+            } else {
+                alert("File must be under 4.3 MB in size.  Your file is too large.  Please try again.");
+            }
+        } else {
+            alert("You must choose a file before trying to upload it");
+        }         
+    }
+    
+    function saveToSalesforce() {
+        $('.loading').show();
+        var newExpenseWrapper = getNewExpenseDetailWrapper();
+        if(!expenseItemId && $.trim(recieptPhoto)) 
+            createExpenseRecord(newExpenseWrapper);
+        else { 
+            alert('Please Select a Recipt Photo to be uploaded');
+            $('.loading').hide();
+        }
+        //else uploadFile();
+    }
+       
+    function uploadFile() {
+        //console.log(recieptPhoto);
+        if(!$.trim(recieptPhoto)) {
+            alert('Please Select a Recipt Photo to be uploaded');
+            $('.loading').hide();
+        } else {
+            var attachmentBody = "";
+            if (fileSize <= positionIndex + chunkSize) {
+                attachmentBody = recieptPhoto.substring(positionIndex);
+               doneUploading = true;
+            } else {
+                attachmentBody = recieptPhoto.substring(positionIndex, positionIndex + chunkSize);
+            }
+            //console.log('attachmentBody : ' + attachmentBody.length);
+            Visualforce.remoting.Manager.invokeAction(
+               '{!$RemoteAction.NewExpensePageController.doUploadAttachment}',
+                expenseItemId, attachmentBody, fileName, attachmentId,
+                function(result, event) {
+                    //console.log('attachmentId: ',result);
+                    if (event.type === 'exception') {
+                        console.log("exception");
+                        console.log(event);
+                    } else if (event.status) {
+                        if (result.substring(0, 3) == '00P') {
+                            if (doneUploading == true) {                                   
+                                $('.uploadRecieptImg').hide();                                                                
+                                if(result.length > 18){   
+                                    $('.confirmationMsg').html(' ');                             
+                                    appendImg = '<label>' + result + '</label>';
+                                    $('.confirmationMsg').append(appendImg);
+                                }                                                                                                
+                                $('.confirm.popMsg').show();
+                                $('.confirm.popMsg').find('.clseBtn').addClass('reload');
+                                attachmentId = null;   
+                                $('.loading').hide();                                                                                                                                          
+                            } else {
+                                attachmentId = result;
+                                positionIndex += chunkSize;
+                                uploadFile(recieptPhoto);
+                            }
+                        }
+                        else{
+                            alert(result);
+                        }
+                    } else {
+                        console.log(event.message);
+                    }
+                }, {
+                    buffer: true,
+                    escape: true,
+                    timeout: 120000
+                }
+            );                
+        }       
+    }   
+    
+    /*
+     * @purpose: To validate each field.
+     * @param:   
+     * @return:  -
+     */     
+    function validateFields() {
+        $(".errorMessage ul").empty();
+        var fieldsFilled = true;
+        $('.required').each(function(element) {
+            var elementVal = '#init#';
+            if($(this).is("select") && !$(this).attr('disabled')) {
+                elementVal = $(this).find('option:selected').val();
+            } else {
+                elementVal = $(this).val().trim();
+            }
+            if(elementVal) {
+                if($(this).hasClass('merchantName')) {
+                    if($('#merchantName').val()) $('#merchantName').css("border-color", "#ccc");
+                    else {
+                        if(fieldsFilled) fieldsFilled = false;
+                        $('#merchantName').css("border-color", "red");
+                        $(".errorMessage ul").append('<li>Please Select a Proper Merchant Name</li>');
+                    }
+                } else if($(this).hasClass('expenseAmount')) {
+                    var setError = false;
+                    var errorMsg;
+                    if(isNaN(elementVal)) {
+                        setError = true;
+                        errorMsg = '<li>Please Enter Numeric Value For Expense Amount</li>';
+                        $(this).val('');
+                    } else if(parseInt(elementVal) < 0) {
+                        setError = true;
+                        errorMsg = '<li>Please Enter Expense Amount Greater Than 0</li>';
+                    } else setError = false;
+                    
+                    if(setError) {
+                        if(fieldsFilled) fieldsFilled = false;      
+                        $(".errorMessage ul").append(errorMsg);
+                        $(this).css("border-color", "red");
+                    } else $(this).css("border-color", "#ccc");
+                } else if($(this).hasClass('creditCard')) {
+                    if($('#creditCard').val()) $('#creditCard').css("border-color", "#ccc");
+                    else {
+                        if(fieldsFilled) fieldsFilled = false;
+                        $('#creditCard').css("border-color", "red");
+                        $(".errorMessage ul").append('<li>Please Select a Proper Merchant Name</li>');
+                    }
+                } else if($(this).hasClass('productName')) {
+                    if($('#productName').val()) $('#productName').css("border-color", "#ccc");
+                    else {
+                        if(fieldsFilled) fieldsFilled = false;
+                        $('#productName').css("border-color", "red");
+                        $(".errorMessage ul").append('<li>Please Select a Proper Merchant Name</li>');
+                    }
+                } else $(this).css("border-color", "#ccc");
+            } else {
+                if(fieldsFilled) fieldsFilled = false;
+                var errorMsg;
+                if($(this).hasClass('merchantName')) {
+                    errorMsg = '<li>Please Select a Proper Merchant Name</li>';
+                    $('#merchantName').css("border-color", "red");
+                } else if($(this).hasClass('expenseDate')) errorMsg = '<li>Please Provide Expense Date</li>';
+                else if($(this).hasClass('expenseAmount')) errorMsg = '<li>Please Enter Numeric Value for Expense Amount</li>';    
+                else if($(this).hasClass('expenseComment')) errorMsg = '<li>Please Provide Expense Comment</li>';
+                else if($(this).hasClass('expensePoint')) errorMsg = '<li>Please Provide Expense Points</li>';
+                else if($(this).hasClass('creditCard')) {
+                    errorMsg = '<li>Please Select a Proper Credit Card</li>';
+                    $('#creditCard').css("border-color", "red");
+                } else if($(this).hasClass('productName')) {
+                    errorMsg = '<li>Please Select a Proper Product</li>';
+                    $('#productName').css("border-color", "red");
+                }
+                                                
+                $(".errorMessage ul").append(errorMsg);
+                $(this).css("border-color", "red");
+            }
+        });
+        return fieldsFilled;
+    }
+    
+    //To check weather all the fields from the page are filled.
+    function checkFormFilled(){
+
+        
+        //Validate complete form
+        if(validateFields()){
+            getExpenseFormValues();
+            $('.errorMessage').hide();
+            $('.uploadRecieptImg').show();
+        } else{
+            $('.loading').hide();  
+            $('.errorMessage').show();
+        }
+    }    
+    
+    //Function gets values from the expense form
+    function getExpenseFormValues(){
+    
+        merchantName = $('.merchantName').val();
+        expenseAmount = $('.expenseAmount').val();
+        //billable = $('.billable').prop('checked');
+        //reimbursable = $('.reimbursable').prop('checked');
+        //category = $('.MerchantCategory').val();
+        category = $('.MerchantCategory').find('option:selected').val();
+        creditCard = $('.creditCard').val();
+        productName = $('.productName').val();
+        //paymentType = $('.paymentType').val(); 
+        expenseComment = $('#expenseComment').val();
+        expenseCampaign = $('.expenseCampaign').val();
+        expensePoints = $('#expensePoints').val();
+        expenseDepartment = $('.expenseDepartment').find('option:selected').val()
+        
+        //Extract expense date in unix time 
+        var expenseDateStr = $('#expenseDate').val();
+        
+        if(expenseDateStr) {
+            expenseDate = new Date(expenseDateStr).getTime();
+        }
+    }
+    
+    /*
+     * @purpose: Create a wrapper of the form details 
+     * @param:   -
+     * @return:  JSON of wrapper
+     */
+    function getNewExpenseDetailWrapper(){
+        var Expense_Item__c = { }
+        //Expense_Item__c.Expense_Merchant__c = merchantName;
+        Expense_Item__c.Merchant_Account__c = merchantName;
+        Expense_Item__c.Expense_Amount__c = expenseAmount;
+        //Expense_Item__c.Expense_Billable__c = billable;
+        //Expense_Item__c.Expense_Reimbursable__c = reimbursable;
+        Expense_Item__c.Expense_Category__c = category;
+        Expense_Item__c.Expense_Credit_Card__c = creditCard;
+        Expense_Item__c.Expense_Product__c = productName;
+        //Expense_Item__c.Expense_Payment_Type__c = paymentType; 
+        Expense_Item__c.Expense_Status__c = 'Pending'; 
+        Expense_Item__c.Expense_Date__c = expenseDate;
+        Expense_Item__c.Expense_Comment__c = expenseComment;
+        Expense_Item__c.Expense_Campaign__c = expenseCampaign;
+        Expense_Item__c.Expense_Points__c = expensePoints;
+        Expense_Item__c.Expense_Department__c = expenseDepartment;
+        return JSON.stringify(Expense_Item__c);        
+    }
+    
+    /*
+     * @purpose: Call remote action function to create a record
+     * @param:   JSON string containing values from form for the nex expense details to be created
+     * @return:  -
+     */
+    function createExpenseRecord(newExpenseWrapper){
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.NewExpensePageController.createExpenseRecord}',
+            newExpenseWrapper,
+            function(result, event){  
+                
+                if(result.isSuccess){
+                    expenseItemId = result.id;
+                    confirmImageName = result.confirmationImage;
+                    var imgSrc = "{!URLFOR($Resource.NewExpensePageResources,'images/" + confirmImageName  + "')}";
+                    appendImg = '<img height="300px" src="' + imgSrc + '"></img>'; 
+                    $('.confirmationMsg').html(' ');
+                    $('.confirmationMsg').append(appendImg); 
+                    //$('.uploadRecieptImg').show();
+                    uploadFile();
+                } else {
+                    console.log(result.strError);
+                    alert('Something Wrong..! Please Contact Admin..!');
+                    $('.loading').hide();
+                }
+            }, 
+            {escape:false}
+        );        
+    } 
+
+    //Shows pop up to fill the details of new merchant to be created
+    function addNewMerchant(){
+        $('.newMerchantName').val($('#merchantName').val());
+        $('.addNewMerchantDetails').show();    
+    }
+    
+    //Creates new merchant record
+    function createNewMerchant(){
+        $('.loading').show();
+        var expenseMerchantName = $('.newMerchantName').val();
+        var expenseMerchantCategory = $('.newMerchantCategory').val();
+        
+        if(expenseMerchantName == '' || ($.trim( expenseMerchantName )).length==0){
+            $('.loading').hide();
+            alert('Please Enter Valid Expense Merchant Name');
+        }
+        else{
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.NewExpensePageController.createExpenseMerchantRecord}',
+                expenseMerchantName,expenseMerchantCategory ,
+                function(result, event){    
+                    $('.addNewMerchantDetails').hide();
+                    $('.addMerchant').hide();                   
+                    var appendMsg = '<label>' + result.strError + '</label>';
+                    $('.confirmationMsg').append(appendMsg);
+                    $('.confirm.popMsg').show();
+                    $('.loading').hide();                     
+                    $('.MerchantCategory').val(expenseMerchantCategory);
+                    $('#merchantName').val(expenseMerchantName).css("border-color", "#ccc");
+                    $('.merchantName').val(result.id);
+                    
+                    var firstError = $($(".errorMessage ul li")[0]);
+                    if($(firstError).text().indexOf('Merchant') > -1)
+                        $(firstError).empty();
+                }, 
+                {escape:false}
+            );        
+        }
+    }
+    $('#merchantName').blur(function(){        
+        $(this).next().hide();
+        thisObj = $(this);
+        
+        var merchantId = $('.' + thisObj[0].id).val();
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.NewExpensePageController.getExpenseMerchantDetails}',
+            merchantId,
+            function(result, event){               
+                if(result) {
+                    $(".MerchantCategory").val(result.Expense_Category__c);
+                }
+            }, 
+            {escape:false}
+        );        
+    });
+    
+    
+    $('#creditCard').focusout(function(){
+        $(this).next().hide();
+    });
+
+    $('#productName').focusout(function(){
+        $(this).next().hide();
+    });
+    
+    $('.clseBtn').click(function(){
+        $(this).closest( ".popMsg" ).hide();
+        if($(this).hasClass('reload')){
+            location.reload();
+        }
+    });     
+    </script>
+</apex:page>

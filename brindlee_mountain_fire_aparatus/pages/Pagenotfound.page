@@ -1,0 +1,124 @@
+<apex:page showHeader="false" sidebar="false">
+
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+    <!-- End Google Tag Manager -->
+
+    <style>
+        .pagenotfoundTitle {
+            color: #014669;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 26px;
+            font-weight: bold;
+            padding-bottom: 15px;
+        }
+        a.pagenotfoundLink:hover
+        {
+            color: Gray;
+            font-family:  Arial, Helvetica, sans-serif;
+            font-size: 12px;    
+            font-weight:bold;   
+            text-decoration:underline; 
+        }
+        .pagenotfoundLink {
+            color: Gray;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .pagenotfoundText {
+            color: Gray;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: normal;
+        }
+    </style>
+    <head>
+        <title>Page Not Found | Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="Page Not Found | Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/Pagenotfound" />
+
+       <meta http-equiv="X-UA-Compatible" content="IE=8" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+       <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+       <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+    </head>
+     <!-- Header-->
+    <c:BrindleeMountainHeader />
+    
+    <!--Menu-->
+    <c:BrindleeMountainMenu />
+    
+    <div class="mobile-margin">
+        <div class="pagebody">
+            
+    <div style="padding: 15px;">
+        <table border="0" cellpadding="1" cellspacing="1" width="800px">
+            <tbody><tr>
+                <td colspan="2" class="pagenotfoundTitle"> Page not found</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="pagenotfoundText"><b>You may not able to visit this page because of:</b></td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;"> 1.</td>
+                <td class="pagenotfoundText" style="width: 780px;">  An out-of-date bookmark/favorite </td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;">2. </td>
+                <td class="pagenotfoundText" style="width: 780px;"> A search engine that has an out-of-date listing for this site</td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;">3.</td>
+                <td class="pagenotfoundText" style="width: 780px;"> A mistyped address</td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;">4.</td>
+                <td class="pagenotfoundText" style="width: 780px;"> You have no access to this page</td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;"> 5. </td>
+                <td class="pagenotfoundText" style="width: 780px;">The requested resource was not found</td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;"> 6. </td>
+                <td class="pagenotfoundText" style="width: 780px;">An error has occurred while processing your request</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="pagenotfoundText"> Please try one of the following pages:</td>
+            </tr>
+            <tr>
+                <td class="pagenotfoundText" style="width: 20px;"> &nbsp;</td>
+                <td style="width: 780px;"><a href="apex/default" class="pagenotfoundLink">home page</a> </td>
+            </tr>
+            <tr>
+                <td colspan="2"> &nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="pagenotfoundText">If difficulties persist, please <a href="/apex/ContactUs" class="pagenotfoundLink">contact us</a>.</td>
+            </tr>
+        </tbody></table>
+    </div>
+
+            <!--  end innerpages  -->
+            <div class="bottom-left">
+                <div class="bottom-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:page>

@@ -1,0 +1,86 @@
+<apex:component controller="InputLookupController">
+        
+    <apex:attribute name="elementInfo" type="String" description="Holds Id of the html input and style class of apex input field." required="true"/>
+    <apex:attribute name="objectName" type="String" description="api Name of the sobject to be searched." required="true"/>
+    <apex:attribute name="objectFieldsToConsider" type="String" description="filed API names for construct query criteria"/>
+    <apex:attribute name="optionDisplayField" type="String" description="filed API name for display as option in list"/>
+    <apex:attribute name="optionValueField" type="String" description="filed API names for value for option"/>
+    <apex:attribute name="extendedCriteria" type="String" description="for extend criteria while fetching records"/>
+    
+    <!-- used only for DOM manipulations -->
+    <apex:attribute name="loadingClass" type="String" description="loading display caller's DOM element Id"/>
+    <apex:attribute name="classesToHide" type="String" description="reRender caller's DOM element"/>
+    <apex:attribute name="classesToShow" type="String" description="reRender caller's DOM element"/>
+    
+    <input type="text" id="{!elementInfo}"/>
+    <script type="text/javascript">
+        var accountObjects;
+        var queryTerm;
+        $('#{!elementInfo}').autocomplete({
+            minLength: 2,         
+            source: function(request, response) {
+                        $('.{!elementInfo}').val('');
+                        queryTerm = request.term;
+                        if('{!loadingClass}') $('.{!loadingClass}').show();
+                        
+                        InputLookupController.searchRecord(
+                            request.term, '{!objectName}', '{!objectFieldsToConsider}' , '{!optionDisplayField}', '{!optionValueField}', '{!extendedCriteria}',
+                            function(result, event) {
+                                if(event.type == 'exception') {
+                                    alert(event.message);
+                                } else {
+                                    if(result.length) {
+                                        if('{!classesToHide}') {
+                                            '{!classesToHide}'.split(',').forEach(function(cls) {
+                                                $('.'+cls).hide();
+                                            });
+                                        }
+                                    } else {
+                                        if('{!classesToShow}') {
+                                            '{!classesToShow}'.split(',').forEach(function(cls) {
+                                                $('.'+cls).show();
+                                            });
+                                        }                                    
+                                    }
+                                    var optionValues = [];;
+                                    if('{!objectName}' === 'Employee_Credit_Cards__c') {
+                                        result.forEach(function(object) {
+                                            //console.log(object);
+                                            var creditCardNumber = object.Credit_Cards__r.Credit_Card_Number_E__c;
+                                            var name = object.Credit_Cards__r.Name+' - [****-****-****-' + (creditCardNumber.substring(creditCardNumber.length-4))+']';
+                                            optionValues.push({'Name':name,
+                                                                 'Id':object.Credit_Cards__r.Id});
+                                        });
+                                    } else {
+                                        optionValues = result;
+                                    }
+                                    response(optionValues);
+                                    if('{!objectName}'.indexOf('Merchant') > -1) $('.merchantNameDetails').find('.ui-helper-hidden-accessible').hide();
+                                    else if(result.length) $('.ui-helper-hidden-accessible').hide();
+                                }
+                                if('{!loadingClass}') $('.{!loadingClass}').hide();
+                            }
+                        );
+                   },
+            focus: function( event, ui ) {
+                    $('#{!elementInfo}').val( ui.item['Name'].replace(/(&#39;)/g, "'"));
+                    return false;
+                    },
+            select: function( event, ui ) {
+                        $('#{!elementInfo}').val( ui.item['Name'].replace(/(&#39;)/g, "'") );
+                        $('.{!elementInfo}').val( ui.item['Id']);
+                        return false;
+                    },
+         })
+         .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            var entry = "<a>" + item['Name'];
+           
+            entry = entry + "</a>";
+            entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+            return $( "<li></li>" )
+                .data( "ui-autocomplete-item", item )
+                .append( entry )
+                .appendTo( ul );
+        };                
+    </script>
+</apex:component>

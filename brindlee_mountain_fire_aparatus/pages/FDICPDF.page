@@ -1,0 +1,90 @@
+<apex:page controller="FireApparatusPDFController2" sidebar="false" renderAs="pdf" readonly="true" standardStylesheets="false" applyBodyTag="false" showHeader="false">
+   
+    <head>  
+    <style>
+        * { margin:0; padding:0; font-family:sans-serif; color:#000; }
+        @page {
+            @top-center {
+                content: element(header);
+            }
+            @bottom-left {
+                content: element(footer);
+                width:100%;
+            } 
+            size:8.3in 11in;
+            margin:0; 
+            background-image:url({!URLFOR($Resource.FireApparatusImages,'2018/Newspaper-Truckpages.jpg')});
+            background-position: center top;
+        }
+        .listItems { padding:0px 58px;text-align:center; }
+        .listItems li { display:block; float:left; width:150px; margin:0px 10px 5px 10px; vertical-align:top; text-align:center; font-size:9pt; }
+        .listItems li img.truckImg { width:140px; height:69px; display:inline-block; }
+           
+        .truck-image{ 
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            padding:10px;
+        }
+        .rounderCornerImg { z-index:1;position:absolute;left:1px;width:148px;height:74px;top:8px; }
+        .listItems li a { color:#000; text-decoration:none;  font-size:8pt; }
+        .resultsDesc { font-size:11px; }
+        div.header { padding: 20px; position: running(header); }
+        div.footer { padding:20px 0; position: running(footer);display:block; }
+        .txtRed { font-size:15pt; color:#DE2429; padding-bottom:5pt; }
+        .listItems li.margin-Top { margin-top:160px; }
+        .breakPage { page-break-before:always; }       
+    </style>
+    </head>    
+    <body>
+    <apex:form >       
+        <div class = "main" >
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td style="margin:68px 0px;display: block;">
+                        <apex:outputPanel id="allProductsPanel" >
+                            <apex:variable value="{!0}" var="index"/>
+                            <apex:variable value="{!0}" var="overlappedIndex"/>
+                                <ul class="listItems" style="padding-top:50px; display:block;">
+                                    <apex:repeat var="product" rendered="{!listAllProducts.size>0}" value="{!listAllProducts}">  
+                                    <apex:variable value="{!IF(OR(index==4, overlappedIndex==17),1,overlappedIndex)}" var="overlappedIndex"/>
+                                    <li class="page-break {!IF(OR(overlappedIndex==13,overlappedIndex==14,overlappedIndex==15,overlappedIndex==16),'breakPage margin-Top','')}" >
+                                        <div>
+                                            <div class="truck-image">
+                                                <img src="{!URLFOR($Resource.FireApparatusImages,'2018/roundedCorner.png')}" class="rounderCornerImg"/>
+
+                                                <a class="truckUrl" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                                                    <apex:outputPanel rendered="{!AND(product.Cloud_Documents__r.size>0,NOT(ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c)))}">
+                                                        <img src="{!product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}" class="truckImg" />
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!OR(ISBLANK(product.Cloud_Documents__r),product.Cloud_Documents__r.size=0,ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Image_URL__c))}">
+                                                        <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" class="truckImg" />
+                                                    </apex:outputPanel>
+                                                </a>
+                                            </div>      
+                                            <div class="truck-description">
+                                                <a class="truckUrl" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=product.Id])}">
+                                                    <div style="font-weight:bold;">{!product.VF_Main_Title__c}</div></a>
+                                                <span class="resultsDesc">Stock #{!product.Stock_Number__c}</span><br/>
+                                                <span class="resultsDesc">{!product.Description}</span><br/>
+                                                <span class="resultsDesc">{!product.VF_Website_Price__c}</span><br/>    
+                                                            
+                                            </div>
+                                        </div>  
+                                    </li>
+                                    <apex:variable value="{!index + 1}" var="index"/>
+                                    <apex:variable value="{!overlappedIndex + 1}" var="overlappedIndex"/>
+                                    </apex:repeat>
+                                </ul>
+                            
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+            </table>
+       
+            <div style="clear:both;"></div>           
+        </div>
+    </apex:form>
+    </body>   
+</apex:page>

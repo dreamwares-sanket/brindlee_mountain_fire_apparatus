@@ -1,0 +1,18 @@
+<apex:page controller="Time_Tracking_Controller"  standardStylesheets="false" sidebar="false" showHeader="false" cache="false">
+    <link rel="stylesheet" href="{!URLFOR($Resource.Time_Tracking_Style,'style.css')}"/>  
+    <apex:form id="frm">     
+        <div class="main">
+            <center>
+                <div class="head">    
+                    <img src="{!URLFOR($Resource.Time_Tracking_Style,'logo.png')}"/>
+                </div>
+            </center>
+            <div class="container">                                     
+                <div class="footer">
+                    <apex:commandButton styleClass="btn first" value="Start Task" action="{!startTaskProcess}"/>
+                    <apex:commandButton styleClass="btn second" value="Stop Task" action="{!StopTaskProcess}"/>
+                </div>
+            </div>
+        </div>        
+    </apex:form>            
+</apex:page>

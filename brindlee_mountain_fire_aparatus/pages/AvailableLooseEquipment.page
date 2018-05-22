@@ -1,0 +1,271 @@
+<apex:page standardController="Product2" extensions="AvailableLooseEquipmentController" showHeader="false" sidebar="false" >
+    <head>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery.colorbox.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/Utility.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/availableTruckDetails.js')}"/>
+        <script src="{!URLFOR($Resource.ImageSwiper,'aws-sdk-2.1.24.js')}"/>
+        <script src="{!URLFOR($RESOURCE.JSZIP,'/Stuk-jszip-f355e18/dist/jszip.js')}" />
+        <script src="{!URLFOR($RESOURCE.Filesaver,'/FileSaver.js-master/FileSaver.min.js')}" />
+        <script src="{!URLFOR($Resource.ImageSwiper,'swiper.min.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        
+        <link rel="stylesheet" href="{!URLFOR($Resource.ImageSwiper,'swiper.min.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/colorbox.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        
+        <style>
+            .product-field { display:block; }
+        </style>
+    </head>
+  
+    <div id="assign-action-spinner-main" style="display:none;" >
+        <div id="assign-action-spinner-content">
+            <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />
+        </div>
+    </div>
+    
+    <c:BrindleeMountainHeader />
+    <c:BrindleeMountainMenu />
+    
+    <div class="mobile-margin" style="font-family:Georgia;">
+        <div class="pagebody">
+            <div class="top-left">
+                <div class="top-right">
+                    <!--Back to search results link    -->               
+                    <div class="bold-heading-div" style="display:{!IF(ISBLANK(availableLooseEquipmentsUrl), 'none', 'block')}">
+                        <a href="{!availableLooseEquipmentsUrl}" > &#171; Return to search results</a> 
+                    </div>
+                    <div class="hometop">
+                        <div class="hometopleft">
+                            <apex:outputPanel rendered="{!!ISBLANK(strMainImageURL)}">
+                                <img id="mainImgUrl" width="100%" alt="Truck" src="{!strMainImageURL}"/>
+                            </apex:outputPanel>
+                            
+                            <!--Alt image if url string is null -->
+                            <apex:outputPanel rendered="{!ISBLANK(strMainImageURL)}">
+                                <img width="100%" alt="Truck" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}"/>
+                            </apex:outputPanel>
+                        </div>
+                        <div class="hometopright">
+                            <c:BrindleeMountainRightSideMenu />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-content">
+                <div class="horizontalbar"> &nbsp;</div>
+                                
+                <h5 style="display: block; font-family:Impact!Important; font-weight:normal !important; font-size:2em !important; line-height:1.5em !important;"><span id="ContentPlaceHolder1_lblHeaderValues">{!product2.Name}</span> </h5>
+                <div class="thumbnaildiv">
+
+                    <apex:repeat value="{!listCloudDocuments}" var="currDoc">
+                        <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currDoc.Amazon_S3_Image_Thumbnail_URL__c)),true,false)}">
+                        <a href="{!currDoc.Amazon_S3_Image_URL__c}" class="group1 cboxElement largeImgUrl">
+                            <img alt="Image" src="{!currDoc.Amazon_S3_Image_Thumbnail_URL__c}"/></a>
+                        </apex:outputPanel>                        
+                    </apex:repeat>
+                    <div>
+                        <button id="downloadImgs" onclick="downloadImages();">Download Images</button>
+                    </div>
+                </div>
+                        
+                <div class="truckdescription">
+                    <a class="ddlFieldText">
+                        <h2 onclick="invokeGA_MoreQuestions_Top();">**Ask More Questions About This Equipment**</h2>
+                    </a>
+                    <!--Back to search results link 2 --->
+                    <div class="bold-heading-div margin-reduced" style="display:{!IF(ISBLANK(availableLooseEquipmentsUrl), 'none', 'block')}">
+                        <a href="{!availableLooseEquipmentsUrl}" > &#171; Return to search results</a>
+                    </div>
+                    <br/><br/>
+                    
+                    <div class="main-description">
+                        <apex:outputText styleClass="product-field" value="{!product2.Name}" rendered="{!NOT(ISBLANK(product2.Name))}" escape="false"></apex:outputText>
+                        <apex:outputText styleClass="product-field" value="{!product2.Loose_Equipment_Type__c}" rendered="{!NOT(ISBLANK(product2.Loose_Equipment_Type__c))}" escape="false"></apex:outputText>
+                        <apex:outputText styleClass="product-field" value="{!product2.Equipment_Price__c}" rendered="{!NOT(ISBLANK(product2.Equipment_Price__c))}" escape="false"></apex:outputText>
+                        <apex:outputText styleClass="product-field" value="{!product2.Description}" rendered="{!NOT(ISBLANK(product2.Description))}" escape="false"></apex:outputText>
+                        
+                        <!--Back to search results link 3 --->
+                        <div class="bold-heading-div margin-reduced" style="display:{!IF(ISBLANK(availableLooseEquipmentsUrl), 'none', 'block')}">
+                            <a href="{!availableLooseEquipmentsUrl}" > &#171; Return to search results</a>
+                        </div>
+                    </div>
+                    
+                    <div class="fR">
+                        <div class="yellowbox" id="contact">
+                            <div class="priceusd">
+                                <h1 class="red">
+                                    <span style="font-size:35px;">
+                                        <apex:outputText value="{0, number, $###,###,##0}">
+                                           <apex:param value="{!product2.Equipment_Price__c}" />        
+                                        </apex:outputText>
+                                    </span>
+                                </h1><br/><br/>
+                            
+                                <h1 class="black">
+                                    <span style="font-size:35px;">
+                                        <apex:outputText value="{!Product2.VF_Website_Price__c}" escape="false" />
+                                    </span>
+                                </h1><br/>
+                            </div><br/>
+                            
+                            <p> For Additional Information,<br/> Contact Brindlee Mountain at<br/> </p>
+                            
+                            <center>
+                                <h2> Toll free : <a href="tel:+{!CompanyContactInfo.Toll_Free__c}">{!CompanyContactInfo.Toll_Free__c}</a> <br/>
+                                     Local : <a href="tel:+{!CompanyContactInfo.Local__c}">{!CompanyContactInfo.Local__c}</a> or <br/>
+                                    <a onclick="invokeGA_MoreQuestions_Bottom();">
+                                        **Ask More Questions About This Equipment**
+                                    </a>
+                                </h2>
+                            </center>
+                            
+                            <div class="printpage">
+                                <a href="{!URLFOR($Page.LooseEquipmentPDF,null,[id=$CurrentPage.parameters.Id])}" id="ContentPlaceHolder1_lnkPrint" target="_blank">Print this page</a>
+                            </div>
+                            <!--
+                            <div align="center">
+                                <span class="invalid" id="ContentPlaceHolder1_lblMsg">
+                                    <apex:outputText id="videoUrl" escape="false" value="{!product2.VF_Video_URL__c}" rendered="{!!ISNULL(product2.VF_Video_URL__c)}"/>
+                                </span>
+                            </div>-->
+                            
+                            <!-- Form here -->
+                            <div style="display: none;" class="contactussales" id="ContentPlaceHolder1_divContact"> 
+                                <iframe src="https://go.pardot.com/l/68872/2015-09-18/2gfwdm?Inquiry_Stock_Number={!product2.Stock_Number__c}" width="100%" height="800" type="text/html" frameborder="0" allowTransparency="true" style="border: 0"></iframe>
+                            </div><br/>
+                            
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(product2.VF_Video_URL__c))}">
+                                <div align="center" id="ContentPlaceHolder1_divYoutube" style="display:block;!important">
+                                    <a id="ContentPlaceHolder1_hyperVideoLink" href="{!product2.VF_Video_URL__c}"><alt="" src="../icons/videoicon.jpg"/></a>
+                                </div>
+                            </apex:outputPanel>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+                <br/><h1><apex:outputText rendered="{!IF(AND(listSimilarProducts!= null,listSimilarProducts.size>0), true, false)}"> Don't like this one? Check out these other 4 options</apex:outputText></h1><br/><br/>
+                
+                <div class="horizontalbar"> &nbsp;</div>
+                
+                    <div class="home-row"> <br/>
+                        <apex:repeat value="{!listSimilarProducts}" var="currprod">
+                            <span>
+                                <div class="homeboxes">
+                                   <h3>
+                                       <a href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=currprod.Id])}">
+                                           <span >{!currprod.Name}</span>
+                                       </a>
+                                   </h3>
+                                   <div class="boximage">
+                                       <apex:outputPanel rendered="{!AND(currprod.Cloud_Documents__r.size>0,NOT(ISBLANK(currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                           <img src="{!currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" />
+                                       </apex:outputPanel>
+                                       <apex:outputPanel rendered="{!OR(ISBLANK(currprod.Cloud_Documents__r),currprod.Cloud_Documents__r.size=0,ISBLANK(currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))}">
+                                           <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" />
+                                       </apex:outputPanel>
+                                    </div>
+                                   <p><span class='truckDesc'>{!currprod.Description}</span></p>
+                                   <a class="learnmorebtn" id="ContentPlaceHolder1_dListTrucks_ancImage_0" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=currprod.Id])}">Truck Detail</a> 
+                                </div>
+                            </span>
+                        </apex:repeat>
+                        <br/>
+                    </div>
+               
+            </div>
+            <!--  end pagecontent  -->
+            <div class="bottom-left">
+                <div class="bottom-right"></div>
+            </div>
+        </div>
+    </div>
+    <c:BrindleeMountainFooter />
+    
+    <!--Image popup-->
+    <div id="cboxOverlay" style="opacity: 1; cursor: auto; visibility: visible; display: none;"></div>
+    
+    <div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none; visibility: visible; top: 606px; left: 376px; position: absolute; width: 597px; height: 371px; opacity: 1; cursor: auto;">
+        <div id="cboxWrapper" style="height: 371px; width: 597px;">
+            <div>
+                <div id="cboxTopLeft" style="float: left;"></div>
+                <div id="cboxTopCenter" style="float: left; width: 555px;"></div>
+                <div id="cboxTopRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxMiddleLeft" style="float: left; height: 329px;"></div>
+                <div id="cboxContent" style="float: left; width: 555px; height: 329px;">
+                    <div id="cboxTitle" style="float: left; display: block;"></div>
+                    <div id="cboxCurrent" style="float: left; display: block;">image 1 of 7</div>
+                    <button type="button" id="cboxPrevious" style="display: block;">previous</button>
+                    <button type="button" id="cboxNext" style="display: block;">next</button>
+                    <button id="cboxSlideshow" style="display: none;"></button>
+                    <div id="cboxLoadingOverlay" style="float: left; display: none;"></div>
+                    <div id="cboxLoadingGraphic" style="float: left; display: none;"></div>
+                    <button type="button" id="cboxClose">close</button>
+                </div>
+                <div id="cboxMiddleRight" style="float: left; height: 329px;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxBottomLeft" style="float: left;"></div>
+                <div id="cboxBottomCenter" style="float: left; width: 555px;"></div>
+                <div id="cboxBottomRight" style="float: left;"></div>
+            </div>
+        </div>
+        <div style="position: absolute; width: 9999px; visibility: hidden; max-width: none; display: none;"></div>
+    </div>
+
+    <site:googleAnalyticsTracking />
+    
+    <div id="liveagent_invite_button_5737A0000004CB9" style="display:none;"><span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.startChat('5737A0000004CB9')">
+    <IMG SRC="https://c.cs44.content.force.com/servlet/servlet.ImageServer?id=0157A000000558V&oid=00D7A0000008nf3&lastMod=1465325888000" height="50" Width="150"></img></span>
+    <span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.rejectChat('5737A0000004CB9')">
+    <IMG SRC="https://c.cs44.content.force.com/servlet/servlet.ImageServer?id=0157A000000559n&oid=00D7A0000008nf3&lastMod=1465325696000" Height="42" width="42"></img></span></div>
+    
+    <script type='text/javascript' src='https://c.la4-c1cs-was.salesforceliveagent.com/content/g/js/37.0/deployment.js'></script>
+    <script type='text/javascript'>
+        liveagent.init('https://d.la4-c1cs-was.salesforceliveagent.com/chat', '5727A0000004C9r', '00D7A0000008nf3');
+
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        
+        ga('create', 'UA-1763379-2', 'auto');
+        ga('send', 'pageview');
+        
+        function invokeGA_MoreQuestions_Top(){
+            invokeGAClickEvent('askmorequestionstop');
+            showOrHideForm();
+        }
+        
+        function invokeGA_MoreQuestions_Bottom(){
+            invokeGAClickEvent('askmorequestionsbottom');
+            showOrHideForm();            
+        }
+        
+        function invokeGAClickEvent(clickEventLabel){
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'truckdetailinquiry',
+              eventAction: 'clickedlink',
+              eventLabel: clickEventLabel,
+              eventValue: 1
+            });
+        }
+        
+        // Strictly stays here         
+        function getLoginCreds(){
+            return JSON.parse('{!JSENCODE(LoginCredentials)}');
+        }
+        
+        function get360ImagesPath(){
+            return '{!product2.AWS_360_Images_Path__c}';
+        }
+    </script>
+</apex:page>

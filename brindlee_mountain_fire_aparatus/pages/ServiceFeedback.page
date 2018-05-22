@@ -1,0 +1,131 @@
+<apex:page cache="false" controller="ServiceFeedbackController" sidebar="false" showHeader="false" applyBodyTag="false">
+    <head>
+       <title>Brindlee Mountain Fire Apparatus | Fire Truck Finder</title>
+        <meta id="meta_description" name="Description" content="Simply the most used fire trucks for sale anywhere; Brindlee Mountain is the largest buyer and seller of used fire engines, used ladders, used brush trucks, and used rescue trucks.  Visit our 43 acre campus in Alabama, or watch our inventory on-line!" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/FireTruckFinder" />
+        
+        <link rel='stylesheet' type='text/css' href="{!URLFOR($RESOURCE.WebportalResources,'/css/googleFonts.css')}"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/jqueryUI.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/FTF_Style.css')}"/>
+        
+        
+        
+        <style>
+            button.btn.btn-default.multiselect-clear-filter { display: none; }
+            input[type='checkbox'] { width: auto; display: block; -webkit-appearance: none; appearance: none; -moz-appearance: none; width: 17px; height: 17px;position:relative;}
+            input[type='checkbox']:checked:before { content: ''; border: 2px solid #860000; border-width: 0 2px 2px 0px; display: block; width: 6px; height: 10px; transform: rotate(45deg); position: absolute; left: 4px; top: 1px; }
+            .message .messageText h4 { font-weight: bold; display: block; font-size: 16px; margin: 0; padding: 0 0 3px; font-style: normal; }
+            .message { width: 100%; max-width: 400px; text-align: left; margin-left: 0; z-index: 99999; font-size: 13px; line-height: normal; transition: all 0.4s ease; }
+            .message.errorM3 {  background: #fff;   border-left: 3px solid red; top:150px;}
+            .message.confirmM3 {  background: #fff;   border-left:3px solid #30a027 top:150px;}   
+            .bodyClass{min-height:500px;}
+            input:focus, button:focus{outline:0;}
+        </style>
+    </head>
+    <body>
+        <apex:form >
+            <c:BrindleeMountainHeader />            
+            <!-- Menu -->
+            <c:BrindleeMountainMenu />
+
+            <div class="mobile-margin ">
+                <div class="pagebody">
+                    <div class="top-left">
+                        <div class="top-right">
+                            <div class="pagetop bodyClass">
+                                
+                                <div class="registration-head" id="registration">                                 
+                                    <div id="heading">
+                                        <h1> Service Feedback
+                                        </h1>                                 
+                                    </div> 
+                                    <apex:outputPanel rendered="{!strView=='ServiceFeedBackDetail'}">
+                                        <!--<div class="truck-types-container">-->
+                                        <div align="center">    
+                                            <apex:pageMessages />
+                                        </div>
+                                        <hr class="breaKLine"/>                                    
+                                        <div class="spaceTop" id="contactDetails">
+                                            <div class="fL halfBlck rSpace noSpace">
+                                                <div>
+                                                    <label class="smlLabel">Overall, how did we do?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.Overall_how_did_we_do__c}"
+                                                                     
+                                                                     styleClass="txtInput picklist" html-fieldlabel="Payroll Frequency">
+                                                    </apex:inputField>    
+                                                    <span class="blankSpan"></span>
+                                                </div>
+                                                <div>    
+                                                    <label class="smlLabel" for="deptWebsite">How was the quality of your repair?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.The_quality_of_the_repair__c}"
+                                                                     
+                                                                     styleClass="txtInput picklist" html-fieldlabel="Payroll Frequency">
+                                                    </apex:inputField>
+                                                    <span class="blankSpan"></span>
+                                                </div>
+                                                <div>    
+                                                    <label class="smlLabel" for="Ourcommunication">How was our communication with you about your job?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.Our_communication_w_you_about_your_job__c}"
+                                                                     
+                                                                     styleClass="txtInput picklist">
+                                                    </apex:inputField>
+                                                </div>
+                                                
+                                                                                                     
+                                            </div>
+                                            <div class="fR halfBlck lSpace noSpace">
+                                                <div>                                                   
+                                                    <label class="smlLabel" for="Wouldyouliketohear">Would you like to hear from us?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.Would_you_like_to_hear_from_us__c}">
+                                                    </apex:inputField>
+                                                    
+                                                    <span class="blankSpan"></span>                                             
+                                                </div>
+                                                <div class="clr"></div>
+                                                <div>    
+                                                    <label class="smlLabel" for="Wouldyouwork">Would you work with Brindlee again in the future?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.Working_with_Brindlee_Mountain__c}">
+                                                    </apex:inputField>
+                                                    <span class="blankSpan"></span>
+                                                </div> 
+                                                <div>    
+                                                    <label class="smlLabel" for="Whatimprovements">What improvements could we make?</label>
+                                                    <apex:inputField value="{!RecordServiceSurveys.What_improvements_could_we_make__c}">
+                                                    </apex:inputField>
+                                                    <span class="blankSpan"></span>
+                                                </div> 
+                                            </div>
+                                            <div class="clr"></div>
+                                            <!-- <button class="sign-up btn" id="submit-btn" onclick="processSave();">Save Service Surveys</button>
+<button class="sign-up btn" id="submit-btn" onclick="processSave();">Sign Up For Fire Truck Finder</button>-->
+                                            <apex:commandButton value="Save" action="{!createServiceSurveysRecord}" status="ProcessStatus" styleClass="sign-up btn"/>
+                                        </div>
+                                        <!-- </div>--> 
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!strView=='CreateSuccess'}">
+                                        <div align="center">
+                                            <apex:pageMessages />
+                                        </div>
+                                        
+                                    </apex:outputPanel>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            <!--Footer -->
+            <c:BrindleeMountainFooter /> 
+        </apex:form>
+        
+    </body>    
+</apex:page>

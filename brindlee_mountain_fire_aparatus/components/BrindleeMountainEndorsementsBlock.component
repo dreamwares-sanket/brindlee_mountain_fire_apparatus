@@ -1,0 +1,37 @@
+<apex:component controller="BrindleeMountainHeaderController">
+    <!--<div class="sidebar">-->
+    <a href="{!URLFOR($Page.firetruckfinder)}" target="_self">
+        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/250x250_BTF.jpg')}" alt="fire truck finder" class="sbimage"/></a><br/>
+    <a href="http://www.evtcc.org/" target="_blank">
+        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/evt.jpg')}" alt="evt" class="sbimage"/></a><br/>
+    <a href="http://www.wheeledcoach.com/" target="_blank">
+        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/wheeled.jpg')}" alt="wheeled" class="sbimage"/></a><br/>
+    <a href="http://www.waterousco.com/" target="_blank">
+        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/waterous.jpg')}" alt="waterous" class="sbimage"/></a><br/>
+    <a href="http://www.propolyamerica.com/" target="_blank">
+        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/propoly.jpg')}" alt="pro poly" class="sbimage"/></a><br/>
+    <div class="sbarcontact">
+        <div class="contacttext">Contact Us</div>
+        <div class="callus">
+            <!--<a href="tel:{!companyContactInfo.Toll_Free__c}">{!companyContactInfo.Toll_Free__c}</a><br/>(Toll Free)-->
+            <a href="tel:{!companyContactInfo.Local__c}">{!companyContactInfo.Local__c}</a><br/>(Home Office)
+            <p>Fax: {!companyContactInfo.Fax__c}</p>
+        </div>
+        <div class="calloremail">
+            <p>Please call us or email <a href="mailto:{!companyContactInfo.Sales_Email__c}">{!companyContactInfo.Sales_Email__c}</a> <br/>
+               to discuss what options we can offer your department!</p>
+        </div>
+        <div class="facebookdiv">
+            <div class="fb-like" data-href="https://www.facebook.com/firetruckmall" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=141789035838777";
+                fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+        </div>
+    </div>
+</apex:component>

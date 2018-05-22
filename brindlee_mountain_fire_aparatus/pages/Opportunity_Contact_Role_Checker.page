@@ -1,0 +1,5 @@
+<apex:page standardController="Opportunity">
+     <flow:interview name="Contact_Roles_Update_Opportunity_Primary_Contact" finishLocation="{!URLFOR($Action.Opportunity.View, Opportunity.Id)}">
+          <apex:param name="varOpportunityID" value="{!Opportunity.Id}"/>
+     </flow:interview>
+</apex:page>

@@ -1,0 +1,174 @@
+<apex:page controller="SearchBusinessOpportunityController" readOnly="true" sidebar="false" applyBodyTag="false" standardStylesheets="false">
+    <head>
+        
+        
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/css/fixedColumns.dataTables.min.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/css/jquery.dataTables.min.css')}"/>         
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/css/font.css')}" type='text/css' />     
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" type='text/css' />      
+        
+        
+        <script type="text/javascript" src="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/js/jquery-1.12.3.min.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/js/jquery.dataTables.min.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($RESOURCE.SearchBusinessOpportunity,'SearchBusinessOpportunity/js/dataTables.fixedColumns.min.js')}"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
+        
+        <style>
+            .container{max-width:1300px; margin:0 auto;}
+            .container *{ font-family: 'Open Sans', sans-serif }
+            tr:hover {cursor: default!important;} 
+            th, td { white-space: nowrap; }
+            div.dataTables_wrapper { width: 100%; margin: 0 auto; }
+            table#productsTable{table-layout:fixed;}
+            table#productsTable tr th{font-size:14px; text-transform:uppercase;}
+            table#productsTable tr td div { overflow: hidden;  text-overflow:ellipsis;}
+            div#productsTable_filter {margin: 10px 0 15px;}
+            /*.DTFC_LeftBodyWrapper, .DTFC_RightBodyWrapper { height: 500!important;}*/
+            .DTFC_ScrollWrapper{border-top: 1px solid #000;}
+            
+            /*Popup */ 
+            
+            .popup{padding: 0; position: fixed; width: 100%; height: 100%; top: 0; right: 0; background: rgba(0, 0, 0, 0.11); z-index: 99;}
+            .popup img { position: absolute; width: 400px; height: 200px; top: 25%; left: 50%; margin-left: -200px; }
+            .closeBtn{position: absolute; top: 20%; right: 472px; background: none; border: 0; color: #fff; font-weight: 500; font-size: 24px; font-family: monospace; padding: 3px; -ms-transform: rotate(7deg); -webkit-transform: rotate(7deg); transform: rotate(45deg);}
+            
+            /********ScrollBar********/
+            ::-webkit-scrollbar { width: 10px;  height: 10px;}
+            ::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); border-radius: 10px; border-color:gray; }
+            ::-webkit-scrollbar-thumb { border-radius: 10px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);   background: lightgray;}
+            td.imgBlck img{}
+            table.cell-border.compact.hover.row-border.stripe.dataTable.no-footer.DTFC_Cloned tr td, table#productsTable tr td { line-height: 24px; }
+                              
+        </style>
+    </head> 
+    <body>
+        <div class="container">
+            <apex:pageMessages />    
+            <apex:outputPanel rendered="{!strTypeOfObject!=null}">           
+                <p id="selectTriggerFilter"><label><b>Type Of Sales:</b></label><br/></p>            
+                <table id="productsTable" style="width:100%;" class="cell-border compact hover row-border stripe">
+                    <thead>
+                        <tr class="slds-text-heading--label">
+                            <th>Score</th>
+                            <th>Type Of Sale</th>
+                            
+                            
+                            <apex:repeat value="{!IF(strTypeOfObject='Opportunity',$ObjectType.product2.FieldSets.SellMyProducts,$ObjectType.Opportunity.FieldSets.SellMyProducts)}" var="fieldRec">
+                                
+                                
+                                
+                                <apex:outputPanel rendered="{!AND(fieldRec.FieldPath !='FT_Year_of_Truck__c',fieldRec.FieldPath !='FT_Fire_Body_Manufacturer__c',fieldRec.FieldPath !='FT_Custom_Commercial__c',fieldRec.FieldPath !='FT_Pump_GPM__c',fieldRec.FieldPath !='FT_Water_Tank_Size_only__c',fieldRec.FieldPath !='FT_Mileage__c',fieldRec.FieldPath !='FTF_Warranty__c',fieldRec.FieldPath !='Geographic_Region_Formula_Field__c')}">
+                                    <th>
+                                        <apex:outputText value="{!IF(fieldRec.FieldPath='Current_Location__r.Name','Current Location',fieldRec.Label)}"/>
+                                    </th>                               
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!AND(strTypeOfObject=='Opportunity',fieldRec.FieldPath =='Stock_Number__c')}">
+                                    <th>
+                                        Image
+                                    </th>
+                                </apex:outputPanel>
+                            </apex:repeat>
+                            
+                            
+                            <th>Score</th>
+                        </tr>
+                    </thead>               
+                    <tbody>
+                        <apex:repeat value="{!listOpportunityWrapper}" var="resultObject">
+                            
+                            <tr>
+                                <td>{!resultObject.intPoints}</td>
+                                <td>
+                                    <apex:outputText value="{!IF(strTypeOfObject='Opportunity',resultObject.sourceRecord['typeOfSale__c'],resultObject.sourceRecord['Product_Type_of_Sale__c'])}"/>
+                                </td>                                                      
+                                <apex:repeat value="{!IF(strTypeOfObject='Opportunity',$ObjectType.product2.FieldSets.SellMyProducts,$ObjectType.Opportunity.FieldSets.SellMyProducts)}" var="field">
+                                    
+                                    <apex:outputPanel rendered="{!AND(field.FieldPath !='FT_Year_of_Truck__c',field.FieldPath !='FT_Fire_Body_Manufacturer__c',field.FieldPath !='FT_Custom_Commercial__c',field.FieldPath !='FT_Pump_GPM__c',field.FieldPath !='FT_Water_Tank_Size_only__c',field.FieldPath !='FT_Mileage__c',field.FieldPath !='FTF_Warranty__c',field.FieldPath !='Geographic_Region_Formula_Field__c')}">
+                                        <td>
+                                            <div>
+                                                <apex:outputLink value="/{!resultObject.sourceRecord['Id']}" target="_self" rendered="{!if(field.FieldPath=='Name' || field.FieldPath=='Stock_Number__c' ,true,false)}">{!resultObject.sourceRecord[field.FieldPath]}</apex:outputLink>
+                                                <apex:outputText value="{!resultObject.sourceRecord[field.FieldPath]}" rendered="{!if(field.FieldPath !='Name' && field.FieldPath != 'Stock_Number__c',true,false)}"/>
+                                            </div>
+                                        </td>
+                                      
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!AND(strTypeOfObject=='Opportunity',field.FieldPath =='Stock_Number__c')}">
+                                        <td class="imgBlck">  
+                                            <!-- <div class="popup" style="padding:0;">"popoup class need to be added" -->
+                                            <div class = "imagePoper">
+                                                <!--<button class="closeBtn">+</button>-->                                                                           
+                                                <apex:variable value="{!resultObject.sourceRecord['Cloud_Documents__r']}" var="length"/>
+                                                <apex:repeat value="{!resultObject.sourceRecord['Cloud_Documents__r']}" var="recordChild">
+                                                    <img src=" {! recordChild [ 'Amazon_S3_Main_Thumbnail_URL__c' ] }" width= "100%" height="24" class="img-Popup"/>                                                
+                                                </apex:repeat> 
+                                                <apex:outputPanel rendered="{! if(length.size ==0,true,false)}">
+                                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/NoImage.jpg')}" alt="firetrucks" width= "100%" height="24" class="img-Popup"/> 
+                                                </apex:outputPanel>                                                
+                                             </div>
+                                        </td>
+                                    </apex:outputPanel>
+                                </apex:repeat>                          
+                                <td>{!resultObject.intPoints}</td>
+                            </tr>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+                
+            </apex:outputPanel>
+        </div>
+    </body>
+    <script>
+    
+    var j$ = jQuery.noConflict(); 
+    j$(".imagePoper").click(function(){
+        j$(this).toggleClass('popup');           
+    });    
+         
+    $(document).ready(function() {
+        $('#productsTable').DataTable( {
+            "lengthMenu": [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ],
+            "dom": 'rtipS',
+            //searching: true,
+            "deferRender": false,
+            initComplete: function () {
+                var column = this.api().column(1);
+                var select = $('<select class="filter"><option value=""></option></select>')
+                .appendTo('#selectTriggerFilter')
+                .on('change', function () {
+                    var val = $(this).val();
+                    column.search(val ? '^' + $(this).val() + '$' : val, true, false).draw();
+                });
+                
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>');
+                });
+            },
+            scrollY:        "500px",
+            scrollX:        true,
+            scrollCollapse: true,
+            bFilter: true,
+            paging:         true,
+            fixedColumns:   {
+                leftColumns: 3,
+                rightColumns: 1,
+                heightMatch: 'none'
+            },
+            
+            "order": [[0, "desc" ]],
+            "columnDefs": [
+                {   
+                    "targets": [ 0,1 ],
+                    "visible": false
+                    
+                }
+            ]
+            
+        } );
+        
+    } );
+    
+    </script>
+</apex:page>

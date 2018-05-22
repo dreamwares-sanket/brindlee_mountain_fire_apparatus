@@ -1,0 +1,148 @@
+<!--
+ /**
+  *  pageName  Default
+  *  createdBy Amol[Dreamwares]
+  *  createdOn  20-08-2015                                                  
+  *  purpose display homepage data and recently added 32 trucks
+  **/
+-->
+<apex:page controller="DefaultPageController" action="{!initializeProductsList}" showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" applyBodyTag="false">
+    <head>
+        <title>Brindlee Mountain Fire Apparatus | Used Fire Trucks for Sale</title>
+        
+        
+        <meta id="meta_description" name="Description" content="Simply the most used fire trucks for sale anywhere; Brindlee Mountain is the largest buyer and seller of used fire engines, used ladders, used brush trucks, and used rescue trucks.  Visit our 43 acre campus in Alabama, or watch our inventory on-line!" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" /> <!---->
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.WebportalResources,'/css/defaultPage.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/Utility.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <!--
+        <apex:stylesheet value="{!URLFOR($Resource.WebportalResources,'/css/defaultStyle.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.WebportalResources,'/css/webportalStyle.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.WebportalResources,'/css/defaultPage.css')}" />
+        
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/Utility.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}" />-->
+    </head>
+   <body>
+       <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+    
+       <c:BrindleeMountainHeader />
+        
+        <div class="topbanner">
+            <div class="banner-inner"></div></div>
+        <c:BrindleeMountainMenu />
+        <div class="mobile-margin">    
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="hometop">
+                            <div class="hometopleft">
+                                <a href="/FireTruckFinder"><img src="{!URLFOR($Resource.WebportalResources,'/banners/FireTruckFinderBanner.jpg')}" width="100%"/></a>
+                            </div>
+                            <div class="hometopright">
+                                <c:BrindleeMountainRightSideMenu />
+                            </div>
+                        </div>
+                    </div>
+                </div><!--Top Left END -->                                      
+                <div class="page-content">
+                    <h1>          
+                      Recently Added Trucks
+                    </h1>
+                    <!--Recently Added Trucks-->
+                    <span id="SubHeader1_dListTrucks"><span>   
+                        <div class="horizontalbar">&nbsp;</div>    
+                        <div class="home-row">
+                            <br/><span> 
+                            <apex:outputPanel rendered="{!listRecentlyAddedTrucks.size!=0}">
+                                <apex:repeat value="{!listRecentlyAddedTrucks}" var="recentTrucks">
+                                    <div class="homeboxes"> 
+                                        <h3>                                       
+                                            <a href= "{!URLFOR($Page.AvailableTruckDetailView,null,[id=recentTrucks.Id])}">
+                                                <span title="{!recentTrucks.VF_Main_Title__c}">{!recentTrucks.VF_Main_Title__c}</span></a>
+                                        </h3>
+                                        <div class="boximage">
+                                            <apex:outputPanel rendered="{!AND(NOT(ISBLANK(recentTrucks.Cloud_Documents__r)),recentTrucks.Cloud_Documents__r.size>0,NOT(ISBLANK(recentTrucks.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                                <a href= "{!URLFOR($Page.AvailableTruckDetailView,null,[id=recentTrucks.Id])}">
+                                                <img src="{!recentTrucks.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}"/>
+                                                </a>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!OR(ISBLANK(recentTrucks.Cloud_Documents__r),recentTrucks.Cloud_Documents__r.size=0,ISBLANK(recentTrucks.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))}">
+                                                <a href= "{!URLFOR($Page.AvailableTruckDetailView,null,[id=recentTrucks.Id])}">
+                                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/NoImage.jpg')}" alt="firetrucks"/>
+                                                </a>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <p><span class="truckDesc">{!recentTrucks.Description} </span></p>
+                                        <a href= "{!URLFOR($Page.AvailableTruckDetailView,null,[id=recentTrucks.Id])}" class="learnmorebtn">Truck Detail</a>            
+                                    </div> 
+                                </apex:repeat>
+                            </apex:outputPanel>
+                            </span><br/><span></span>
+                        </div>
+                    </span></span>
+                    
+                    <div id="mainContent">
+                        <div style="text-align: center;">
+                            <span style="text-align: left;">
+                                Brindlee Mountain Fire Apparatus is the nation&#39;s largest buyer and seller of used fire apparatus.
+                                We offer used fire trucks for all your needs, including used engines and pumpers, used aerials, ladders
+                                and quints, used rescues and squads, and even used brush trucks and mini pumpers.  We have the largest
+                                single site location of used fire apparatus in the nation.
+                            </span><br/>
+                        </div>
+                        <br/>
+                        We are based outside of Huntsville, Alabama, and welcome your visit anytime! Please read through our online
+                        showroom of used fire truck inventory, and contact us with any questions you have about the units and pricing. 
+                        We are committed to providing the best used and old fire apparatus, and thank you for your visit during your 
+                        truck search!<br/>
+                        <br/>
+                        <em>He has shown you, O mortal, what is good. And what does the LORD require of you?  To act justly and to 
+                        love mercy and to walk humbly with your God.</em>- Micah 6:8 NIV
+                        <br/>
+                        <br/>
+                    </div>
+                </div>
+                <!--  end homepage  -->
+                <div class="bottom-left">
+                    <div class="bottom-right"></div></div>                        
+            </div>
+        </div>    
+        <c:BrindleeMountainFooter />
+        
+<div id="liveagent_invite_button_573o0000000L6fb" style="display:none;">
+<span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.startChat('573o0000000L6fb')"><IMG src="https://c.na17.content.force.com/servlet/servlet.ImageServer?id=015o0000002P7D5&oid=00Do0000000JLLE&lastMod=1467658193000"></IMG></span>
+<span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.rejectChat('573o0000000L6fb')"><IMG src="https://c.na17.content.force.com/servlet/servlet.ImageServer?id=015o0000002P7DP&oid=00Do0000000JLLE&lastMod=1467658240000" height="30" width="30"></IMG></span></div>
+
+<script type='text/javascript' src='https://c.la3-c1-was.salesforceliveagent.com/content/g/js/39.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la3-c1-was.salesforceliveagent.com/chat', '572o0000000L5fL', '00Do0000000JLLE');
+</script>
+    </body>
+</apex:page>

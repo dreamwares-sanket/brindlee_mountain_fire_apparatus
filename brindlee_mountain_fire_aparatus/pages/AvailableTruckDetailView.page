@@ -1,0 +1,980 @@
+<apex:page standardController="Product2" extensions="AvailableTruckDetailViewController" showHeader="false" sidebar="false" cache="false">
+    <head>
+        <title>{!product2.VF_Main_Title__c} | Used Truck Details</title>
+        <meta id="meta_description" name="Description" content="Used Fire Truck DEtails" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/AvailableTruck/{!getCanonicalParams}" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet"/>
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/colorbox.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/availableTruckDetail.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($Resource.ImageSwiper,'swiper.min.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/availableTruckDetail2.css')}"/>
+        
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jquery.colorbox.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/Utility.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/availableTruckDetails2.js')}"/>
+        <!--<script src="{!$Resource.availableTruckDetailJs}"/>-->
+        <script src="{!URLFOR($Resource.ImageSwiper,'aws-sdk-2.1.24.js')}"/>
+        <script src="{!URLFOR($RESOURCE.JSZIP,'/Stuk-jszip-f355e18/dist/jszip.js')}" />
+        <script src="{!URLFOR($RESOURCE.Filesaver,'/FileSaver.js-master/FileSaver.min.js')}" />
+        <script src="{!URLFOR($Resource.ImageSwiper,'swiper.min.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <!--Cookie Script
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/cookie.js')}"/>-->
+
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+        <script type="text/javascript">stLight.options({publisher: "fdefe28d-9c56-4d6b-96f7-8b188b47ce75", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>    
+        <!--Cookie Script Execution-->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var productTitle = $(".imgTitle").text();
+                if (productTitle) {
+                    $("body").prepend("<div class='orangebanner'><p><a href='javascript:;'>Click here to inquire about the " + productTitle + "</p></div>");
+                }
+            });
+
+            var ProductStatus = "{!product2.status__c}";
+            console.log(ProductStatus,'ProductStatus');
+            if(ProductStatus != 'Sold'){
+                showCookie();
+            }
+            else
+            {
+                console.log('hide');
+            }
+
+            function showCookie() {    
+                $.getScript( "{!URLFOR($Resource.WebportalResources,'/scripts/cookie.js')}" , function ( data, textStatus, jqxhr ) {
+                    function wiggle() {
+                        setInterval(function() {
+                          setTimeout(function() {
+                            $('#desktop-frm-btn').addClass('wiggle');
+                          }, 3000);
+                          $('#desktop-frm-btn').removeClass('wiggle');
+                        }, 10000);
+                    }
+                    $(document).ready(function() {
+                        var fold = $(window).height();
+                        $(".orangebanner p a").click(function() {
+                          $('#customer-reg-from').slideDown();
+                        });    
+                        $(window).scroll(function() {
+                            if ($(document).scrollTop() >= fold) {
+                              $(".orangebanner").fadeIn();
+                            }
+                            else {
+                              $(".orangebanner").fadeOut();
+                            }
+                        });
+                        wiggle();
+                    });
+                });
+            }    
+        </script>
+        
+        <style>
+            /*.versionB{display:none;}*/
+            
+            .dualPage{display:none;}
+            .dualPage.activeDiv{display:block;}
+            .fL{ float:left; }
+            .fR.pageBtn{ width:auto; }
+            .clr{ clear: both; }
+            .pageBtn{padding: 20px 20px 10px;}
+            .pageVbtn{background: #e47b25; border-radius: 3px; border: 1px solid #e47b25; color: white; font-size: 13px; font-weight: 300; padding: 8px 10px; width: 100%; cursor: pointer; font-family: Georgia,"Times New Roman",Times,serif;}
+            .pageVbtn:hover{background:#f38f3d}    
+            .tableLayout{display:table; width: 100%;}
+            .tableCell{display:table-cell;}
+            .tableCell.versionB{width:245px;}
+            .accTitle{background: #b00912; display: block; padding: 15px; color: #fff; font-style: normal; text-align: left; margin: 0 0 0; border-radius: 3px; position: relative; font-family: Georgia,"Times New Roman",Times,serif; font-size: 13px; font-weight: 500; margin: 10px 0; }
+            
+            /*.accTitle:before { content: '+'; right: 17px; position: absolute; font-size: 23px; line-height: 14px; }*/
+            .yellowbox.versionB { border-radius: 100%; width: 300px !important; height: 300px; padding: 30px; box-sizing: border-box; margin: 0 auto; border: 1px solid #52f500; }
+            .commaTxt b { font-size: 13px; font-weight: 600; }
+            .commaTxt > p { font-size: 20px; line-height: 25px; padding: 5px 0 0; }
+            .queLink { font-size: 20px; color: rgb(67, 61, 141); display: block; padding: 20px; text-align: center; line-height: normal; }
+            .priceTxt{line-height:normal;}
+            
+            /*.accTitle.ui-accordion-header-active:before { content: '-';}*/
+
+            
+            .ui-accordion .ui-accordion-content, .accPanel-content {
+                padding: 1em 2.2em;
+                border-top: 0;
+                overflow: auto;
+                /*height: auto !important;*/
+                border: 1px solid #dedede;
+                margin-top: -12px;
+                box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.19);
+            }
+            
+            .bgOrnge.versionB {
+                position: static;
+                width: 100%;
+                max-width: 100%;
+                margin: 25px 0 0;
+                box-sizing: border-box;
+                max-height: 250px;
+                overflow: auto;
+            }
+            
+            .bgVersionB{position:relative !important;}
+            #showImgs{ display: none;}
+            #showAverImg{display: none;}
+            #  {display:block !important;}
+
+            /*#downloadImgs1{display:block;}*/
+            .downButton{
+                display: block;
+            }
+            
+            .orangBtn{background: #e47b25; border-radius: 3px; border: 1px solid #c66a34; color: white; text-shadow: 1px 0 1px rgba(0, 0, 0, 0.69); font-size: 15px; font-weight: 300; padding: 8px 10px; width: auto; cursor: pointer;}
+            .info-box{min-height:auto; width: 300px;}
+            button.cls {background: #fff; border: 0 none; font-size: 13px; border-radius: 3px; padding: 6px; width: 100px; color: #911010; text-transform: uppercase; font-weight: 600; box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.19); font-family: "Times New Roman",Times,serif; margin-top:15px;}
+            .comma{ background:url({!URLFOR($Resource.WebportalResources,'/images/comma.png')})no-repeat; background-size: 100%; position: absolute; height: 100px; width: 100px; top: -37px; left: 0; }
+            .commaTxt{position:relative; padding-left:15px;}
+
+            /*new css added*/
+            .orangebanner {
+                background: #e47b25;
+                width: 100%;
+                text-align: center;
+                position: fixed;
+                top: 0;
+                display: none;
+                padding: 1em;
+                z-index: 10000;
+            }
+
+            .orangebanner p {
+                margin: 0;
+                font-size: 200%;
+            }
+
+            .orangebanner p a {
+                color: white;
+                text-decoration: none;
+            }
+
+            .wiggle {
+                animation: shake 3s cubic-bezier(.36,.07,.19,.97) both;
+                transform: translate3d(0, 0, 0);
+                backface-visibility: hidden;
+                perspective: 1000px;
+            }
+
+            @keyframes shake {
+                10%, 90% {
+                    transform: translate3d(-1px, 0, 0);
+                }
+                  
+                20%, 80% {
+                    transform: translate3d(2px, 0, 0);
+                }
+
+                30%, 50%, 70% {
+                    transform: translate3d(-4px, 0, 0);
+                }
+
+                40%, 60% {
+                    transform: translate3d(4px, 0, 0);
+                }
+            }
+            
+            .geoimgTxt{font-size:18px; text-align:center; color:#B40000;}
+            .geoimgTxt > div{font-size:20px; text-transform: capitalize;}
+        </style>
+    
+    </head>
+    
+    <div id="assign-action-spinner-main" style="display:none;" >
+        <div id="assign-action-spinner-content">
+            <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />
+        </div>
+    </div>
+    
+    <!-- Header --> <c:BrindleeMountainHeader />
+    <!-- Menu --> <c:BrindleeMountainMenu />
+    
+    <div class="mobile-margin" style="font-family:Georgia;">
+        <div class="pagebody">
+            <div class="top-left">
+                <div class="top-right">
+                    
+                    <!--Back to search results link    --->
+                    <div class="bold-heading-div" style="display:{!IF(ISBLANK(AvailableTrucksUrl), 'none', 'block')}">
+                        <a href="{!AvailableTrucksUrl}">&#171; Return to search results</a>
+                    </div>
+                    
+                    <div class="fL imgTitle">
+                        {!product2.VF_Main_Title__c}
+                    </div>
+                     <div class="fR pageBtn">
+                        <!--<button class="pageVbtn">Change View</button>-->
+                    </div>
+                    <div class="clr"></div>
+                    <div class="hometop">
+                        <div class="hometopleft">
+                            <apex:outputPanel rendered="{!!ISBLANK(product2.AWS_360_Images_Path__c)}">
+                                <div id="360_img_container" class="imgPopup" style="display:none">
+                                    <div class="imgStyle" align="center">
+                                        <button onclick="$('#360_img_container').hide();" id="closBtn">Back</button>
+                                        <img id="360_img" width="100%" />
+                                        <div class="imgBtns">
+                                            <button class="playbtn" onclick="playDemo();">Play</button>
+                                            <button  class="pausebtn" onclick="pauseDemo();">Pause</button>
+                                            <button  class="stopbtn" onclick="stopDemo();">Stop</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!!ISBLANK(strMainImageURL)}">
+                                <img id="mainImgUrl" width="100%" alt="Truck" src="{!strMainImageURL}"/>
+                            </apex:outputPanel>
+                            
+                            <!--Alt image if url string is null -->
+                            <apex:outputPanel rendered="{!ISBLANK(strMainImageURL)}">
+                                <img width="100%" alt="Truck" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}"/>
+                            </apex:outputPanel>
+                            
+                            <div class="dualPage" style="margin-top:15px;">
+                                <h5 class="deskInfo" style="display: block; font-family:Impact!Important; font-weight:normal !important; font-size:2em !important; line-height:1.5em !important;">
+                                    <span id="ContentPlaceHolder1_lblHeaderValues">{!product2.VF_Main_Title__c}</span>
+                                </h5>
+                                <div class="thumbnaildiv deskInfo verBthumbs " style="background:#fff;">
+                                    <!-- 360 image popup link -->
+                                    <apex:outputPanel rendered="{!!ISBLANK(product2.AWS_360_Images_Path__c)}">
+                                        <a onclick="show360Viewer();">
+                                            <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/360_Tour.png')}" />
+                                        </a>
+                                    </apex:outputPanel>
+                                    <apex:repeat value="{!listCloudDocuments}" var="currDoc">
+                                        <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currDoc.Amazon_S3_Image_Thumbnail_URL__c)),true,false)}">
+                                            <a href="{!currDoc.Amazon_S3_Image_URL__c}" class="group1 cboxElement largeImgUrl desktop">
+                                                <img alt="Image" src="{!currDoc.Amazon_S3_Image_Thumbnail_URL__c}"/>
+                                            </a>
+                                        </apex:outputPanel>                        
+                                    </apex:repeat>
+                                    <div align="center">
+                                        <button id="downloadImgs" class="downButton" onclick="downloadImages();" >
+                                        Download Images</button>
+                                        <button id="showImgs" class="orangBtn" style="margin:10px 0 0;">View More Photos</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!--Mobile View-->
+                        <div class="mobileSlider"> 
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <!-- 360 image popup link -->
+                                    <apex:outputPanel rendered="{!!ISBLANK(product2.AWS_360_Images_Path__c)}">
+                                        <span class="swiper-slide">                     
+                                            <a onclick="show360Viewer();">
+                                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/360_Tour.png')}" />
+                                            </a>
+                                        </span>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:repeat value="{!listCloudDocuments}" var="currDoc">
+                                        <apex:outputPanel styleClass="swiper-slide" rendered="{!IF(NOT(ISBLANK(currDoc.Amazon_S3_Image_Thumbnail_URL__c)),true,false)}">
+                                            <a href="{!currDoc.Amazon_S3_Image_URL__c}" class="group1 cboxElement largeImgUrl mobile">
+                                                <img alt="Image" src="{!currDoc.Amazon_S3_Image_Thumbnail_URL__c}"/>
+                                            </a>
+                                        </apex:outputPanel>                        
+                                    </apex:repeat>
+                                </div>    
+                                <div class="swiper-pagination"></div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                            <div class="downldDiv">
+                                <button id="downloadImgs" class="downButton" onclick="downloadImages();">Download Images</button>
+                            </div>
+                        </div>
+                                                
+                        <div class="hometopright">
+                            <div class="info-box">
+                                <div align="center" class="priceTxt" style="color:#fff; font-family:Times, serif; font-weight:600;">
+                                    <apex:outputText value="{!product2.VF_Website_Price__c}" />&nbsp;<apex:outputText value="{!product2.VF_Website_Price_Financing_WAC__c}" />
+                                </div>
+
+                                <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                                <div align="center" class="orangeBtn dualPage activeDiv">
+                                    <button id="desktop-frm-btn" onclick="$('#customer-reg-from').slideDown()">Yes, I'm Interested!</button>
+                                    <button id="mob-frm-btn" onclick="scrollToBottomForm();">Yes, I'm Interested!</button>
+                                </div>
+                                <p class="redBoxpsg"> For Additional Information,<br class="deskInfo"/>
+                                    Contact Brindlee Mountain<span class="deskInfo"> at</span>:<br/>
+                                </p>
+                                <div class="redBoxpsg deskInfo">
+                                    <h2>Local: <a href="tel:{!CompanyContactInfo.Local__c}">{!CompanyContactInfo.Local__c}</a>
+                                    </h2>
+                                </div>
+                                </apex:outputPanel>
+                                <!--<div class="redBoxpsg mobileInfo">
+                                    <a href="tel:{!CompanyContactInfo.Toll_Free__c}" class="blckBtn">Call Now</a>
+                                </div>-->
+                                
+                                <div id="customer-reg-from" style="display:none; ">
+                                    
+                                    <div class="bgOrnge">
+                                        <img src="{!URLFOR($RESOURCE.WebportalResources, '/images/close_white.svg')}" class="clseBtn" onclick="$('#customer-reg-from').slideUp()" />
+                                        <span>Thank you for your interest in the {!product2.VF_Main_Title__c}! Fill out the form below
+                                            and we'll immediately start the process to get you more information.
+                                        </span>
+                                        <div class="" > 
+                                            <iframe src="https://go.pardot.com/l/68872/2015-09-18/2gfwdm?Inquiry_Stock_Number={!product2.Stock_Number__c}" width="100%"  type="text/html" frameborder="0" allowTransparency="true" id="orangeframe"></iframe>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="socPluginsDiv">
+                                <span class='st_email_large' displayText='Email'></span>
+                                <span class='st_sharethis_large' displayText='ShareThis'></span>
+                                <span class='st_googleplus_large' displayText='Google +'></span>
+                                <span class='st_facebook_large' displayText='Facebook'></span>
+                                <span class='st_twitter_large' displayText='Tweet'></span>
+                            </div>
+                            <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                            <div align="center" class="orangeBtn dualPage" style="margin: 15px 0;">
+                                <button id="desktop-frm-btn" class="desktopForm" onclick="openfrom()">Yes, I'm Interested!</button>
+                                <button id="mob-frm-btn" onclick="scrollToBottomForm();">Yes, I'm Interested!</button>
+                            </div>
+                            </apex:outputPanel>
+
+                            <div id="customer-reg-fromB" class="bgVersionB" style="display:none;  padding:0 0 15px; ">
+                            <div class="bgOrnge versionB dualPage" style="max-width:100% !important; max-height:100%;">
+                                <img src="{!URLFOR($RESOURCE.WebportalResources, '/images/closeimg.png')}" 
+                                class="clseBtn" onclick="$('#customer-reg-fromB').slideUp()" />
+                                <span>Thank you for your interest in the {!product2.VF_Main_Title__c}! Fill out the form below
+                                    and we'll immediately start the process to get you more information.
+                                </span>
+                                <div class="" > 
+                                    <iframe src="https://go.pardot.com/l/68872/2015-09-18/2gfwdm?Inquiry_Stock_Number={!product2.Stock_Number__c}" width="100%"  type="text/html" frameborder="0" allowTransparency="true" id="orangeframe"></iframe>
+                                </div>
+                                <!--<button class="cls" onclick="$('#customer-reg-fromB').slideUp()" >Close</button >-->
+                            </div>
+                            </div>
+                            <div class="dualPage">
+                            <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                             <div id="geographicRegn" style="display:{!IF(ISBLANK(product2.Geographic_Region_Formula_Field__c),'none','block')}" >
+                                <apex:variable value="{!SUBSTITUTE(SUBSTITUTE(product2.Geographic_Region_Formula_Field__c,' - ','-'),' ','-')}" var="region" />
+                                <img src="{!URLFOR($Resource.GeographicRegionMaps,'/GeographicRegionMaps/'+region+'.gif')}"/>
+                                <div id="geographicRegnText" class="geoimgTxt">
+                                    Apparatus currently resides in <div>{!product2.Geographic_Region_Formula_Field__c}</div>
+                                </div>                                
+                            </div>
+                           </apex:outputPanel> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BOTTOM LEFT -->
+            <div class="page-content">
+            <div class="horizontalbar">&nbsp;</div>
+                <div class="">
+                    <div class="dualPage activeDiv">
+                        <h5 class="deskInfo" style="display: block; font-family:Impact!Important; font-weight:normal !important; font-size:2em !important; line-height:1.5em !important;">
+                            <span id="ContentPlaceHolder1_lblHeaderValues">{!product2.VF_Main_Title__c}</span>
+                        </h5>
+                        <div class="thumbnaildiv deskInfo verAthumbs" >
+                            <!-- 360 image popup link -->
+                            <apex:outputPanel rendered="{!!ISBLANK(product2.AWS_360_Images_Path__c)}">
+                                <a onclick="show360Viewer();">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/360_Tour.png')}" />
+                                </a>
+                            </apex:outputPanel>
+                            
+                            <apex:repeat value="{!listCloudDocuments}" var="currDoc">
+                                <apex:outputPanel rendered="{!IF(NOT(ISBLANK(currDoc.Amazon_S3_Image_Thumbnail_URL__c)),true,false)}">
+                                    <a href="{!currDoc.Amazon_S3_Image_URL__c}" class="group1 cboxElement largeImgUrl desktop">
+                                        <img alt="Image" src="{!currDoc.Amazon_S3_Image_Thumbnail_URL__c}"/>
+                                    </a>
+                                </apex:outputPanel>                        
+                            </apex:repeat>
+                            <div class="" align="center" style="padding:10px 15px;">
+                                <button id="downloadImgs" class="downButton" onclick="downloadImages();">Download Images
+                                </button>
+                                <button id="showAverImg" class="orangBtn" style="margin:10px 0 0;">View More Photos</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                
+                </div>
+                
+                 <div class="truckdescription">
+                 <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                    <a class="ddlFieldText deskInfo">
+                        <h2 onclick="invokeGA_MoreQuestions_Top();">**Ask More Questions About This Truck**</h2>
+                    </a>
+                    <a class="ddlFieldText mobileInfo">
+                        <h2 onclick="invokeGA_MoreQuestions_Top_Mobile();">**Ask More Questions About This Truck**</h2>
+                    </a>
+                </apex:outputPanel>    
+                    <!--Back to search results link 2 --->
+                    <div class="bold-heading-div margin-reduced" style="display:{!IF(ISBLANK(AvailableTrucksUrl), 'none', 'block')}">
+                        <a href="{!AvailableTrucksUrl}" >&#171; Return to search results</a>
+                    </div>
+                    <br/><br/>
+                    <div class="mobileInfo bgGray">
+                        <h4>Truck Details</h4>
+                    </div>
+                    <div class="main-description">
+                    <div class="dualPage activeDiv">
+                        <span id="ContentPlaceHolder1_lblTruckDetailsData">
+                            <apex:outputText value="{!product2.VF_Main_Title__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Main_Title__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Chassis__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Chassis__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Seating__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Seating__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Chassis_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Chassis_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Fire_Body_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Fire_Body_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Engine__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Engine__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Transmission_Description__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Transmission_Description__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Engine_Brake__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Engine_Brake__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Engine_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Engine_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Pump__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Pump__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Current_Annual_Pump_Service_Test__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Current_Annual_Pump_Service_Test__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Water_Tank__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Water_Tank__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Foam_System__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Foam_System__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Foam_Tank_1__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Foam_Tank_1__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Foam_Tank_2__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Foam_Tank_2__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Pump_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Pump_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Drivers_Side_Discharges__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Drivers_Side_Discharges__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Drivers_Side_Suction__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Drivers_Side_Suction__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Officers_Side_Discharges__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Officers_Side_Discharges__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Officers_Side_Suction__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Officers_Side_Suction__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Front_Discharges__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Front_Discharges__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Front_Suction__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Front_Suction__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Rear_Discharges__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Rear_Discharges__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Rear_Suction__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Rear_Suction__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.FT_Deck_Gun__c}<br/>" rendered="{!NOT(ISBLANK(product2.FT_Deck_Gun__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Plumbing_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Plumbing_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Booster_Reel__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Booster_Reel__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Crosslays_Speedlays__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Crosslays_Speedlays__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Monitor_Description__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Monitor_Description__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Generator_Description__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Generator_Description__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Lighting_Description__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Lighting_Description__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Heated_Mirrors__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Heated_Mirrors__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Hard_Suction__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Hard_Suction__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Electric_Reels__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Electric_Reels__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Hydraulic_Reels__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Hydraulic_Reels__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Air_Reels__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Air_Reels__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Electronic_Siren__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Electronic_Siren__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Electrical_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Electrical_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Cascade_System__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Cascade_System__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Breathing_Air__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Breathing_Air__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Air_Conditioning__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Air_Conditioning__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Hydraulic_Ladder_Rack__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Hydraulic_Ladder_Rack__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Aluminum_Hose_Bed_Cover__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Aluminum_Hose_Bed_Cover__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Automatic_Tire_Chains__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Automatic_Tire_Chains__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Pump_Heat_Pan__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Pump_Heat_Pan__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Backup_Camera__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Backup_Camera__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Federal_Q2B_Siren__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Federal_Q2B_Siren__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.FT_Ground_Ladders__c}<br/>" rendered="{!NOT(ISBLANK(product2.FT_Ground_Ladders__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Auto_Lube_System__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Auto_Lube_System__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Features__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Features__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Pump_Hours__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Pump_Hours__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Engine_Hours__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Engine_Hours__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Mileage__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Mileage__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Arrowstick_Traffic_Indicator__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Arrowstick_Traffic_Indicator__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_LED_Lighting__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_LED_Lighting__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Light_Tower__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Light_Tower__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Telescoping_Lights__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Telescoping_Lights__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Additional_Lighting_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Lighting_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Current_Aerial_Certification__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Current_Aerial_Certification__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.VF_Aerial_Device__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Aerial_Device__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Fire_Truck__r.Aerial_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Aerial_Info__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.FT_Aerial_Hours__c}<br/>" rendered="{!NOT(ISBLANK(product2.FT_Aerial_Hours__c))}" escape="false"></apex:outputText>
+                            <apex:outputText value="{!product2.Loose_Equipment_Included__c}<br/>" rendered="{!NOT(ISBLANK(product2.Loose_Equipment_Included__c))}" escape="false"></apex:outputText>
+                            
+                            <br/><apex:outputText value="{!product2.VF_Break_Text_1__c}<br/><br/>" style="color:red;font-weight:bold;" rendered="{!NOT(ISBLANK(product2.VF_Break_Text_1__c))}" escape="false"></apex:outputText>
+                            
+                            <i><apex:outputText value="{!product2.VF_OAL__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_OAL__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.VF_OAH__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_OAH__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.VF_OAW__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_OAW__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.VF_GVRW__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_GVRW__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.VF_Wheelbase__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Wheelbase__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.Fire_Truck__r.Additional_Dimension_Info__c}<br/>" rendered="{!NOT(ISBLANK(product2.Fire_Truck__r.Additional_Dimension_Info__c))}" escape="false"></apex:outputText>
+                                <apex:outputText value="{!product2.VF_Warranty_Terms__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Warranty_Terms__c))}" escape="false"></apex:outputText>
+                                <br/>
+                            </i>
+                            <!-- Comment generation -->
+                            <apex:repeat value="{!listCommentsToDisplay}" var="comment" rendered="{!AND( !ISBLANK(listCommentsToDisplay), listCommentsToDisplay.size>0)}">
+                                <apex:outputText value="{!comment.Comment__c}<br/>" escape="false" rendered="{!!ISBLANK( comment.Comment__c )}"></apex:outputText> 
+                                <apex:outputLink value="{!comment.Link__c}" rendered="{!!ISBLANK( comment.Link__c )}" target="_blank">{!comment.Link__c}</apex:outputLink>
+                                <br style="display:{!IF(!ISBLANK( comment.Link__c ),'block','none')}"/>
+                                <br/>
+                            </apex:repeat>
+                            <i>
+                                <apex:outputText value="<b>Seller's Information About this Truck:</b><br/>{!product2.Truck_Quote__c}" rendered="{!NOT(ISBLANK(product2.Truck_Quote__c))}" escape="false"></apex:outputText>
+                            </i>
+                            <apex:outputText id="stockNumber" value="{!product2.VF_Stock_Number__c}<br/>" rendered="{!NOT(ISBLANK(product2.VF_Stock_Number__c))}" escape="false"></apex:outputText>
+                            <!--<apex:outputText value="{!product2.AWS_360_Images_extension__c}"></apex:outputText>-->
+                        </span>
+                        </div>
+                        
+                        <div class="dualPage">
+                        {!product2.Comment_Generation__c}
+                            
+                        <div id = "accordion-2" class="accSec">
+                         <h3 class="accTitle" id="GeneralSpecsSectionHeader">General Specs</h3>
+                         <div id="GeneralSpecsSection" class="accPanel-content">
+                            <ul id="GeneralSpecsSectionUl">
+                                <apex:repeat var="field" value="{!$ObjectType.Product2.FieldSets.General_Specs}">
+                                    <apex:outputPanel rendered="{!Product2[field] != null}">
+                                         <li> 
+                                            <apex:outputText value="{0, number, ######.##}" rendered="{!if(field.FieldPath = 'FT_Year_of_Truck__c',true,false)}" escape="false" >
+                                            <apex:param value="{!Product2.FT_Year_of_Truck__c}" />
+                                            </apex:outputText>                                    
+                                            <apex:outputText value="{!Product2[field]}" rendered="{!if(field.FieldPath != 'FT_Year_of_Truck__c',true,false)}" escape="false" /> 
+                                         
+                                         </li>
+                                    </apex:outputPanel>                                    
+                                </apex:repeat>  
+                            </ul>   
+                         </div>
+                         <h3 class="accTitle" id="PumpSectionsHeader">Pump</h3>
+                         <div id="PumpSections" class="accPanel-content">
+                            <ul id="PumpSectionUl">
+                                <apex:repeat var="field" value="{!$ObjectType.Product2.FieldSets.Pump}">
+                                    <apex:outputPanel rendered="{!Product2[field] != null}">
+                                        <li> 
+                                            <apex:outputText value="{0, number, ######.##}" rendered="{!if(field.FieldPath = 'FT_Year_of_Truck__c',true,false)}" escape="false" >
+                                            <apex:param value="{!Product2.FT_Year_of_Truck__c}" />
+                                            </apex:outputText>                                    
+                                            <apex:outputText value="{!Product2[field]}" rendered="{!if(field.FieldPath != 'FT_Year_of_Truck__c',true,false)}" escape="false" /> 
+                                         
+                                         </li>
+                                    </apex:outputPanel>
+                                </apex:repeat>
+                            </ul>
+                         </div>
+                         <h3 class="accTitle" id="ElectricalSectionsHeader">Electrical</h3>
+                         <div id="ElectricalSections" class="accPanel-content">
+                            <ul id="ElectricalSectionUl">
+                                <apex:repeat var="field" value="{!$ObjectType.Product2.FieldSets.Electrical}">
+                                    <apex:outputPanel rendered="{!Product2[field] != null}">
+                                        <li> 
+                                            <apex:outputText value="{0, number, ######.##}" rendered="{!if(field.FieldPath = 'FT_Year_of_Truck__c',true,false)}" escape="false" >
+                                            <apex:param value="{!Product2.FT_Year_of_Truck__c}" />
+                                            </apex:outputText>                                    
+                                            <apex:outputText value="{!Product2[field]}" rendered="{!if(field.FieldPath != 'FT_Year_of_Truck__c',true,false)}" escape="false" /> 
+                                         
+                                         </li>
+                                    </apex:outputPanel>
+                                </apex:repeat>                      
+                            </ul>
+                         </div>
+                         <h3 class="accTitle" id="OptionsSectionHeader">Options</h3>
+                         <div id="OptionsSection" class="accPanel-content">
+                            <ul id="OptionsSectionUl">
+                                <apex:repeat var="field" value="{!$ObjectType.Product2.FieldSets.Options}">
+                                   <apex:outputPanel rendered="{!Product2[field] != null}">
+                                        <li> 
+                                            <apex:outputText value="{0, number, ######.##}" rendered="{!if(field.FieldPath = 'FT_Year_of_Truck__c',true,false)}" escape="false" >
+                                            <apex:param value="{!Product2.FT_Year_of_Truck__c}" />
+                                            </apex:outputText>                                    
+                                            <apex:outputText value="{!Product2[field]}" rendered="{!if(field.FieldPath != 'FT_Year_of_Truck__c',true,false)}" escape="false" /> 
+                                        </li>
+                                    </apex:outputPanel>
+                                </apex:repeat>                                                              
+                            </ul>
+                         </div>
+                      </div>
+                      <!--<p><strong>Note:</strong> Click on the linked heading text to expand or collapse accordion panels.</p>-->
+                      </div>
+                        <!--Back to search results link 3 -->
+                        <div class="bold-heading-div margin-reduced" style="display:{!IF(ISBLANK(AvailableTrucksUrl), 'none', 'block')}">
+                            <a href="{!AvailableTrucksUrl}" > &#171; Return to search results</a>
+                        </div>
+                    </div>
+                    
+                    <div class="fR">
+                        <div class="dualPage activeDiv">
+                         <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                            <div id="geographicRegn" class="dualPage activeDiv" style="display:{!IF(ISBLANK(product2.Geographic_Region_Formula_Field__c),'none','block')}" >
+                                <apex:variable value="{!SUBSTITUTE(SUBSTITUTE(product2.Geographic_Region_Formula_Field__c,' - ','-'),' ','-')}" var="region" />
+                                <img src="{!URLFOR($Resource.GeographicRegionMaps,'/GeographicRegionMaps/'+region+'.gif')}"/>                                
+                                <div id="geographicRegnText" class="geoimgTxt">
+                                    Apparatus currently resides in <div>{!product2.Geographic_Region_Formula_Field__c}</div>
+                                </div>
+                            </div>
+                          </apex:outputPanel>  
+                        </div>
+                        <div class="yellowbox dualPage activeDiv" id="contact">
+                            <div class="priceusd">
+                                <h1 class="red"> <span id="ContentPlaceHolder1_lblReducedPrice" style="font-size:35px;">{!product2.VF_Additional_Pricing_Text__c}</span></h1>
+                                <br/><br/>
+                                <h1 class="black"> <span id="ContentPlaceHolder1_lblPrice" style="font-size:35px;"><apex:outputText value="{!Product2.VF_Website_Price__c}" escape="false" />&nbsp;<apex:outputText value="{!Product2.VF_Website_Price_Financing_WAC__c}" escape="false" /></span></h1><br/>
+                            </div><br/>
+                            <p> For Additional Information,<br/>
+                                Contact Brindlee Mountain at<br/>
+                            </p>
+                            <center>
+                                <h2>Local : <a href="tel:{!CompanyContactInfo.Local__c}">{!CompanyContactInfo.Local__c}</a> or <br/>
+                                     <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                                        <a onclick="invokeGA_MoreQuestions_Bottom();" id="ContentPlaceHolder1_ancAskMoreQue">
+                                            **Ask More Questions About This Truck**
+                                        </a>
+                                    </apex:outputPanel>
+                                </h2>
+                            </center>
+                            <div class="printpage">
+                                <a href="{!URLFOR($Page.TruckDetailsPDF,null,[id=$CurrentPage.parameters.Id])}" id="ContentPlaceHolder1_lnkPrint" target="_blank">Print this page</a>
+                            </div>
+                            <div align="center">
+                                <span class="invalid" id="ContentPlaceHolder1_lblMsg">
+                                    <apex:outputText id="videoUrl" escape="false" value="{!product2.VF_Video_URL__c}" rendered="{!!ISNULL(product2.VF_Video_URL__c)}"/>
+                                </span>
+                            </div>
+                            
+                            <!-- Form here -->
+                            <div style="display: none;" class="contactussales greenform-block" id="ContentPlaceHolder1_divContact"> 
+                                <iframe id="contactUsSalesiFrame" src="https://go.pardot.com/l/68872/2015-09-18/2gfwdm?Inquiry_Stock_Number={!product2.Stock_Number__c}" width="100%" height="auto" type="text/html" frameborder="0" allowTransparency="true" style="border: 0" scrolling="yes"></iframe>
+                            </div><br/>
+                            
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(product2.VF_Video_URL__c))}">
+                                <div align="center" id="ContentPlaceHolder1_divYoutube" style="display:block;!important">
+                                    <a id="ContentPlaceHolder1_hyperVideoLink" href="{!product2.VF_Video_URL__c}"><alt="" src="../icons/videoicon.jpg"/></a>
+                                </div>
+                            </apex:outputPanel>
+                            <br/>
+                            
+                            </div>
+                            <div class="dualPage" style="position: relative;">
+                            
+                            <div class="commaTxt" >                             
+                                <apex:outputText value="<b>Seller's Information:</b><p>{!product2.Truck_Quote__c}</p>" rendered="{!NOT(ISBLANK(product2.Truck_Quote__c))}" escape="false"></apex:outputText>
+                            </div>
+                            
+                            
+                            <div class="yellowbox versionB">
+                                <center>
+                                    <h1 class="black"> <span id="ContentPlaceHolder1_lblPrice" style="font-size:30px; line-height:normal;"><apex:outputText value="{!Product2.VF_Website_Price__c}" escape="false" /> &nbsp; <apex:outputText value="{!Product2.VF_Website_Price_Financing_WAC__c}" escape="false" /></span></h1><br/>
+                                    <br/>
+                                    <p> For Additional Information,<br/>
+                                        Contact Brindlee Mountain at<br/>
+                                    </p>
+                                
+                                    <h2>Local : <a href="tel:{!CompanyContactInfo.Local__c}">{!CompanyContactInfo.Local__c}</a> or <br/>
+                                        
+                                    </h2>
+                                </center>
+                                <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                                <div class="printpage">
+                                    <a href="{!URLFOR($Page.TruckDetailsPDF,null,[id=$CurrentPage.parameters.Id])}" id="ContentPlaceHolder1_lnkPrint" target="_blank">Print this page</a>
+                                </div>
+                                </apex:outputPanel>
+                            </div>
+                            <!--<div align="center" class="orangeBtn dualPage activeDiv">
+                                    <button id="desktop-frm-btn" onclick="$('#customer-reg-from').slideDown()">Yes, I'm Interested!</button>
+                                    <button id="mob-frm-btn" onclick="scrollToBottomForm();">Yes, I'm Interested!</button>
+                                </div>-->
+                            <apex:outputPanel rendered="{!product2.status__c!='Sold'}">    
+                                <a class="queLink" href="#"  id="queLink-dektop-view">
+                                    Have More Questions About This Truck?
+                                </a>
+                                
+                                <a class="queLink" href="#" onclick="scrollToBottomForm();" 
+                                id="queLink-mob-view" style="display: none">
+                                    Have More Questions About This Truck?
+                                </a>
+                            </apex:outputPanel>
+                        </div>
+                        </div>
+                    
+                </div>
+                <!-- Version B Content section -->
+                
+                
+                
+                <div class="addldescr"> <span id="ContentPlaceHolder1_lblCGP"></span></div>
+                <div class="addldescr"> <span id="ContentPlaceHolder1_lblDescription"></span></div>
+                <br/>
+                <h1 class="deskInfo"> Don't like this one? Check out these other 4 options</h1>
+                <br/><br/>
+                
+                <div id="mob-bottom-frm" class="mobileInfo">
+                    <a href="tel:{!CompanyContactInfo.Toll_Free__c}" class="blckBtn">Call Now</a>
+                    <div class="bgOrnge mobileInfo" style="position:static; margin: 20px auto 0;">
+                        <div class="bold-price">{!product2.VF_Website_Price__c} {!product2.VF_Website_Price_Financing_WAC__c}</div>
+                        <div>{!product2.VF_Main_Title__c}</div>
+                         <apex:outputPanel rendered="{!product2.status__c!='Sold'}">
+                        <div class="contactussales" style="height:auto;"> 
+                            <iframe src="https://go.pardot.com/l/68872/2015-09-18/2gfwdm?Inquiry_Stock_Number={!product2.Stock_Number__c}" width="100%" style="height: 650px; border: 0" type="text/html" frameborder="0" allowTransparency="true"></iframe>
+                        </div>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+                
+                <div class="mobileInfo bgGray">
+                    <h4>Similar Trucks</h4>
+                </div>
+                <span id="ContentPlaceHolder1_dListTrucks"><span>
+                    <div class="horizontalbar"> &nbsp;</div>
+                    
+                    <div class="home-row"> <br/>
+                        <apex:repeat value="{!listSimilarProducts}" var="currprod">
+                            <span>
+                                <div class="homeboxes">
+                                    <h3><a href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=currprod.Id])}">
+                                        <span >{!currprod.VF_Main_Title__c}</span>
+                                        </a></h3>
+                                    <div class="boximage">
+                                        <apex:outputPanel rendered="{!AND(currprod.Cloud_Documents__r.size>0,NOT(ISBLANK(currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                            <img src="{!currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" /></apex:outputPanel>
+                                        <apex:outputPanel rendered="{!OR(ISBLANK(currprod.Cloud_Documents__r),currprod.Cloud_Documents__r.size=0,ISBLANK(currprod.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))}">
+                                            <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" /></apex:outputPanel>
+                                    </div>
+                                    <p><span class='truckDesc'>{!currprod.Description}</span></p>
+                                    <a class="learnmorebtn" id="ContentPlaceHolder1_dListTrucks_ancImage_0" href="{!URLFOR($Page.AvailableTruckDetailView,null,[id=currprod.Id])}">
+                                        Truck Detail</a> 
+                                </div>
+                            </span>
+                        </apex:repeat>
+                        <br/>
+                        <span> </span>
+                    </div>
+                    </span></span> 
+            </div>
+            
+            <!--  end pagecontent  -->
+            
+            <div class="bottom-left">
+                <div class="bottom-right"></div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <c:BrindleeMountainFooter />
+    
+    <!--Image popup-->
+    <div id="cboxOverlay" style="opacity: 1; cursor: auto; visibility: visible; display: none;"></div>
+    
+    <div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none; visibility: visible; top: 606px; left: 376px; position: absolute; width: 597px; height: 371px; opacity: 1; cursor: auto;">
+        <div id="cboxWrapper" style="height: 371px; width: 597px;">
+            <div>
+                <div id="cboxTopLeft" style="float: left;"></div>
+                <div id="cboxTopCenter" style="float: left; width: 555px;"></div>
+                <div id="cboxTopRight" style="float: left;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxMiddleLeft" style="float: left; height: 329px;"></div>
+                <div id="cboxContent" style="float: left; width: 555px; height: 329px;">
+                    <div id="cboxTitle" style="float: left; display: block;"></div>
+                    <div id="cboxCurrent" style="float: left; display: block;">image 1 of 7</div>
+                    <button type="button" id="cboxPrevious" style="display: block;">previous</button>
+                    <button type="button" id="cboxNext" style="display: block;">next</button>
+                    <button id="cboxSlideshow" style="display: none;"></button>
+                    <div id="cboxLoadingOverlay" style="float: left; display: none;"></div>
+                    <div id="cboxLoadingGraphic" style="float: left; display: none;"></div>
+                    <button type="button" id="cboxClose">close</button>
+                </div>
+                <div id="cboxMiddleRight" style="float: left; height: 329px;"></div>
+            </div>
+            <div style="clear: left;">
+                <div id="cboxBottomLeft" style="float: left;"></div>
+                <div id="cboxBottomCenter" style="float: left; width: 555px;"></div>
+                <div id="cboxBottomRight" style="float: left;"></div>
+            </div>
+        </div>
+        <div style="position: absolute; width: 9999px; visibility: hidden; max-width: none; display: none;"></div>
+    </div>
+    
+    <site:googleAnalyticsTracking />
+    
+    <div id="liveagent_invite_button_5737A0000004CB9" style="display:none;"><span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.startChat('5737A0000004CB9')">
+        <IMG SRC="https://c.cs44.content.force.com/servlet/servlet.ImageServer?id=0157A000000558V&oid=00D7A0000008nf3&lastMod=1465325888000" height="50" Width="150"></img></span>
+    <span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.rejectChat('5737A0000004CB9')">
+        <IMG SRC="https://c.cs44.content.force.com/servlet/servlet.ImageServer?id=0157A000000559n&oid=00D7A0000008nf3&lastMod=1465325696000" Height="42" width="42"></img></span></div>
+
+<script src="{!URLFOR($RESOURCE.Reel,'/scripts/reel.js')}"></script>
+<script type='text/javascript' src='https://c.la4-c1cs-was.salesforceliveagent.com/content/g/js/37.0/deployment.js'></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la4-c1cs-was.salesforceliveagent.com/chat', '5727A0000004C9r', '00D7A0000008nf3');
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-1763379-2', 'auto');
+ga('send', 'pageview');
+
+function invokeGA_MoreQuestions_Top(){
+    invokeGAClickEvent('askmorequestionstop');
+    $('#customer-reg-from, #customer-reg-fromB').slideDown();
+}
+
+function invokeGA_MoreQuestions_Top_Mobile(){
+    invokeGAClickEvent('askmorequestionstop');
+    scrollToBottomForm();  
+}
+
+function invokeGA_MoreQuestions_Bottom(){
+    invokeGAClickEvent('askmorequestionsbottom');
+    showOrHideForm();     
+}
+
+function invokeGAClickEvent(clickEventLabel){
+    ga('send', {
+        hitType: 'event',
+        eventCategory: 'truckdetailinquiry',
+        eventAction: 'clickedlink',
+        eventLabel: clickEventLabel,
+        eventValue: 1
+    });
+}
+
+stLight.options({
+    publisherGA:"UA-1763379-2"
+});
+
+function scrollToBottomForm(){
+    $('html, body').animate({
+        scrollTop: $("#mob-bottom-frm").offset().top
+    }, 500);
+}
+
+// Strictly stays here         
+function getLoginCreds(){
+    return JSON.parse('{!JSENCODE(LoginCredentials)}');
+}
+
+function get360ImagesPath(){
+    return '{!product2.AWS_360_Images_Path__c}';
+}
+
+$('#customer-reg-from, #customer-reg-fromB').click(function(event) {
+    if ( $(event.target).closest(".bgOrnge").get(0) == null ){
+        $('#customer-reg-from, #customer-reg-fromB').slideUp();
+    }
+});
+
+$('#360_img_container').click(function(event){
+    if( event.target.id == '360_img_container' ){
+        $('.imgPopup').hide();
+    }
+});
+
+
+
+$(document).ready(function(){
+    $(".pageVbtn").click(function(){
+        $(".dualPage").toggleClass("activeDiv");
+
+        $('#queLink-dektop-view').click(function(){
+            $('html,body').animate({ scrollTop: $(".desktopForm").offset().top}, 'slow');
+            $('.desktopForm').click();
+        });
+        
+        /*$( "#accordion-2" ).accordion({
+           collapsible: true,
+           heightStyle:"content"
+        });*/    
+    });
+    changeView();
+});
+function changeView(){
+    //console.log("change view");
+    if( !document.getElementById('GeneralSpecsSectionUl').getElementsByTagName('li').length >= 1 ){
+        document.getElementById("GeneralSpecsSectionHeader").style.display="none";
+        document.getElementById("GeneralSpecsSection").style.display="none";        
+    }       
+    if( !document.getElementById('OptionsSectionUl').getElementsByTagName('li').length >= 1 ){
+        document.getElementById("OptionsSectionHeader").style.display="none";
+        document.getElementById("OptionsSection").style.display="none";
+    }
+    if( !document.getElementById('PumpSectionUl').getElementsByTagName('li').length >= 1 ){
+        document.getElementById("PumpSectionsHeader").style.display="none";
+        document.getElementById("PumpSections").style.display="none";
+    }
+    if( !document.getElementById('ElectricalSectionUl').getElementsByTagName('li').length >= 1 ){
+        document.getElementById("ElectricalSectionsHeader").style.display="none";
+        document.getElementById("ElectricalSections").style.display="none";
+    }   
+        
+}
+function openfrom(){
+    $('#customer-reg-fromB').slideDown();
+}
+</script>
+
+<!--show more images-->
+<script type='text/javascript'>
+$(document).ready(function(){
+
+    //Show More Images    
+    $('.verBthumbs span:gt(9)').hide();
+   
+    if($('.verBthumbs span').length>9)
+    {
+        $('#showImgs').css({'display':'block'});
+    }
+    $('#showImgs').on("click",function()
+    {  
+        spanCount = $('.verBthumbs span').length;
+        if(spanCount>9)
+        {
+            $('.verBthumbs span:gt(9)').toggle();
+        }
+    });
+
+    //Show Less Images
+    $('.verAthumbs span:gt(15)').hide();
+    
+    if($('.verAthumbs span').length>15)
+    {
+        $('#showAverImg').css({'display':'block'});
+    }
+    $('#showAverImg').on("click",function()
+    {  
+        spanCount = $('.verAthumbs span').length;
+        if(spanCount>15)
+        {
+            $('.verAthumbs span:gt(15)').toggle();
+        }
+    });
+
+    //Show downloadimages button for A view
+    if($('.verAthumbs span').length==0)
+    {  // alert('test1');
+        $('.downButton').hide();
+    }
+    
+    //Show downloadimages button for B view
+    if($('.verBthumbs span').length==0)
+    {
+        $('.downButton').hide();
+    }
+});
+
+$("#showImgs, #showAverImg").click(function () {
+    $(this).text(function(i, v){
+       return v === 'View Less Images' ? 'View More Images' : 'View Less Images'
+    })
+});
+</script>
+</apex:page>

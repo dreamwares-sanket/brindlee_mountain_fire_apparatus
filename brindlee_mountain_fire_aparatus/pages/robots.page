@@ -1,0 +1,6 @@
+<apex:page contentType="text/plain">
+   User-Agent: *                                       <!-- This section allows to all robots -->
+   Allow: /                                            <!-- Allows indexing of everything -->
+   Sitemap: https://www.firetruckmall.com/Sitemap      <!-- Gives the location of sitemap file -->
+   Disallow: /TruckDetailsPDF/
+</apex:page>

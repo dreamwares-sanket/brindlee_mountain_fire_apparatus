@@ -1,0 +1,4 @@
+<apex:page standardController="Opportunity" sidebar="false" extensions="DepositBillingFromOpportunity"
+           action="{!processBillingRecord}">
+    
+</apex:page>

@@ -1,0 +1,114 @@
+<apex:page controller="TestimonialsController" action="{!initializeTestimonialsList}" sidebar="false" showHeader="false"> 
+    <head>
+        <title>Testimonials - Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="Testimonials - Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/Testimonials" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <!--Include js scripts-->
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/jquery.colorbox.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/popup-box3.js')}"/><!---->
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <!--Include style sheets-->
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/colorbox.css')}"/>
+    </head>
+   <body>
+       <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+   
+       <!-- Header -->
+       <c:BrindleeMountainHeader />
+       <!-- Menu -->
+       <c:BrindleeMountainMenu />
+    
+        <div class="mobile-margin">
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="pagetop">
+                            <div class="page-banner">
+                                <div class="page-banner-inner">
+                                    <div class="page-banner-image">
+                                        <!-- Insert Image from url-->
+                                        <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_testimonials.jpg')}" alt="firetrucks"/>
+                                        <div class="bannertitle">
+                                            Testimonials</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  end page-banner  -->
+                            <div class="hometopright">
+                                <c:BrindleeMountainRightSideMenu />
+                            </div>
+                        </div>
+                        <!--  end pagetop  -->
+                    </div>
+                </div>
+                
+                <div class="page-content">
+                    <div class="horizontalbar">&nbsp;</div>
+                    <div class="pageleft">
+                        <apex:repeat value="{!listTestimonials}" var="currTestimonial">
+                            <br/>
+                            <div dir="ltr" style="font-family: HelveticaNeue, 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; font-size: 16px;">
+                                <apex:outputField value="{!currTestimonial.Review__c}"/>
+                            </div><br/>
+    
+                      <apex:outputpanel rendered="{!AND(currTestimonial.Cloud_Documents__r.size>0,NOT(ISBLANK(currTestimonial.Cloud_Documents__r[0].Amazon_S3_Image_URL__c)))}">
+                           <div style="display:inline;">
+                               <div class="testimonialimage">
+                                  <a class="group1 cboxElement" href="{!currTestimonial.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}">
+                                      <img src="{!currTestimonial.Cloud_Documents__r[0].Amazon_S3_Image_URL__c}" alt="Image"/>
+                                  </a>
+                                  <br /><br />
+                                  <center>
+                                      <h2><span>
+                                         <apex:outputText value="{!currTestimonial.Caption__c}" escape="false"/>
+                                      </span></h2>
+                                  </center>
+                               </div>
+                               <div class="clickpict">
+                                  Click on a picture to enlarge
+                               </div>
+                            </div>
+                                      
+                      </apex:outputpanel>
+                      <apex:outputpanel rendered="{!OR(ISBLANK(currTestimonial.Cloud_Documents__r),currTestimonial.Cloud_Documents__r.size=0,ISBLANK(currTestimonial.Cloud_Documents__r[0].Amazon_S3_Image_URL__c))}">
+                          <!--
+                          <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.WebportalResources,'/images/NoImage.jpg')}">
+                              <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/NoImage.jpg')}" alt="Image"/></a>
+                          -->
+                      </apex:outputpanel>
+                            <div class="delineate"></div>
+                        </apex:repeat>
+                    </div>
+                    
+                    <div class="sidebar">
+                        <c:BrindleeMountainEndorsementsBlock /></div>
+                </div>
+                
+                <div class="bottom-left">
+                    <div class="bottom-right"></div></div>
+            </div>
+        </div>
+        
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

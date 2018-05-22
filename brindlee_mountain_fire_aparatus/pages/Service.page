@@ -1,0 +1,212 @@
+<apex:page sidebar="false" showheader="false">
+    <head>
+        <title>Emergency vehicle service and repair</title>
+        <meta id="meta_description" name="Description" content="Emergency vehicle service and repair" />
+        <meta id="meta_keywords" name="Keywords" content="emergency vehicle repair, emergency vehicle service, fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/Service" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <!--Include scripts-->
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/jquery-1.8.3.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/jquery.colorbox.js')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/popup-box.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <!--Include style sheets-->
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/colorbox.css')}"/>
+        
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+        
+        <!--Body -->
+        <div class="mobile-margin" >
+            <div class="pagebody">
+                <div class="top-left">
+                 <div class="top-right">
+                    <div class="pagetop">
+                       <div class="page-banner">
+                          <div class="page-banner-inner">
+                             <div class="page-banner-image">
+                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_service.jpg')}" alt="firetrucks"/>
+                                <div class="bannertitle"> Service </div>
+                             </div>
+                          </div>
+                       </div>
+                       <!--  end page-banner  -->
+                       <div class="hometopright">
+                           <c:BrindleeMountainRightSideMenu />
+                       </div>
+                    </div>
+                    <!--  end pagetop  -->
+                 </div>
+              </div>
+               <!-- Content -->
+              <div class="page-content" id="contentdiv">
+                  <div class="horizontalbar">&nbsp;</div>
+                  
+                  <div class="pageleft">
+                    <h1>Services Offered</h1><br/><br/>
+                    <div class="servicediv">
+                        <h1>Pump Tests</h1>
+                    </div>
+                    <div class="servicediv">
+                        <h1>Annual Service</h1>
+                    </div>
+                    <div class="servicediv">
+                        <h1>Pump Overhaul</h1>
+                    </div>
+                    <div class="servicediv">
+                        <h1>Collision Repair</h1>
+                    </div>
+                    <div class="servicediv">
+                        <h1>Aerial Test and Repair</h1>
+                    </div>
+                    <div class="servicediv">
+                        <h1>All Types of Engine and Transmission Work</h1>
+                    </div>
+                    <div class="servicediv lastservice">
+                        <h1>Leasing Programs</h1>
+                    </div>
+                    <p>Brindlee Mountain Fire Apparatus has the staff, equipment, and resources to handle all of your emergency vehicle service 
+                       needs. Major refurbishment and collision work are specialties at the Brindlee Mountain Fire Apparatus Service Facility. 
+                       Our 14 service bays and staff of EVT and ASE Certified Mechanics provide the skills and knowledge needed to return your 
+                       apparatus to service in a timely manner with the benefit of knowing that the repairs are of the highest quality and meet 
+                       factory standards.</p>
+                    <p>Brindlee Mountain's technicians are factory trained by many manufacturers and perform everything from routine maintenance 
+                       to complete overhauls. We service all makes and models and are factory authorized as a warranty and service center for E-One 
+                       Fire Apparatus, Wheeled Coach Ambulances, Waterous Fire Pumps, and Pro-Poly Tanks. We also provide service for Hale Fire Pumps, 
+                       FoamPro Foam Systems, and many more. Recently, we were given the honor of being appointed as one of three Waterous Platinum 
+                       Service Centers in the United States.</p>
+                    <p>As you can see, our capabilities go far beyond your annual pump and aerial test! Be sure to check below for more pictures of 
+                       our recent collision repair jobs.</p>
+                       
+                    <div class="beforeafter">Before and After</div>
+                    
+                    <h1 class="repairedpumper">1995 Pumper – Collision Repair</h1><br/><br/>
+                    <p>This unit was struck in the left rear corner of the apparatus body and sustained structural, body, and tank damage. It required 
+                       extensive repair of the polypropylene tank and a complete replacement of the apparatus body rear end assmebly.</p>
+                    <div class="repairdiv">
+                        <div class="repairedimages">
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair1a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair1a.jpg')}" alt="truck"/></a>
+                                <h2>Before</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair2a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair2a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair3a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair3a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair4a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/pumper1995_repair4a.jpg')}" alt="truck"/></a>
+                                <h2>After</h2>
+                            </div>
+                            <div class="clearer"></div>
+                        </div>
+                        <div class="clickpict">Click on a picture to enlarge</div>
+                    </div>
+                    <div class="delineate"></div>
+                    <h1 class="repairedpumper">2001 Pumper – Collision Repair</h1><br/><br/>
+                    <p>This unit was involved in an intersection collision and sustained damage to the right front corner and internal structural 
+                       damage to the cab.   It required a section replacement of the cab front panel, complete officer's interior cab area metal 
+                       replacement, and repairs to the chassis.</p>
+                    <div class="repairdiv">
+                        <div class="repairedimages">
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair1a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair1a.jpg')}" alt="truck"/></a>
+                                <h2>Before</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair2a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair2a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair3a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair3a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair4a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper2001_repair4a.jpg')}" alt="truck"/></a>
+                                <h2>After</h2>
+                            </div>
+                            <div class="clearer"></div>
+                        </div>
+                        <div class="clickpict">Click on a picture to enlarge</div>
+                    </div>
+                    <div class="delineate"></div>
+                    <h1 class="repairedpumper">1986 95? Platform – Complete Refurbishment</h1><br/><br/>
+                    <p>The job included a full paint job with color change, full upholstery replacement, complete engine rebuild and pump 
+                       inspection, fluid and filter change throughout truck, light 
+                        package upgrade, and a tip section replacement on the ladder.
+                    </p>
+                    <div class="repairdiv">
+                        <div class="repairedimages">
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair1a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair1a.jpg')}" alt="truck"/></a>
+                                <h2>Before</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair2a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair2a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair3a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair3a.jpg')}" alt="truck"/></a>
+                                <h2>In Progress</h2>
+                            </div>
+                            <div class="repairprogress">
+                                <a class="group1 cboxElement" href="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair4a.jpg')}">
+                                    <img src="{!URLFOR($RESOURCE.Webportalresources,'/images/pumper1986_repair4a.jpg')}" alt="truck"/></a>
+                                <h2>After</h2>
+                            </div>
+                            <div class="clearer"></div>
+                        </div>
+                        <div class="clickpict">Click on a picture to enlarge</div>
+                    </div>
+                    <!--  end repairdiv (3)  -->
+                </div>
+                    <div class="sidebar">
+                        <c:BrindleeMountainEndorsementsBlock /></div>
+              </div>
+              <div class="bottom-left">
+              <div class="bottom-right"></div>
+           </div>
+           </div>
+      </div>   
+      
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

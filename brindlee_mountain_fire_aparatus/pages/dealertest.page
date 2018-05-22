@@ -1,0 +1,75 @@
+<apex:page showHeader="false" sidebar="false">
+  <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+    <!-- End Google Tag Manager -->
+
+    <head>
+        <title>Homepage - Brindlee Mountain Fire Apparatus</title>
+        <meta id="meta_description" name="Description" content="Recent Deliveries - Brindlee Mountain Fire Apparatus" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/RecentDeliveries" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <apex:includeScript value="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/homepage.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/> 
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap-multiselect.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap.min.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        
+        <script src="https://rawgit.com/Brindlee/firetruckmall/master/BMFA-DealerTruckDisplay.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://rawgit.com/Brindlee/firetruckmall/master/BMFA-DealerTruckDisplay.css"></link>
+        <style>
+            /* A CSS class for provide general theme for truck advertise.
+             * NOTE: more properties may get added as per requirement.
+             * Default :
+             *      .FT_ThemeContainer { background-color: #7a0303; color: #fff; }
+             * Following CSS properties take in to consideration.
+             * 1. background-color : 
+             *      Used in title or heading text, also as background color for "View Details" button.
+             * 2. color:
+             *      Used as text color for "View Details" button.
+             * .FT_ThemeContainer { background-color: orange; color: purple; }
+             */
+            
+        </style>
+    </head>
+    <!-- Header -->
+
+   <c:BrindleeMountainHeader />
+   
+   <div class="topbanner">
+        <div class="banner-inner"></div>
+    </div>
+   <!-- Menu -->
+   <c:BrindleeMountainMenu />
+   
+
+        <div id="dealerTruckContainerId" accountId="DFTF-00055" class="FT_ThemeContainer"></div>
+        <script>
+        window.onload = function() {
+            FT_loadTruckData();
+        }
+        </script>
+                             
+
+    <c:BrindleeMountainFooter />
+    <site:googleAnalyticsTracking />
+</apex:page>

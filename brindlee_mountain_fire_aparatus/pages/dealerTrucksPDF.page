@@ -1,0 +1,32 @@
+<apex:page controller="dealerTrucksPDFController" renderAs="pdf" readonly="true">
+<html>
+    <body style="font-size:10.7px; font-family:sans-serif;line-height: 135%;background-position: center;">        
+        <apex:outputPanel rendered="{! (truckList.size > 0) }">
+            <table cellpadding="5px" colspan="3px" border="1px solid black" style="border-collapse: collapse">
+                <tr>
+                    <apex:repeat value="{!$ObjectType.Product2.FieldSets.Dealer_Notifier_Truck_Fields}" var="field"> 
+                        <th>{!field.Label}</th>
+                    </apex:repeat>
+                </tr>
+                <apex:repeat value="{!truckList}" var="truck">
+                    <tr>
+                        <apex:repeat value="{!$ObjectType.Product2.FieldSets.Dealer_Notifier_Truck_Fields}" var="field"> 
+                            <td>
+                                <apex:outputPanel rendered="{! (field.FieldPath == 'Name') }">
+                                    <a href="{!$Site.BaseUrl}/{!truck.id}">{!truck[field]}</a>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{! (field.FieldPath != 'Name') }">
+                                    {!truck[field]}
+                                </apex:outputPanel>
+                            </td>
+                        </apex:repeat>
+                    </tr>                                
+                </apex:repeat>            
+            </table>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{! (truckList.size == 0) }">
+            <h1>No Trucks Available.</h1>
+        </apex:outputPanel>        
+    </body>
+</html>
+</apex:page>

@@ -1,0 +1,517 @@
+<apex:page standardController="PM_Safety_Inspection__c" sidebar="false" showHeader="false" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false">
+    
+    <head>
+        <style>
+            *{margin:0 ; padding:0; box-sizing:border-box; font-size:14px; font-family: Times; }
+            table.tableStyle{ margin-top:20px; border-collapse:collapse; table-layout:fixed; page-break-inside: avoid; } 
+            table.tableStyle th, table.tableStyle td { border: 1px solid #000;padding:5px; text-align:center; } 
+            table.tableStyle th{ background:#444444; padding:5px; color:#fff; font-size:15px; } 
+            ul.listStyle { margin: 0; padding: 0; list-style: none; width: 100%; position: relative; }
+            ul.listStyle > li { float: left; width: 49.98%; border-bottom: 1px solid #000; margin: 0; padding: 0; margin-bottom: -1px; position: relative; }
+            ul.listStyle li:before { content: ''; height: 100%; background: red; position: absolute; right: 0; display: block; width: 1px; } 
+            ul.listStyle > li span { padding: 5px; display: block; } th.thStyle{background: #444444; padding: 5px; color: #fff; font-size: 15px} 
+            .psgStyle{padding:10px 0; display:block; font-style:italic;}
+            
+            
+            .tableStyle.tableInfo{border:1px solid #000; }
+            .tableStyle.tableInfo tr td{border:1px solid #000; border-bottom:1px solid #000; text-align:left;}
+        </style>
+    </head>
+    <body>
+        <apex:outputPanel >        
+            <div class="fL" align="center">
+                <img src="{!URLFOR($RESOURCE.FireTruckSafetyInspectionImages,'/FireTruckSafetyInspectionImage.jfif')}" class="logoimg"/>
+            </div>
+            <div class="fL" align="center">
+                <h2 style="padding-bottom: 29px; display: block; font-size: 21px; font-weight: 600; color: #343638;">PM Safety Inspection</h2>
+            </div>
+            
+            <p class="psgStyle">
+                Each inspectable item is evaluated for the condition as it relates to DOT specifications.
+                Items that are annotated as "Needs Work" are addressed with specific recommendations in the comments section.
+            </p>
+            
+            <!-- Basic Information -->
+            <table class="tableStyle tableInfo" border="0" cellpadding="0" cellspacing="0" width="100%" > 
+                <tr>
+                    <th class="thStyle" colspan="2">Information</th>                    
+                </tr>
+                
+                <tr>
+                    <td>
+                        <label >PM Safety Inspection Name : </label>
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Name}
+                        </apex:outputPanel>
+                    </td> 
+                    <td >
+                        <label> Date of Inspection : </label>
+                        
+                        <apex:outputPanel >
+                            <apex:outputText value="{0, date, MM/dd/yyyy}" >
+                                <apex:param value="{!PM_Safety_Inspection__c.Date_of_Inspection__c}" />
+                            </apex:outputText>                           
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Fire Truck : </label>                        
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Fire_Truck__r.Name}
+                        </apex:outputPanel>
+                    </td>
+                    
+                    <td >
+                        <label> Odometer Reading : </label>
+                        
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Odometer_Reading__c}
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        <label> Fire Department : </label>
+                        
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Fire_Department__r.Name}       
+                        </apex:outputPanel>
+                    </td>
+                    <td class="">
+                     <label> Hours : </label>                        
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Hours__c}       
+                        </apex:outputPanel>
+                    
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="">
+                        <label> Employee : </label>
+                        
+                        <apex:outputPanel >
+                            {!PM_Safety_Inspection__c.Technician__r.Name}       
+                        </apex:outputPanel>
+                    </td>
+                    <td class="">                    
+                    
+                    </td>
+                </tr>
+            </table>
+            <!-- END Basic Information -->
+            
+            <!-- Battery Information -->
+            <table class="tableStyle" border="0"  cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Battery</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Battery}" var="field"> 
+                    <tr>
+                        <td> 
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>       
+            <!-- Battery Information -->
+            
+            <!-- Under Vehicle Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Under Vehicle</th> 
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Under_Vehicle}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- Under Vehicle Information -->
+            
+            <!-- Fire Pump Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Fire Pump</th> 
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Fire_Pump}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- Fire Pump Information -->
+            
+            <!-- Aerial Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Aerial</th> 
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Aerial}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- Aerial Information -->
+            
+            <!-- Engine Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Engine</th>
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Engine}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- Engine Information -->
+            
+            <!-- Cooling System Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Cooling System</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Cooling_System}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Cooling System Information -->
+            
+            <!-- Air Intake System Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Air Intake System</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Air_Intake_System}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Air Intake System Information -->
+            
+            <!-- Charging System Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Charging System</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Charging_System}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Charging System Information -->
+            
+            <!-- Body Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Body</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Body}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Body Information -->
+            
+            <!-- Tires & Wheels Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Tires and Wheels</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Tires_Wheels}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Tires & Wheels Information -->            
+            
+            
+             <!-- DOT Lighting Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>DOT Lighting</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.DOT_Lighting}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- DOT Lighting Information -->
+            
+             <!-- Emergency Response A/V Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Emergency Response A/V</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Emergency_Response_A_V}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Emergency Response A/V Information -->
+            
+             <!-- Climate Control Systems Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Climate Control Systems</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Climate_Control_Systems}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Climate Control Systems Information -->
+            
+             <!-- Cab Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Cab</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Cab}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Cab Information -->
+            
+             <!-- Road Test Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Road Test</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Road_Test}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!PM_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!PM_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- Road Test Information -->
+            
+            <!-- Comments Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Comments</th>
+                    <!--<th>Comment</th>-->
+                </tr>   
+                <apex:repeat value="{!$ObjectType.PM_Safety_Inspection__c.FieldSets.Comments}" var="field"> 
+                    <tr>                       
+                        <td style="text-align:left;">      
+                            <div style="min-height:30px;"><apex:outputText escape="false" value="{!PM_Safety_Inspection__c[field]}">
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- END Recommendations Information -->
+            
+            
+        </apex:outputPanel>
+    </body>
+</apex:page>

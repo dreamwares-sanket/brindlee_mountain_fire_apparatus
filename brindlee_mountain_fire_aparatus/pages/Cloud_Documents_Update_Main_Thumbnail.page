@@ -1,0 +1,6 @@
+<apex:page standardController="DragDropToCloud__Cloud_Documents__c" recordSetVar="unused" sidebar="false">
+    <!-- Runs your Flow -->   
+    <flow:interview name="Cloud_Document_Update_Main_Thumbnail" finishLocation="/{!$CurrentPage.parameters.ProductID}">
+        <apex:param name="SelectedCloudDocuments" value="{!Selected}"/>
+    </flow:interview>
+</apex:page>

@@ -1,0 +1,31 @@
+<apex:component >
+    <footer>
+        <div class="footer">
+            <div class="mobile-margin">
+                <div class="footer-inner-body">
+                    <div class="footer-inner-truck-finder-virtual">
+                        <a target="_blank" href="https://www.google.com/maps/place/Brindlee+Mountain+Fire+Apparatus/@34.462151,-86.556632,3a,75y,251.56h,92.71t/data=!3m5!1e1!3m3!1siE-vUyeMBqQAAAQJOF4epQ!2e0!3e2!4m2!3m1!1s0x0:0xd61e8f6406c106ce?hl=en-US">
+                            <img src="{!URLFOR($Resource.WebportalResources,'/images/fire-truck-finder-virtual-logo.png')}"/>
+                        </a>
+                    </div>
+                    <div class="footer-inner"> Copyright &copy; 2015 Brindlee Mountain Fire Apparatus, LLC. All Rights Reserved. <br/>
+                        <a href="{!URLFOR($Page.Default)}">Home</a> | 
+                        <a href="{!URLFOR($Page.AvailableTrucks)}">Fire Trucks For Sale</a> | 
+                        <a href="{!URLFOR($Page.RecentDeliveries)}">Recent Deliveries</a> | 
+                        <a href="{!URLFOR($Page.Testimonials)}"> Testimonials</a> | 
+                        <a href="{!URLFOR($Page.Service)}">Service</a> | 
+                        <a href="{!URLFOR($Page.AboutUs)}">About
+                        Us</a> | 
+                        <a href="{!URLFOR($Page.ContactUs)}">Contact</a><br/>
+                        
+                    </div>
+                    <div class="footer-inner-truck-finder">
+                        <a target="_self" href="{!URLFOR($Page.firetruckfinder)}">
+                            <img src="{!URLFOR($Resource.WebportalResources,'/images/fire-truck-finder-logo.png')}"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</apex:component>

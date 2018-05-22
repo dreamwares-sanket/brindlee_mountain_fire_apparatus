@@ -1,0 +1,161 @@
+<!-------------------------------------------------------------------------------------
+    @ Developer      :- DWS
+    @ Purpse         :- Used for Answering service
+    @ Component Name :- FireTruckAnsweringServiceCare
+    @ Created By     :- DWS
+    @ LastModifiy By :- DWS
+--------------------------------------------------------------------------------------->
+<apex:page sidebar="false" showHeader="false" cache="false"> 
+ <html>
+     <head>
+         <meta http-Equiv="Cache-Control" Content="no-cache" />
+         <meta http-Equiv="Pragma" Content="no-cache" />
+         <meta name="robots" content="noindex" />
+         <meta http-Equiv="Expires" Content="0" />
+         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />-->
+         <apex:stylesheet value="{!URLFOR($Resource.FireTruckAnsweringService,'css/bootstrap.min.css')}" />
+         <apex:stylesheet value="{!URLFOR($Resource.FireTruckAnsweringService,'css/bootstrap-theme.min')}" />
+         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+         <style>
+             .truck-input{
+                 display:none;
+             }
+             .no-ans{
+                 display:none;
+             }
+             .option-txt{
+                 text-align:left;
+             }
+             .option{
+                 text-align:-webkit-right;
+             }
+             .second_opt{
+                 display:none;
+             }
+         </style>
+     </head>
+     <body>
+         <div class="page-header" style="text-align:center">
+          <h1><small>Fire Truck Answering Service Care</small></h1>
+        </div>
+         <div class="container">
+            <div class="row">
+                <div class="col-lg-12" >
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6" >
+                     <!--
+                     <p>
+                         <label>Agent :</label> "Hello, you’ve reached the answering service for Brindlee Mountain Fire Apparatus, Are you calling to inquire about a specific truck ?"  
+                     </p>
+                     -->
+                     <p>
+                        <label>Caller :</label> The caller has a question about a specific fire truck.
+                     </p>
+                     <div class="row">
+                         <div class="col-lg-4">
+                             <table class="table" >
+                                 <tr> 
+                                     <td class="col-sm-1 option" ><input type="radio" class="radio" name="radio_btn1"  value="Yes"/></td>
+                                     <td class="col-sm-1 option-txt" >Yes</td>
+                                     <td class="col-sm-1 option" ><input type="radio" class="radio" name="radio_btn1" value="No"/></td>
+                                     <td class="col-sm-1 option-txt" >No</td> 
+                                 </tr>
+                             </table>
+                          </div>
+                     </div>
+                     
+                     <p class="second_opt">
+                        <label>Agent :</label> "Great! Thanks for asking about this truck. Brindlee is closed right now, but I will help get your question to the right person quickly. Do you happen to have a stock number for the truck you are asking about?"
+                     </p>
+                     <div class="row second_opt">
+                         <div class="col-lg-9">
+                             <table class="table" >
+                                 <tr> 
+                                     <td class="col-sm-1 option" ><input id="second_opt_yes" type="radio" class="radio" name="radio_btn"  value="Yes" /></td>
+                                     <td class="col-sm-1 option-txt" >Yes </td>
+                                     <td class="col-sm-1 option" ><input type="radio" class="radio second_opt_o" name="radio_btn" value="No"/></td>
+                                     <td class="col-sm-1 option-txt" >No</td> 
+                                     <td class="col-sm-1 option" ><input type="radio" class="radio second_opt_o" name="radio_btn" value="General"/></td>
+                                     <td class="col-sm-4 option-txt" >General Questions</td> 
+                                 </tr>
+                             </table>
+                          </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-9">
+                             <table class="table" >
+                                 <tr class="truck-input"> 
+                                     <td class="col-sm-2" > Enter Stock Number  </td>
+                                     <td class="col-sm-2" > <input type="text" class="input form-control" id="truck-id" /> </td>
+                                     <td class="col-sm-1" align="left" > <button type="button" class=" btn-primary form-control" id="truck-btn" > Search </button> </td>
+                                 </tr>
+                                 <tr class="no-ans"> 
+                                     <td class="col-sm-3" ><label>Agent :</label> "OK no problem! Please give me the information and I will pass it on to get it answered right away."  </td>
+                                 </tr>
+                             </table>
+                         </div>
+                     </div>
+                 </div>
+             
+                 <div class="col-lg-6" >
+                     <div id='iframe-section' class="" style="display:none;">
+                         <iframe id="iframe-block" width="100%" height="500px"  />
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </body>
+     <script>
+         
+         $('[name="radio_btn1"]').change(function(){
+             var url = 'https://go.pardot.com/l/68872/2016-09-11/5265jt' ;
+             
+             if($(this).val() == 'General') 
+                 url = 'https://go.pardot.com/l/68872/2016-09-11/5265jt' ;
+             if($(this).val() == 'Yes') {
+                 $('.no-ans').hide();
+                 $('#iframe-section').hide();
+                 $('.truck-input').show();
+                 $('.second_opt').show();
+                 $('.second_opt_o').prop('checked',false);
+                 $('#second_opt_yes').prop('checked',true);
+             }
+             else{
+                 $('.truck-input').hide();
+                 $('.no-ans').show();
+                 $('#iframe-section').show();
+                 $('#iframe-block').attr('src',url);
+                 $('.second_opt').hide();
+             }
+         });
+         
+         $('[name="radio_btn"]').change(function(){
+             var url = 'https://go.pardot.com/l/68872/2016-09-11/5265jt' ;
+             
+             if($(this).val() == 'General') 
+                 url = 'https://go.pardot.com/l/68872/2016-09-11/5265jt' ;
+             if($(this).val() == 'Yes') {
+                 $('.no-ans').hide();
+                 $('#iframe-section').hide();
+                 $('.truck-input').show();
+             }
+             else{
+                 $('.truck-input').hide();
+                 $('.no-ans').show();
+                 $('#iframe-section').show();
+                 $('#iframe-block').attr('src',url);
+             }
+         });
+        
+        
+        $('#truck-btn').click(function(){
+             $('#iframe-section').show();
+             $('#iframe-block').attr('src','https://www.firetruckmall.com/apex/SearchResults?search='+$('#truck-id').val());
+        });
+     </script>
+ </html>
+ 
+</apex:page>

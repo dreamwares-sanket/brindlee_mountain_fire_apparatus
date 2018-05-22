@@ -1,0 +1,267 @@
+<apex:page standardController="Fire_Truck_Safety_Inspection__c" sidebar="false" showHeader="false" renderAs="pdf" applyBodyTag="false" applyHtmlTag="false">
+    <head>
+        <style>
+            *{margin:0 ; padding:0; box-sizing:border-box; font-size:14px; font-family: Times; }
+            table.tableStyle{ margin-top:20px; border-collapse:collapse; table-layout:fixed; page-break-inside: avoid; } 
+            table.tableStyle th, table.tableStyle td { border: 1px solid #000;padding:5px; text-align:center; } 
+            table.tableStyle th{ background:#444444; padding:5px; color:#fff; font-size:15px; } 
+            ul.listStyle { margin: 0; padding: 0; list-style: none; width: 100%; position: relative; }
+            ul.listStyle > li { float: left; width: 49.98%; border-bottom: 1px solid #000; margin: 0; padding: 0; margin-bottom: -1px; position: relative; }
+            ul.listStyle li:before { content: ''; height: 100%; background: red; position: absolute; right: 0; display: block; width: 1px; } 
+            ul.listStyle > li span { padding: 5px; display: block; } th.thStyle{background: #444444; padding: 5px; color: #fff; font-size: 15px} 
+            .psgStyle{padding:10px 0; display:block; font-style:italic;}
+            
+            
+            .tableStyle.tableInfo{border:1px solid #000; }
+            .tableStyle.tableInfo tr td{border:1px solid #000; border-bottom:1px solid #000; text-align:left;}
+        </style>
+    </head>
+    <body>
+        <apex:outputPanel >        
+            <div class="fL" align="center">
+                <img src="{!URLFOR($RESOURCE.FireTruckSafetyInspectionImages,'/FireTruckSafetyInspectionImage.jfif')}" class="logoimg"/>
+            </div>
+            <div class="fL" align="center">
+                <h2 style="padding-bottom: 29px; display: block; font-size: 21px; font-weight: 600; color: #343638;">Fire Truck Safety Inspection</h2>
+            </div>
+            
+            <p class="psgStyle">
+                Each inspectable item is evaluated for the condition as it relates to DOT specifications.
+                Items that are annotated as "Needs Work" are addressed with specific recommendations in the comments section.
+            </p>
+            
+            <!-- Basic Information -->
+            <table class="tableStyle tableInfo" border="0" cellpadding="0" cellspacing="0" width="100%" > 
+                <tr>
+                    <th class="thStyle" colspan="2">Information</th>                    
+                </tr>
+                
+                <tr>
+                    <td>
+                        <label >Fire Truck-Apparatus : </label>
+                        <apex:outputPanel >
+                            {!Fire_Truck_Safety_Inspection__c.Fire_Truck_Apparatus__r.Name}
+                        </apex:outputPanel>
+                    </td> 
+                    <td >
+                        <label> Inspection Date : </label>
+                  
+                        <apex:outputPanel >
+                            <apex:outputText value="{0, date, MM/dd/yyyy}" >
+                                <apex:param value="{!Fire_Truck_Safety_Inspection__c.Inspection_Date__c}" />
+                            </apex:outputText>                           
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Project Name : </label>
+                   
+                        <apex:outputPanel >
+                            {!Fire_Truck_Safety_Inspection__c.Project__r.Name}
+                        </apex:outputPanel>
+                    </td>
+               
+                    <td >
+                        <label> Tech who performed inspection : </label>
+                    
+                        <apex:outputPanel >
+                            {!Fire_Truck_Safety_Inspection__c.Tech_who_performed_inspection__r.Name}
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="">
+                        <label> Fire Truck Safety Inspection Name : </label>
+                    
+                        <apex:outputPanel >
+                            {!Fire_Truck_Safety_Inspection__c.Name}       
+                        </apex:outputPanel>
+                    </td>
+                    <td class=""></td>
+                </tr>
+            </table>
+            <!-- END Basic Information -->
+            
+            <!-- Tires and Brakes Information -->
+            <table class="tableStyle" border="0"  cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Tires and Brakes</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Tires_and_Brakes}" var="field"> 
+                    <tr>
+                        <td> 
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>       
+            <!-- END Tires and Brakes Information -->
+            
+            <!-- Suspension and Steering Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Suspension and Steering</th> 
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Suspension_and_Steering}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- END Suspension and Steering Information -->
+            
+            <!-- Fuel and Exhaust System Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Fuel and Exhaust System</th> 
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Fuel_and_Exhaust_System}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- END Fuel and Exhaust System Information -->
+            
+            <!-- Lights and Warning Systems Information -->
+            <table  class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Lights and Warning Systems</th> 
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Lights_and_Warning_Systems}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- END Lights and Warning Systems Information -->
+            
+            <!-- Belts and Fluids Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Belts and Fluids</th>
+                    <th>Result</th> 
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Belts_and_Fluids}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>            
+                </apex:repeat> 
+            </table>
+            <!-- END Belts and Fluids Information -->
+            
+            <!-- Mirrors and Glass Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Mirrors and Glass</th>
+                    <th>Result</th>
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Mirrors_and_Glass}" var="field"> 
+                    <tr>
+                        <td>      
+                            <label>{!field.Label}</label>
+                        </td>
+                        <td>      
+                            <apex:outputPanel rendered="{! IF(field.Type != 'date',TRUE,FALSE)}">
+                                {!Fire_Truck_Safety_Inspection__c[field]}
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{! IF(field.Type == 'date',TRUE,FALSE)}">
+                                <apex:outputText value="{0,date,MM/dd/yyyy}" >
+                                    <apex:param value="{!Fire_Truck_Safety_Inspection__c[field]}" />
+                                </apex:outputText>                           
+                            </apex:outputPanel>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- END  Mirrors and Glass Information -->
+            
+               <!-- Recommendations Information -->
+            <table class="tableStyle" border="0" cellpadding="0" cellspacing="0" width="100%"> 
+                <tr>
+                    <th>Safety Inspection Recommendations</th>
+                    <!--<th>Comment</th>-->
+                </tr>   
+                <apex:repeat value="{!$ObjectType.Fire_Truck_Safety_Inspection__c.FieldSets.Recommendations}" var="field"> 
+                    <tr>
+                      <!--  <td>      
+                            <label>{!field.Label}</label>
+                        </td>-->
+                        <td style="text-align:left;">      
+                            <div style="min-height:30px;"><apex:outputText escape="false" value="{!Fire_Truck_Safety_Inspection__c[field]}">
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>          
+                </apex:repeat> 
+            </table>
+            <!-- END Recommendations Information -->
+            
+            
+        </apex:outputPanel>
+    </body>
+</apex:page>

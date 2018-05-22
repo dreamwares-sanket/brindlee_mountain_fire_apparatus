@@ -1,0 +1,103 @@
+<apex:page controller="sitemapController" showHeader="false" contentType="text/xml" cache="false">
+    <urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        
+        <!-- Values for static page urls -->
+        <url>
+            <loc>https://www.firetruckmall.com/default</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/AvailableTrucks</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/RecentDeliveries</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/Testimonials</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/Service</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/AboutUs</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/News</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/BrindleeHistory</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/ContactUs</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/Buying-a-Used-Fire-Truck</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/Selling-your-Used-Fire-Truck</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/Need-Work-on-Your-Used-Fire-Truck</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/CompanyDirectory</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://www.firetruckmall.com/FireTruckFinder</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+        </url>
+        
+        <!-- Reapeat for Available Truck Categories urls-->
+        <apex:repeat value="{!listAvailableTrucksUrls}" var="category">
+            <url>
+                <loc>{!category}</loc>
+                <changefreq>daily</changefreq>
+                <priority>1.0</priority>
+            </url>
+        </apex:repeat>
+        
+        <!-- Repeat for Available Truck Detail page urls-->
+        <apex:repeat value="{!listUrlSetWrapper}" var="UrlSet">
+            <apex:repeat value="{!UrlSet}" var="url">
+                <url>
+                    <loc>{!SUBSTITUTE(url.strUrl,"&","%26")}</loc>
+                    <lastmod>{!url.strDate}</lastmod>
+                    <changefreq>weekly</changefreq>
+                    <priority>0.5</priority>
+                </url>
+            </apex:repeat>
+        </apex:repeat>
+        
+    </urlset>
+    
+</apex:page>

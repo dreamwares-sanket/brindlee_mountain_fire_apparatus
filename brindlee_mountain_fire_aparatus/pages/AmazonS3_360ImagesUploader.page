@@ -1,0 +1,359 @@
+<apex:page controller="AmazonS3_360ImagesUploader_Controller" showHeader="false" standardStylesheets="false">
+    <head>
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/jqueryUI.css')}"/>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,600i,700,800" rel="stylesheet" />
+        <style>
+            *{font-family: 'Open Sans', sans-serif;}
+            ul#imgs-container { text-align: center; }
+            ul#imgs-container li { list-style: none; display: inline-block; border-right: 1px solid #ccc;  border-bottom: 1px solid #ccc; padding: 6px 0; }
+            ul#imgs-container li:last-child{ border-right: none; }
+            ul#imgs-container li:nth-child(3n+3) { border-right: none;}
+            .imgBtns > button:hover { background-color: rgba(0, 0, 0, 0.2); border: none; }
+            #demo-thumb { width:75%; }
+            
+            #progress-txt { margin-top: 10px; font-weight:bold }
+            #progress-bar-container {position: fixed;left: 0;top: 0;background-color:rgba(0,0,0,.4);height: 100%;width: 100%;z-index: 999;align: center;vertical-align: middle;}
+            #progress-bar-content {position: absolute;top: 50%;left: 50%;z-index: 1000;background-color: #F5FCFF; width: 15%;border-radius: 10px;border: 1px solid #999999;margin-left: -60px;margin-top: -40px; padding: 23px 10px; text-align:center;}
+            #progress-bar { position: relative; width: 100%; height: 30px; background-color: #ddd; }
+            #progress { position: absolute; width: 0%; height: 100%; background-color: #4CAF50; }
+            
+            
+            /************Error/Info Msgs ************/
+            #msg{ border: 1px solid #ccc; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.35); border-radius: 3px; font-size: 13px; display: inline-block; padding: 5px 5px; text-align: left; min-width: 200px; }
+            .err {  border-left: 3px solid #af2121 !important;}
+            .info { border-left: 3px solid #3371ad !important; }
+            *{margin:0; padding:0; box-sizing:border-box;}
+            .container{max-width:1100px; margin: 0 auto;}
+            .pageHead { text-align: center; font-size: 24px; padding: 25px 0; }
+            .btnsDiv{padding: 20px 0 50px;}
+            .btnStyle { background: #af2121; color: #fff; font-size: 13px; padding: 5px 12px; border: 1px solid #980b0b; border-radius: 3px; cursor: pointer; }
+            .btnStyle:hover{background: #c13f3f;}
+            .fL{float:left;}
+            .fR{float:right;}
+            .clr{clear:both;}
+            .halfSec { width: 60%; border: 1px solid #ccc; text-align: center; max-height:345px; }
+            .listSec{width:40%; padding-left:15px; max-height:345px; overflow:hidden;}
+            ul.img-thumbs{padding:0; max-height:300px; overflow:auto;}
+            ul.img-thumbs li{width:33.33%; position:relative; }
+            ul.img-thumbs li div span{display:none; }
+            button.cancelBtn { background: url({!URLFOR($RESOURCE.Reel,'/images/close_button.png')}) no-repeat center; font-size: 0; width: 15px; height: 15px; position: absolute; top: 3px; right: 3px; border-radius: 50px; padding: 9px; background-size: 10px; box-shadow: 0 0 2px rgb(0, 0, 0) inset; border: 0 none; }
+            #fileCount { position: absolute; top: 160px; font-size: 13px; }
+            .img-360-view {width: 130px; height: 60px; background-position: center; background-size: cover; margin: 0 auto; }
+            #demo-thumb { width: 100%; margin: 0 auto; }
+            #demo-thumb-reel { width: 100%; height: 221px; margin: 30px 0; }
+            .imgBtns{ background: #af2121; padding: 15px;}
+            .imgBtns > button { border: 1px solid #fff; font-size: 0; width: 30px; height: 25px; background-color: transparent; border-radius: 3px; margin: 0 5px; }
+            .playbtn:before { content: ''; border-left: 9px solid #fff; border-bottom: 7px solid transparent; border-top: 7px solid transparent; border-radius: 3px; margin: 2px; }
+            .pausebtn:before { content: ''; border-radius: 0; margin: 2px; border-left: 3px solid #fff; border-right: 3px solid #fff; padding: 5px 2px; }
+            .stopbtn:before{content: ''; margin: 2px; padding: 6px; background: white; border-radius: 2px;}
+            .reloadbtn{background: url({!URLFOR($RESOURCE.Reel,'/images/reloadbtn.png')}) no-repeat center; background-size: 17px;}
+            
+            ::-webkit-scrollbar { width: 6px; }
+            ::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); border-radius: 10px; border-color:gray; }
+            ::-webkit-scrollbar-thumb { border-radius: 10px; -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); background: lightgray; }
+            
+        </style>
+        
+    </head>
+    <div class="container">
+        <apex:remoteObjects jsNamespace="SobjectModel">
+            <apex:remoteObjectModel name="Product2" jsShorthand="Product" fields="Id,Total_360_Images__c,AWS_360_Images_extension__c" />
+            <apex:remoteObjectModel id="cloudDocRemoteId" name="DragDropToCloud__Cloud_Documents__c" jsShorthand="getCloudDocs" fields="Id,Name,Product__c,Show_Online__c,Main_Image__c,Main_Thumbnail__c,DragDropToCloud__Bucket_Name__c,DragDropToCloud__Folder_Id__c,Amazon_S3_Main_Thumbnail_URL__c"/>
+        </apex:remoteObjects>
+        
+        <div id="progress-bar-container" style="display:none;">
+           <div id="progress-bar-content">
+               <!--<img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />  -->
+               <div id="progress-txt">Upload Progress 0%</div>
+               <div id="progress-bar">
+                   <div id="progress"></div>
+               </div>
+           </div>
+        </div>
+        
+        <h1 class="pageHead">Amazon S3 images uploader for 360 view</h1>
+        
+        <div id="msg" style="display:none;"></div>
+        <center class="btnsDiv">
+            <button class="add-btn btnStyle" onclick="deleteAllImages(); $('#fileIn').trigger('click');">Choose Images</button>
+            <button class="btnStyle" onclick="submitData();">Upload</button>
+        </center>
+        
+        <div id="demo-block" class="fL halfSec" style="display:none;">
+            <div><img id="demo-thumb" src="" /></div>
+            <div class="imgBtns">
+                <button class="playbtn" onclick="playDemo();">Play</button>
+                <button class="pausebtn" onclick="pauseDemo();">Pause</button>
+                <button class="stopbtn" onclick="stopDemo();">Stop</button>
+                <button class="reloadbtn" onclick="reloadDemo();">Reload</button>
+            </div>
+        </div>
+        
+        <div class="fR listSec">
+            <div id="fileCount"></div>
+            <div>
+                 <ul id="imgs-container" class="img-thumbs">
+                     <!-- uploaded images here --> 
+                 </ul>
+            </div>
+            <center class="btnsDiv" style=" padding: 10px 0 50px;">
+                <button id="delAllBtn" class="btnStyle" onclick="deleteAllImages();" style="display:none;">Delete All</button>
+            </center>
+            <input id="fileIn" type="file" accept="Image/*" multiple="multiple" style="display:none;"/>
+        </div>
+        <div class="clr"></div>
+    </div>
+    <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+    <script src="{!URLFOR($RESOURCE.Reel,'/scripts/reel.js')}"></script>
+    <script src="{!URLFOR($Resource.ImageSwiper,'aws-sdk-2.1.24.js')}"/>
+    <script>
+        window.OriginalfileCount = 0;
+        window.demo360Imgs = [];
+        
+        var AWSCredentials,
+            imageDetails = [];
+            
+        $(document).ready(function(){
+            window.productId = '{!$CurrentPage.parameters.Id}';
+            
+            if( !window.productId ){
+                //alert('Please insert a product Id in the url!');
+                showMsg('err', 'Please insert a product Id in the url!');
+                $('.btnsDiv').hide();
+            }
+            else{
+                AWSCredentials = getAWSCredentials();
+                
+                AWS.config.update({
+                    accessKeyId : AWSCredentials.AccessKeyId__c,
+                    secretAccessKey : AWSCredentials.SecretAccessKey__c,
+                    region_config: "us-west-2" 
+                });
+            }
+        });
+    
+        function playDemo(){
+            $("#demo-thumb").trigger("play", 0.2 );
+        }
+        
+        function pauseDemo(){
+            $("#demo-thumb").trigger("pause");
+        }
+        
+        function stopDemo(){
+            $("#demo-thumb").trigger("stop");
+        }
+        
+        function reloadDemo(){
+            $('#demo-thumb').attr('src', window.demo360Imgs[0] );
+        
+            $('#demo-block').slideDown();
+            $("#demo-thumb").reel({
+                images: window.demo360Imgs,
+                cursor:'hand'
+            });
+        }
+    
+        function submitData() {            
+            if( window.productId ){
+                if( imageDetails.length > 0) {
+                    AWSS3imageUploader();
+                }
+            }else{
+                showMsg('err','Error : Product Id not found!');
+            }
+        }
+        
+        function AWSS3imageUploader(){
+            $('#progress-bar-container').show();          
+            
+            var bucket = new AWS.S3({params: {Bucket: AWSCredentials.BucketId__c}}),
+                options = { partSize: 10 * 1024 * 1024, queueSize: imageDetails.length },
+                errors = '';
+                
+            window.fileCount = 0;
+           
+            imageDetails.forEach(function(file){                
+                var params = {Key: '01t-product2/'+ window.productId +'/360/'+file[0], ContentType: file[1], Body: file[2]};    // set file path in first param
+                
+                bucket.upload(params, options).on('httpUploadProgress', function(evt){
+                
+                    if(parseInt((evt.loaded * 100) / evt.total) === 100){
+                        var progressPc = Math.ceil((100*(window.fileCount+1))/(imageDetails.length-1));
+                        //console.log('Progress:', '100 x '+(window.fileCount+1)+' / '+(imageDetails.length-1)+' = '+progressPc);
+                        //console.log('progressPc', progressPc);
+                        updateProgress(progressPc, 'Uploading images ');
+                    }            
+                }).send(function(err, data){
+                           
+                    if(!err){
+                        if(window.fileCount === (imageDetails.length-1)){
+                            //console.log('window.fileCount',window.fileCount );
+                            console.log("Files uploaded Successfully!!");
+                            updateProduct();
+                        }
+                        window.fileCount++;
+                        //console.log('wfc',window.fileCount);
+                    }else{
+                        console.error('Error in upload', err);
+                        //errors += '<li>'+ err + '</li>';
+                    }
+                });
+            });
+        }
+        
+        function updateProduct(){
+            updateProgress(0, 'Updating record');
+                        
+            var product = new SobjectModel.Product({
+                Id: window.productId,
+                Total_360_Images__c: imageDetails.length,
+                AWS_360_Images_extension__c: imageDetails[0][0].split('.').pop()
+            });
+            product.update(function(err, ids){
+                if( !err ){
+                    updateProgress(100, 'Updating record');
+                    showMsg('info', 'Upload Complete!');
+                    window.setTimeout(function(){ $('#progress-bar-container').hide(); }, 1000);
+                }
+                else{
+                    showMsg('err', 'Error : ' + err);
+                    $('#progress-bar-container').hide();
+                }
+            });
+        }
+        
+        function updateProgress(progress, uploadTxt){
+            progress += '%';
+            $('#progress').css('width', progress);
+            $('#progress-txt').text(uploadTxt +' '+ progress);
+        }
+                    
+        function updateFileCount(){
+            var text, count = imageDetails.length;   // $('.img-thumbs > li').length;
+            
+            if( count > 0 ){
+                text = count + ' selected';
+            }
+            else{
+                text = '';
+            }
+            $('#fileCount').html(text);
+        }
+             
+        $('#fileIn').change(function(e) {
+            fr = new FileReader();
+            
+            $('#delAllBtn').show();
+            
+            function readFile(index) {
+                if( index == e.target.files.length ){
+                    updateFileCount();
+                }
+                
+                if( index >= e.target.files.length ) {
+                    reloadDemo();
+                    return;
+                }
+    
+                var file = e.target.files[index];
+                fr.onload = function(e) {
+                    var img = e.target.result,
+                        fileName = file.name,
+                        fileType = file.type,
+                        isFind = false;
+                    
+                    window.demo360Imgs.push(img);
+                                            
+                    imageDetails.forEach(function(image) {    // get file content  
+                        if(fileName == image[0]) {
+                            isFind = true;
+                            return;
+                        }
+                    });
+                    if(!isFind){
+                        $('.img-thumbs').append('<li><div id="slide_'+window.OriginalfileCount+'" class="img-360-view" style="background-image:url('+ img +');">'
+                                                +'<span>'+ fileName +'</span></div>'
+                                                +'<button onclick="removeImage(this,'+window.OriginalfileCount+')" class="cancelBtn">Delete</button></li>');
+                        fileName = window.OriginalfileCount + '.' + fileName.split('.').pop();    // modify file name acc to sequence
+                        imageDetails.push([fileName, fileType, file, 'slide_'+window.OriginalfileCount]);    // Original Image for upload
+                        
+                        window.OriginalfileCount++;
+                    }
+                    readFile(index+1);
+                }
+                fr.readAsDataURL(file);
+            }
+            readFile(0);
+        });
+        
+        function removeImage(ImgElement, Id){
+            $(ImgElement).parent().remove();
+            
+            for(var index=0; index<imageDetails.length; index++){    // remove image from array
+                if(imageDetails[index][3] === 'slide_'+Id){
+                    imageDetails.splice(index, 1);
+                    window.demo360Imgs.splice(index, 1);
+                    window.OriginalfileCount--;
+                }
+            }
+            //reloadDemo();
+            updateFileCount();
+            
+            if(imageDetails.length == 0){
+                clearView();
+            }
+        }
+        
+        function deleteAllImages(){
+            if( window.imageDetails.length && window.demo360Imgs.length
+                    && confirm('Are you sure you want to remove all the images?') ){
+                clearView();
+            }
+        }
+        
+        function clearView(){
+            window.imageDetails = [];
+            window.demo360Imgs = [];
+            $('#demo-block').slideUp();
+            $('#imgs-container').empty();
+            $('#demo-thumb').attr('src', '' );
+            updateFileCount();
+            $('#delAllBtn').hide();
+            hideMsg();
+        }
+        
+        function dataURItoBlob(dataURI){    // convert base64/URLEncoded data component to raw binary data held in a string
+            var byteString;
+            if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                byteString = atob(dataURI.split(',')[1]);
+            else
+                byteString = unescape(dataURI.split(',')[1]);
+        
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];    // separate out the mime component
+        
+            var ia = new Uint8Array(byteString.length);    // write the bytes of the string to a typed array
+            for (var i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }            
+            return new Blob([ia], {type:mimeString});
+        }
+            
+        function getAWSCredentials(){
+            try{
+                return JSON.parse('{!JSENCODE(LoginCredentials)}');
+            }
+            catch(e){
+                console.error('Exception while fetching AWS settings:', e);
+            }
+        }
+        
+        function showMsg(className, msg){
+            $('#msg').attr('class', className).text(msg).slideDown();
+        }
+        
+        function hideMsg(){
+            $('#msg').slideUp();
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,411 @@
+<apex:page sidebar="false" showheader="false" applyBodyTag="false">
+    <head>
+        <title>Company Fire Truck Directory / Listing</title>
+        <meta id="meta_description" name="Description" content="Company Fire Truck Directory / Listing" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/CompanyDirectory" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+         <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+        
+        <!--Body -->
+        <div class="mobile-margin" >
+            <div class="pagebody">
+                <div class="top-left">
+                 <div class="top-right">
+                    <div class="pagetop">
+                       <div class="page-banner">
+                          <div class="page-banner-inner">
+                             <div class="page-banner-image">
+                                <!--Insert image from SF-->
+                                <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_contactus.jpg')}" alt="GlobeSearch"/>
+                                <div class="bannertitle"> Company Directory </div>
+                             </div>
+                          </div>
+                       </div>
+                       <!--  end page-banner  -->
+                       <div class="hometopright">
+                           <c:BrindleeMountainRightSideMenu />
+                       </div>
+                    </div>
+                    <!--  end pagetop  -->
+                 </div>
+              </div>
+               <!-- Content -->
+              <div class="page-content" id="contentdiv">
+                  <div class="horizontalbar">&nbsp;</div>
+                  
+                  <div class="pageleft" style="float:left;">
+                        
+                        <h1>Brindlee Mountain Fire Apparatus</h1>
+                        <div class="contactuspage">
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JAMES F. WESSEL</dt>
+                            <dd>President<br/>
+                            <a href="mailto:jwessel@firetruckmall.com">jwessel@firetruckmall.com</a><br/>
+                            Cell (256) 651-7388</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>BILLY CLAUNCH</dt>
+                            <dd>Vice President of Sales<br/>
+                            <a href="mailto:bclaunch@firetruckmall.com">bclaunch@firetruckmall.com</a><br/>
+                            Cell (256) 264-5014</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>RITCH SPIRES</dt>
+                            <dd>Vice President of Technical Services<br/>
+                            <a href="mailto:rspires@firetruckmall.com">rspires@firetruckmall.com</a><br/>
+                            Cell (256) 264-5555</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JASON PARSLEY</dt>
+                            <dd>Chief Operating Officer<br/>
+                            <a href="mailto:jparsley@firetruckmall.com">jparsley@firetruckmall.com</a><br/>
+                            Direct Dial (256) 384-3272</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>NATE SMITH</dt>
+                            <dd>Vice President of Operations<br/>
+                            <a href="mailto:nate@firetruckmall.com">nate@firetruckmall.com</a><br/>
+                            Cell (434) 229-9715<br/>
+                            Direct Dial (256) 270-0718</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>MICHAEL SMITH</dt>
+                            <dd>Director of Management Systems<br/>
+                            <a href="mailto:msmith@firetruckmall.com">msmith@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6590</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>CHRIS CRUTCHFIELD</dt>
+                            <dd>Apparatus Sales<br/>
+                            <a href="mailto:ccrutchfield@firetruckmall.com">ccrutchfield@firetruckmall.com</a><br/>
+                            Cell (205) 886-6054</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JEREMY MCCOY</dt>
+                            <dd>Apparatus Sales<br/>
+                            <a href="mailto:jmccoy@firetruckmall.com">jmccoy@firetruckmall.com</a><br/>
+                            Cell (256) 361-6532</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>SAM McMUNN</dt>
+                            <dd>Apparatus Sales<br/>
+                            <a href="mailto:smcmunn@firetruckmall.com">smcmunn@firetruckmall.com</a><br/>
+                            Cell (256) 431-0302</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>PHIL MOYER</dt>
+                            <dd>Apparatus Sales<br/>
+                            <a href="mailto:pmoyer@firetruckmall.com">pmoyer@firetruckmall.com</a><br/>
+                            Cell (256) 683-0186</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JONATHON WATTS</dt>
+                            <dd>Inbound Sales<br/>
+                            <a href="mailto:jwatts@firetruckmall.com">jwatts@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>TIM WHITE</dt>
+                            <dd>HR &amp; Operations<br/>
+                            <a href="mailto:twhite@firetruckmall.com">twhite@firetruckmall.com</a><br/>
+                            Cell (256) 200-0102</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>RANDY WILLIAMS</dt>
+                            <dd>Apparatus Logistics<br/>
+                            <a href="mailto:rwilliams@firetruckmall.com">rwilliams@firetruckmall.com</a><br/>
+                            Cell (256) 338-6282</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>MIKAELA CALIGUIRE</dt>
+                            <dd>Apparatus Purchasing<br/>
+                            <a href="mailto:mcaliguire@firetruckmall.com">mcaliguire@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6572
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>MATT FUNSTON</dt>
+                            <dd>Apparatus Purchasing<br/>
+                            <a href="mailto:mfunston@firetruckmall.com">mfunston@firetruckmall.com</a><br/>
+                            Direct Dial (256) 964-9746</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>CATHY MAYER</dt>
+                            <dd>Apparatus Purchasing<br/>
+                            <a href="mailto:cmayer@firetruckmall.com">cmayer@firetruckmall.com</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JOSH SCHREIBER</dt>
+                            <dd>Apparatus Purchasing<br/>
+                            <a href="mailto:jschreiber@firetruckmall.com">jschreiber@firetruckmall.com</a><br/>
+                            Direct Dial (256) 964-3018
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>CHRISTINE PEAVEY</dt>
+                            <dd>Accounting Controller<br/>
+                            <a href="mailto:cpeavey@firetruckmall.com">cpeavey@firetruckmall.com</a><br/>
+                            Direct Dial (256) 429-2455
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>PATRICK WOODALL</dt>
+                            <dd>Senior Accounting<br/>
+                            <a href="mailto:pwoodall@firetruckmall.com">pwoodall@firetruckmall.com</a><br/>
+                            Direct Dial (256) 801-4547
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>DEBORAH FENDER</dt>
+                            <dd>Accounting Associate<br/>
+                            <a href="mailto:dfender@firetruckmall.com">dfender@firetruckmall.com</a><br/>
+                            Direct Dial (256) 801-4624
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>BUTCH LEDLOW</dt>
+                            <dd>Parts Associate<br/>
+                            <a href="mailto:bledlow@firetruckmall.com">bledlow@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6576
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JOSEPH RODENBERRY</dt>
+                            <dd>Parts Associate<br/>
+                            <a href="mailto:jrodenberry@firetruckmall.com">jrodenberry@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6616
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>BOBBY OWENS</dt>
+                            <dd>Parts Associate<br/>
+                            <a href="mailto:bowens@firetruckmall.com">bowens@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6575
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>RACHELL BRAMLETT</dt>
+                            <dd>Customer Service Coordinator<br/>
+                            <a href="mailto:rbramlett@firetruckmall.com">rbramlett@firetruckmall.com</a><br/>
+                            Direct Dial (256) 776-7786
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>LISA KIRBY</dt>
+                            <dd>Marketing<br/>
+                            <a href="mailto:lkirby@firetruckmall.com">lkirby@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6549
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JOEY CRAIG</dt>
+                            <dd>Service Manager<br/>
+                            <a href="mailto:shop@firetruckmall.com">shop@firetruckmall.com</a><br/>
+                            Direct Dial (256) 929-6608
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>GREG MOORE</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:gmoore@firetruckmall.com">gmoore@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>KEVIN BALDWIN</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:shop@firetruckmall.com">shop@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>ADAM JOHNSON</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:ajohnson@firetruckmall.com">ajohnson@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>KEN BARTLETT</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:shop@firetruckmall.com">shop@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>DON CALIGUIRE</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:dcaliguire@firetruckmall.com">dcaliguire@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>NATHAN MAZUR</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:nmazur@firetruckmall.com">nmazur@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>MICHAEL McCOLLUM</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:michael@firetruckmall.com">michael@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>ALEX WEST</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:shop@firetruckmall.com">shop@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JORDAN BROOKS</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:jbrooks@firetruckmall.com">jbrooks@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>GARY NELSON</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>STEVEN BORDEN</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>KEITH WEIL</dt>
+                            <dd>Service Technician<br/>
+                            <a href="mailto:kweil@firetruckmall.com">kweil@firetruckmall.com</a></dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JOHN WAYNE MARONEY</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>PATRIC BURKS</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>CLINT CATO</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>GABE HAROLDSON</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JASON WELBORN</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>JUAN ALVAREZ-FLORES</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>LOWELL SKIDMORE</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>RICHARD SPISTO</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>AUGUSTUS WALLACE</dt>
+                            <dd>Service Technician</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>TROY LOWERY</dt>
+                            <dd>Shop Assistant</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>ANGELO WOL</dt>
+                            <dd>Shop Assistant</dd>
+                        </dl>
+                        <dl>
+                            <dt>&nbsp;</dt>
+                            <dt>ANDREW INGRAM</dt>
+                            <dd>Shop Assistant</dd>
+                        </dl>
+                        <dl>
+                            <dt><br/>
+                            </dt>
+                        </dl>
+                    </div>
+                        <!--  end contactuspage  -->
+                </div>
+                    <div class="sidebar" style="float:right;">
+                        <c:BrindleeMountainEndorsementsBlock />
+                    </div>
+              </div>
+              <div class="bottom-left">
+                  <div class="bottom-right"></div>
+           </div>
+           </div>
+      </div>   
+      
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+    </body>
+</apex:page>

@@ -1,0 +1,404 @@
+<apex:page controller="FireTruckFinderController" sidebar="false" showheader="false" applyBodyTag="false" cache="false">
+    <head>
+        <title>Brindlee Mountain Fire Apparatus | Fire Truck Finder &reg;</title>
+        <meta id="meta_description" name="Description" content="Simply the most used fire trucks for sale anywhere; Brindlee Mountain is the largest buyer and seller of used fire engines, used ladders, used brush trucks, and used rescue trucks.  Visit our 43 acre campus in Alabama, or watch our inventory on-line!" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/FireTruckFinder" />
+        
+        <link rel='stylesheet' type='text/css' href="{!URLFOR($RESOURCE.WebportalResources,'/css/googleFonts.css')}"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap-multiselect.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.Bootstrap,'/bootstrap.min.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/jqueryUI.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/FTF_Style.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap.min.js')}"/>
+        <script src="{!URLFOR($Resource.Bootstrap,'/bootstrap-multiselect.js')}"/>
+        <script src="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/js/jqueryUI.js')}"></script>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryTouch.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+        
+        <div id="assign-action-spinner-main" style="display:none;" >
+           <div id="assign-action-spinner-content">
+               <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />
+           </div>
+        </div>
+        
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+    
+        <div class="mobile-margin">
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="pagetop">
+                        <div class="registration-head" id="registration">
+                            <div id="heading">
+                                <h1> SIGN UP FOR OUR FIRE TRUCK FINDER &reg;
+                                </h1>
+                                <p class="psgTxt"> Take 30 seconds to fill out the form below, and get immediate updates when a truck
+                                    meeting your wishes is listed!
+                                </p>
+                            </div>
+                            <hr class="breaKLine" />
+                            
+                            <div class="truck-types-container">
+                                <div id="activeDiv">                     <!-- style="display:none;" -->
+                                    <h2 class="active-txt">
+                                        <label class="lftBlHeading" for="active">
+                                            <input id="active" checked="true" type="checkbox"></input> Active
+                                        </label>
+                                    </h2>
+                                    
+                                </div>
+                                <div class="images-section" id="truck-type-container">
+                                    <div>
+                                        <h2 class="">Type of Fire Truck<span class="redStar">&nbsp;*</span></h2>
+                                        <span class="reqField">*Please select a type for your fire truck!</span>
+                                    </div>
+                                    <div id="truckTypes">
+                                        <apex:repeat value="{!MapApparatusTypes}" var="type">
+                                            <apex:variable value="/firetrucktypes/{!type}.jpg" var="imgurl"/>
+                                            <div class="truckChoices" onclick="setTruckTypeSelection(this);">
+                                                <img src="{!URLFOR($Resource.FireTruckTypeImages,imgurl)}"></img>
+                                                <p class="apparatusType">{!MapApparatusTypes[type]}</p><!--<br/>-->
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                    <div class="clr"></div> 
+                                </div>
+                                
+                                <div id="yearRangeDiv" class="fL halfBlck spaceBtm">
+                                    <div>
+                                        <label class="lftBlHeading">Year Range</label>
+                                        <span class="reqField num-validation" style="display:none;">
+                                            *Minimum value must be smaller than Maximum value.
+                                        </span>
+                                    </div>
+                                    <div class="budget-lft fL twoBox rSpace">
+                                        <label for="yearMin" class="smlLabel">Minimum</label>
+                                        <select id="yearMin" class="yearRange"></select>
+                                    </div>
+                                    <div class="budget-rht fR twoBox lSpace">
+                                        <label for="yearMax" class="smlLabel">Maximum</label>
+                                        <select id="yearMax" class="yearRange"></select>
+                                    </div>
+                                </div>
+                                <div class="clr"></div>
+                                
+                                <div id="tanksAndPumpSizeDiv" class="fL halfBlck spaceBtm">
+                                    <div class="fL twoBox rSpace">
+                                        <label for="pumpOptions" class="lftBlHeading">Pump Size</label>
+                                        <select id="pumpOptions" multiple="true"> <!--  *** -->
+                                            <option value="All">All</option>
+                                            <option value="0-500">0 - 500 GPM</option>
+                                            <option value="500-750">500 - 750 GPM</option>
+                                            <option value="750-1250">750 - 1250 GPM</option>
+                                            <option value="1250-1500">1250 - 1500 GPM</option>
+                                            <option value="1500-2000">1500 - 2000 GPM</option>
+                                            <option value="2000">2000 + GPM</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="fR twoBox lSpace">
+                                        <label for="tankOptions"  class="lftBlHeading">Tank Size</label>
+                                        <select id="tankOptions">
+                                            <option value="All">All</option>
+                                            <option value="0-250">0 - 250 Gallons</option>
+                                            <option value="250-400">250 - 400 Gallons</option>
+                                            <option value="400-750">400 - 750 Gallons</option>
+                                            <option value="750-1100">750 - 1100 Gallons</option>
+                                            <option value="1100-1800">1100 - 1800 Gallons</option>
+                                            <option value="1800-2500">1800 - 2500 Gallons</option>
+                                            <option value="2500">2500 + Gallons</option>
+                                        </select>
+                                    </div>
+                                    <div class="clr"></div>
+                                </div>
+                                 <div class="clr"></div>
+                                 
+                                <div id="aerialLengthDiv" class="length-sec fL halfBlck" style="display:none;">
+                                    <div>
+                                        <label class="lftBlHeading">Aerial Length</label>
+                                        <span class="reqField num-validation" style="display:none;">*Minimum value must be smaller than Maximum value.</span>
+                                    </div>
+                                    <div class="budget-lft fL twoBox rSpace">
+                                        <label for="aerialLengthMin" class="smlLabel">Minimum</label>
+                                        <select id="aerialLengthMin"></select>
+                                    </div>
+                                    <div class="budget-rht fR twoBox lSpace">
+                                        <label for="aerialLengthMax" class="smlLabel">Maximum</label>
+                                        <select id="aerialLengthMax"></select>
+                                    </div>
+                                    <div class="clr"></div>
+                                </div>
+                                <div class="clr"></div>
+                                
+                                <div id="budgetRangeDiv" class="fL halfBlck spaceBtm">            
+                                   <label class="lftBlHeading">Budget Range</label>
+                                   <input type="text" id="amount" readonly="true"/>
+                                   <div id="budgetrange-slider"></div>
+                                </div>
+                                <div class="clr"></div>
+                                
+                                <div>
+                                    <label class="lftBlHeading">Brands<span class="redStar">&nbsp;*</span></label>
+                                    <span class="reqField">*Please select at least one brand!</span>
+                                    <div id="brandsSection" class="brandsCheck"></div>
+                                </div>
+                                
+                                <div class="clr"></div>
+                                
+                                <div class="pro-type threeblck-box spaceTop">
+                                    <div class="image-blk threee-box">         
+                                        <label for="chassisTypes" class="lftBlHeading">Chassis</label>
+                                        <select id="chassisTypes"></select>
+                                    </div>
+                                    
+                                    <div class="mileage-sec threee-box">
+                                         <label for="mileage" class="lftBlHeading">Mileage</label>
+                                         <select id="mileage"></select>
+                                    </div>
+                                    <div class="warranty threee-box">
+                                         <label for="warranty" class="lftBlHeading">Warranty</label>
+                                         <select id="warranty"></select>
+                                    </div>              
+                                    <div class="clr"></div>
+                                </div>
+                                
+                                <!-- *** -->
+                                <div class="spaceTop">                    
+                                    <h2 class="active-txt">
+                                        <label class="lftBlHeading" for="4x4">
+                                            <input id="4x4" checked="true" type="checkbox"></input> 4x4
+                                        </label>
+                                    </h2>
+                                </div>
+                                
+                                <div id="geo-region" class="spaceTop">
+                                    <label class="lftBlHeading">Geographic Region<span class="redStar">&nbsp;*</span></label>
+                                    <span class="reqField">*Please select at least one region!</span>
+                                    <div class="fL fL-checkbox">
+                                        <div id="regions" class="brandsCheck">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="fR fR-map">
+                                        <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/Geographic-Region-USA.gif')}"></img>
+                                    </div>
+                                    <div class="clr"></div>
+                                </div>
+                                
+                                <div id="keywordDiv" class="fL halfBlck rSpace noSpace" style="margin-bottom:0;">
+                                    <label for="keyword" class="keywordS lftBlHeading">Search by Keyword</label>
+                                    <input id="keyword" type="text" maxLength="50"></input>
+                                </div>
+                                <div class="clr"></div>
+                                <hr class="breaKLine"/>
+                                
+                                <div id="contactDetails" class="spaceTop">
+                                    <div class="fL halfBlck rSpace noSpace">
+                                        <div>
+                                            <label for="fireDept" class="smlLabel">Fire Department<span class="redStar">&nbsp;*</span></label>
+                                            <input id="fireDept"></input>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                        <div>    
+                                            <label for="deptWebsite" class="smlLabel">Fire Dept&#39;s Website</label>
+                                            <input id="deptWebsite"></input>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                        <div class="">    
+                                            <label for="deptState" class="smlLabel">Fire Dept State/Province<span class="redStar">&nbsp;*</span></label>
+                                            <select id="deptState">
+                                                <option value="AB">AB</option>
+                                                <option value="AK">AK</option>
+                                                <option value="AL">AL</option>
+                                                <option value="AR">AR</option>
+                                                <option value="AZ">AZ</option>
+                                                <option value="BC">BC</option>
+                                                <option value="CA">CA</option>
+                                                <option value="CO">CO</option>
+                                                <option value="CT">CT</option>
+                                                <option value="DC">DC</option>
+                                                <option value="DE">DE</option>
+                                                <option value="FL">FL</option>
+                                                <option value="GA">GA</option>
+                                                <option value="HI">HI</option>
+                                                <option value="IA">IA</option>
+                                                <option value="ID">ID</option>
+                                                <option value="IL">IL</option>
+                                                <option value="IN">IN</option>
+                                                <option value="KS">KS</option>
+                                                <option value="KY">KY</option>
+                                                <option value="LA">LA</option>
+                                                <option value="MA">MA</option>
+                                                <option value="MB">MB</option>
+                                                <option value="MD">MD</option>
+                                                <option value="ME">ME</option>
+                                                <option value="MI">MI</option>
+                                                <option value="MN">MN</option>
+                                                <option value="MO">MO</option>
+                                                <option value="MS">MS</option>
+                                                <option value="MT">MT</option>
+                                                <option value="NB">NB</option>
+                                                <option value="NC">NC</option>
+                                                <option value="ND">ND</option>
+                                                <option value="NE">NE</option>
+                                                <option value="NF">NF</option>
+                                                <option value="NH">NH</option>
+                                                <option value="NJ">NJ</option>
+                                                <option value="NM">NM</option>
+                                                <option value="NS">NS</option>
+                                                <option value="NT">NT</option>
+                                                <option value="NU">NU</option>
+                                                <option value="NV">NV</option>
+                                                <option value="NY">NY</option>
+                                                <option value="OH">OH</option>
+                                                <option value="OK">OK</option>
+                                                <option value="ON">ON</option>
+                                                <option value="OR">OR</option>
+                                                <option value="PA">PA</option>
+                                                <option value="PE">PE</option>
+                                                <option value="QC">QC</option>
+                                                <option value="RI">RI</option>
+                                                <option value="SC">SC</option>
+                                                <option value="SD">SD</option>
+                                                <option value="SK">SK</option>
+                                                <option value="TN">TN</option>
+                                                <option value="TX">TX</option>
+                                                <option value="UT">UT</option>
+                                                <option value="VA">VA</option>
+                                                <option value="VT">VT</option>
+                                                <option value="WA">WA</option>
+                                                <option value="WI">WI</option>
+                                                <option value="WV">WV</option>
+                                                <option value="WY">WY</option>
+                                                <option value="YT">YT</option>
+                                            </select>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                        <div>   
+                                            <label for="email" class="smlLabel">Email Address<span class="redStar">&nbsp;*</span></label>
+                                            <input id="email"></input>
+                                            <span class="reqField">*Please enter valid Email address!</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="fR halfBlck lSpace noSpace">
+                                        <div class="fL twoBox rSpace">
+                                            <label for="fname" class="smlLabel">First Name<span class="redStar">&nbsp;*</span></label>
+                                            <input id="fname"></input>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                        <div class="fR twoBox lSpace">
+                                            <label for="lname" class="smlLabel">Last Name<span class="redStar">&nbsp;*</span></label>
+                                            <input id="lname"></input>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                        <div class="clr"></div>
+                                        <div>    
+                                            <label for="phone" class="smlLabel">Phone Number<span class="redStar">&nbsp;*</span></label>
+                                            <input id="phone"></input>
+                                            <span class="blankSpan"></span>
+                                         </div>
+                                         <div>   
+                                            <label for="city" class="smlLabel">Fire Dept City<span class="redStar">&nbsp;*</span></label>
+                                            <input id="city"></input>
+                                            <span class="blankSpan"></span>
+                                        </div>
+                                    </div>
+                                    <div class="clr"></div>
+                                </div>
+                                
+                                <button id="submit-btn" class="sign-up btn" onclick="processSave();">Sign Up For Fire Truck Finder &reg;</button>
+                            </div>
+                        </div>
+                        <div class="bg-white">
+                            <div id="reg-confirmation">
+                                <img src="{!URLFOR($RESOURCE.FireTruckFinder,'/images/ftfconfirmation.png')}" alt="We have received your request for fire trucks. An email with the link to edit your Fire Truck Finder &reg; criteria will be sent to you promptly." />
+                                <!--
+                                <h1>Thank you!</h1>
+                                <p>We have received your request for fire trucks. An email with the link to edit your Fire Truck Finder &reg; criteria will be sent to you promptly.</p>
+                                -->
+                            </div>
+                            <div id="update-confirmation">
+
+                                <h1>Thank you!</h1>
+                                <p>We have updated your request for fire trucks.</p>
+                            </div>
+                            <div id="reg-failure">
+                                <h1>Oops!</h1>
+                                <p>Something went wrong while submitting your request. Please try again! If the problem persists, contact our customer support.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="bottom-left">
+                    <div class="bottom-right"></div>
+                </div>
+            </div>
+        </div>
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+        <script>
+            //STRICTLY STAYS ON PAGE
+            window.maxSliderPrice = 1200000;    // global var created to set max price range in slider
+            
+            function getFTFCriteriaJSON(){    // get json serialized FTF Criteria record
+                return '{!JSENCODE(strFTFCriteriaRec)}';
+            }
+            
+            function getListChassisTypes(){    // get List of Chassis types
+                return JSON.parse('{!JSENCODE(ChassisTypes)}');
+            }
+            
+            function getListBrands(){    // get List of Brand types
+                return JSON.parse('{!JSENCODE(Brands)}');
+            }
+            
+            function getListMileageOptions(){    // get List of Mileage Options
+                return JSON.parse('{!JSENCODE(MileageOptions)}');
+            }
+            
+            function getListGeographicRegns(){    // get List of Geographic regions
+                return JSON.parse('{!JSENCODE(GeographicRegns)}');
+            }
+            
+            function getAerialLengthMinOptions(){
+                return JSON.parse('{!JSENCODE(AerialLengthMin)}');
+            }
+            
+            function getAerialLengthMaxOptions(){
+                return JSON.parse('{!JSENCODE(AerialLengthMax)}');
+            }
+            
+            function getWarrantyOptions(){
+                return JSON.parse('{!JSENCODE(WarrantyOptions)}');
+            }
+        </script>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/ftf_script.js')}"/>
+     
+    </body>
+</apex:page>

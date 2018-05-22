@@ -1,0 +1,8 @@
+<apex:component controller="TruckTypeLinksController">
+    <apex:repeat value="{!ListCategoryWrappers}" var="type">
+        <apex:variable value="/homepage_firetrucktypes/{!type.categoryImageName}.png" var="imgurl"/>
+        <a href="{!URLFOR($Page.AvailableTrucks+'/'+type.canonicalCategory)}" style="display:block; float:left; margin-bottom:10px;">
+            <img src="{!URLFOR($Resource.FireTruckTypeImages,imgurl)}"></img>
+    	</a>
+	</apex:repeat>
+</apex:component>

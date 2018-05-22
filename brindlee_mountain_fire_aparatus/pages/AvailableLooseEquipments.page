@@ -1,0 +1,257 @@
+<apex:page controller="AvailableLooseEquipmentsController" sidebar="false" showHeader="false" readOnly="true">
+    <head>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/availableTrucks.css')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <style>
+            .pagetop {
+                width:96%;
+            }
+        </style>
+    </head>
+    <body>
+        <!--Processing status Spinner -->
+        <apex:actionStatus id="ProcessStatus" layout="block">
+            <apex:facet name="start">
+               <div id="assign-action-spinner-main">
+                   <div id="assign-action-spinner-content">
+                       <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />&nbsp;&nbsp;
+                   </div>
+               </div>
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <!-- Header -->
+       <c:BrindleeMountainHeader />
+    
+       <!-- Menu -->
+       <c:BrindleeMountainMenu />
+       
+       <div class="mobile-margin">
+            <div class="pagebody">
+                <div class="top-left">
+                    <div class="top-right">
+                        <div class="pagetop">
+                        
+                            <div class="header-page-banner-new">
+                                
+                                <apex:outputPanel id="randomProdsPanel" layout="block">
+                                  
+                                     <ul class="productList">
+                                          <apex:repeat value="{!RandomProducts}" var="randomProd">
+                                            <li>
+                                                <a class="truckUrl" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=randomProd.Id])}">
+                                                    <apex:outputPanel rendered="{!AND(randomProd.Cloud_Documents__r.size>0,NOT(ISBLANK(randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                                       <img src="{!randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" /></apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!NOT(AND(randomProd.Cloud_Documents__r.size>0,NOT(ISBLANK(randomProd.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))))}">
+                                                       <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" /></apex:outputPanel>
+                                                </a>
+                                                <span class="productTitle">{!randomProd.Name}</span>
+                                            </li>
+                                         </apex:repeat>
+                                     </ul>
+                                     
+                                   <apex:outputPanel rendered="{!AND(NOT(ISBLANK(RandomProducts)),RandomProducts.size>0,OR(ISBLANK(selCategory),selCategory='All'),OR(ISBLANK($CurrentPage.parameters.category),$CurrentPage.parameters.category=''))}">
+                                       <div class="headerbannertitle" style="position:static;">Used Loose Equipment For Sale</div>
+                                   </apex:outputPanel>
+                                   <apex:outputPanel rendered="{!AND(NOT(ISBLANK(RandomProducts)),RandomProducts.size>0,NOT(ISBLANK(selCategory)),selCategory!='All')}">
+                                       <div class="headerbannertitle" style="position:static;">{!selCategory} For Sale</div>
+                                   </apex:outputPanel>
+                                   <apex:outputPanel rendered="{!OR(ISBLANK(RandomProducts),RandomProducts.size=0)}">
+                                       <div class="headerbannertitle" style="position:static;">No Trucks found!! </div>
+                                   </apex:outputPanel>
+                               </apex:OutputPanel>
+                                
+                            </div>
+                            <!-- right side menu -->
+                            <div class="hometopright">
+                                <c:BrindleeMountainRightSideMenu />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="page-content" id="pg-content">
+                    <apex:form >
+                        <table class="criteriaTable">
+                            <tr>
+                                <td>
+                                    <b>Budget Min:</b>
+                                    <apex:selectList id="minBudget" value="{!selMinPrice}" size="1">
+                                        <apex:selectOptions value="{!PriceOptions}" ></apex:selectOptions>
+                                        <apex:actionSupport action="{!resetAndFetchProductsByCriteria}" event="onchange" oncomplete="resetRecLimit({!listProducts.size});" status="ProcessStatus" reRender="productsPanel,randomProdsPanel,controllerParamsPanel"/>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Budget Max:</b>
+                                    <apex:selectList id="maxBudget" value="{!selMaxPrice}" size="1">
+                                        <apex:selectOptions value="{!PriceOptions}" ></apex:selectOptions>
+                                            <apex:actionSupport action="{!resetAndFetchProductsByCriteria}" event="onchange" oncomplete="resetRecLimit({!listProducts.size});" status="ProcessStatus" reRender="productsPanel,randomProdsPanel,controllerParamsPanel"/>
+                                    </apex:selectList>
+                                </td>
+                                <td>
+                                    <b>Category:</b>
+                                    <apex:selectList value="{!selCategory}" size="1">
+                                        <apex:selectOptions value="{!CategoryOptions}" > </apex:selectOptions>
+                                        <apex:actionSupport action="{!resetAndFetchProductsByCriteria}" event="onchange" oncomplete="resetRecLimit({!listProducts.size});" status="ProcessStatus" reRender="productsPanel,randomProdsPanel,controllerParamsPanel"/>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <apex:actionFunction name="getNextEqpmntsBatch" action="{!fetchProductsByBatch}" oncomplete="resetLoadMore({!listProducts.size});" reRender="productsPanel,randomProdsPanel">
+                            <apex:param name="offset" value="" />
+                        </apex:actionFunction>
+                        
+                    </apex:form>
+                    <br/>
+                    <apex:outputPanel id="productsPanel">
+                       <apex:repeat value="{!listProducts}" var="product" >
+                            <div class="truck-for-sale">
+                            
+                               <div class="truck-image">
+                                    <a class="truckUrl" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=product.Id])}">
+                                         <apex:outputPanel rendered="{!AND(product.Cloud_Documents__r.size>0,NOT(ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c)))}">
+                                             <img src="{!product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c}" />
+                                         </apex:outputPanel>
+                                         <apex:outputPanel rendered="{!OR(ISBLANK(product.Cloud_Documents__r),product.Cloud_Documents__r.size=0,ISBLANK(product.Cloud_Documents__r[0].Amazon_S3_Main_Thumbnail_URL__c))}">
+                                             <img src="{!URLFOR($RESOURCE.WebPortalResources,'/images/NoImage.jpg')}" />
+                                         </apex:outputPanel>
+                                     </a>
+                               </div>
+                               <div class="truck-description">
+                                  <h2>
+                                    <a class="truckUrl" href="{!URLFOR($Page.AvailableLooseEquipment,null,[id=product.Id])}">
+                                        <span>{!product.Name}</span></a>
+                                  </h2>
+                                  <span class="resultsDesc">{!product.Description}</span><br/>
+                                  <span class="red-text">
+                                  <span ></span></span>
+                               </div>
+                               <div class="note-price">
+                                  <!--<div class="note">
+                                     <span >{!product.VF_Additional_Pricing_Text__c}</span>
+                                  </div>-->
+                                  <div class="price">
+                                     <span>
+                                         <apex:outputText value="{0, number, $###,###,##0}">
+                                               <apex:param value="{!product.Equipment_Price__c}" />        
+                                        </apex:outputText>
+                                     </span>
+                                  </div>
+                               </div>
+                            </div>
+                        </apex:repeat>
+                        
+                        <div><img id="load-more-img" src="{!URLFOR($RESOURCE.WebPortalResources,'/images/ring.gif')}" /></div>
+                    </apex:outputPanel>
+                </div>
+                <div class="bottom-left"><div class="bottom-right"></div></div>
+            </div>
+        </div>   
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+        
+        <script>
+            $(document).ready(function(){
+                addFormatPricesForList($("[id*=minBudget] option"));
+                addFormatPricesForList($("[id*=maxBudget] option"));
+                if( getProductsListSize() < sizeBatch ){
+                    hideLoadMoreSpinner();
+                }
+                attachHandlerForTrucksOnClickEvent();
+            });
+            
+            function addFormatPricesForList(options){
+                $(options).each(function () {
+                    $(this).text(numberWithCommas($(this).text()));
+                });
+            }
+            
+            function numberWithCommas(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            
+            // Lazy Loading
+            var recordOffset = 0,
+                sizeBatch = 50,
+                isReached = false,
+                sizePrevList = getProductsListSize();
+            
+            $(window).scroll(function(){            // load more records when user scrolls to the bottom of the page          
+                var loadMoreImg = $('#load-more-img');
+                
+                if( !isReached && $(loadMoreImg).is(':visible') && isScrolledIntoView(loadMoreImg)){    // event - bottom knocked
+                    isReached = true;
+                    recordOffset += sizeBatch;
+                    getNextEqpmntsBatch(recordOffset);
+                    //console.log('fetching more records...');
+                }    
+            });
+            
+            function isScrolledIntoView(elem){        // check if the element has been scrolled into view
+                var docViewTop = $(window).scrollTop();
+                var docViewBottom = docViewTop + $(window).height();
+                var elemTop = $(elem).offset().top;
+                var elemBottom = elemTop + $(elem).height();
+                
+                return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom) && (elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+            }
+            
+            function resetLoadMore(sizeNewList){    // on complete of loading new records, take further actions
+                //console.log('new List size:', sizeNewList);
+                if( sizePrevList == sizeNewList ){    // if list size is same, then hide load-more spinner
+                    hideLoadMoreSpinner();
+                }
+                else{
+                    isReached = false;
+                    sizePrevList = sizeNewList;
+                }
+            }
+            
+            function resetRecLimit(sizelistEqpmnts){
+                if(sizelistEqpmnts == 0 || sizelistEqpmnts < sizeBatch ){
+                    hideLoadMoreSpinner();
+                }
+                else{
+                    isReached = false;
+                    recordOffset = 0;
+                    sizePrevList = sizelistEqpmnts;
+                }
+            }
+                    
+            function hideLoadMoreSpinner(){
+                $('#load-more-img').hide();
+            }
+            
+            function getProductsListSize(){
+                return '{!listProducts.size}';
+            }
+            
+            // Return Url
+            
+            function attachHandlerForTrucksOnClickEvent(){
+                $('#pg-content').on('mousedown', '.truckUrl', function(){
+                    this.href += getStringForUrlParams();
+                });
+            }
+            
+            function getStringForUrlParams(){
+                return '?price=' + getBudgetRange()+
+                       '&category=' + getCategory();
+            }
+        </script>
+        <apex:outputPanel id="controllerParamsPanel">
+            <script>
+                function getBudgetRange(){
+                    return encodeURI('{!selMinPrice}') +'-'+ encodeURI('{!selMaxPrice}');
+                }
+                
+                function getCategory(){
+                    return encodeURI('{!CategoryCanonicalUrl}');
+                }
+            </script>
+        </apex:outputPanel>
+    </body>
+</apex:page>

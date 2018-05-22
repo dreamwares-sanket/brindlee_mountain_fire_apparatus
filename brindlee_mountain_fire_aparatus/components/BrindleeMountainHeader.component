@@ -1,0 +1,78 @@
+<apex:component controller="BrindleeMountainHeaderController">
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/siteHeader.css')}" />
+<!-- Header -->
+    <header>
+    
+        <div class="header">
+            <div class="mobile-margin">
+                <div class="header-inner">
+                    <h1 class="logo">
+                        <a href="https://www.firetruckmall.com">
+                            <img alt="Brindlee Mountain Fire Apparatus" src="{!URLFOR($Resource.WebportalResources,'/images/logo.png')}"/>
+                        </a>
+                    </h1>
+                    <div class="socialicons">
+                        <a target="_self" href="{!URLFOR($page.firetruckfinder)}">
+                            <img alt="fire truck finder" src="{!URLFOR($Resource.WebportalResources, '/images/fire-truck-finder-icon.png')}"/>
+                        </a>
+                        <a target="_blank" rel="publisher" href="https://plus.google.com/112164859825952859602/about">
+                            <img alt="Google+" src="{!URLFOR($Resource.WebportalResources, '/images/google-plus.png')}"/>
+                        </a>
+                        <a target="_blank" href="http://www.facebook.com/firetruckmall">
+                            <img alt="f" src="{!URLFOR($Resource.WebportalResources, 'images/icon_facebook.png')}"/>
+                        </a>
+                        <a target="_blank" href="https://twitter.com/firetruckmall">
+                            <img alt="t" src="{!URLFOR($Resource.WebportalResources, 'images/icon_twitter.png')}"/>
+                        </a>
+                        <!--<span class="tollfree">Toll Free:{!companyContactInfo.Toll_Free__c}</span>-->
+                        <span class="tollfree">Office: {!companyContactInfo.Local__c}</span>
+                    </div>
+                    
+                    <div id="searchbox">
+                        <input placeholder="Search Trucks!" id="searchinput" value="{!$CurrentPage.parameters.search}" onkeypress="searchOnEnterkey(event);"/>
+                        <button class="searchButton" type="button" onclick="reloadPage();">
+                            <img id="searchimg" src="{!URLFOR($RESOURCE.WebportalResources,'/images/search.png')}" />
+                        </button>
+                    </div>    
+                    <div class="clearer"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script>
+        piAId = '69872';
+        piCId = '1288';
+        
+        (function() {
+            function async_load(){
+            var s = document.createElement('script'); s.type = 'text/javascript';
+            s.src = ('https:' == document.location.protocol ? 'https://pi' : 'http://cdn') + '.pardot.com/pd.js';
+            var c = document.getElementsByTagName('script')[0]; c.parentNode.insertBefore(s, c);
+            }
+            if(window.attachEvent) { window.attachEvent('onload', async_load); }
+            else { window.addEventListener('load', async_load, false); }
+        })();
+        
+        function searchOnEnterkey(e){
+                //console.log(e.which);
+                //console.log(e);
+                if( e.keyCode == 13 ){
+                    reloadPage();
+                }
+        }
+        function reloadPage(){
+            var searchquery = document.getElementById('searchinput').value;
+            if( searchquery != ''){
+                if( searchquery.length > 2 ){
+                    top.location.href = '{!$Page.SearchResults}?search='+encodeURI(searchquery);
+                }
+                else{
+                    alert('Please enter atleast 3 characters to search!');
+                }
+            }
+            else{
+                alert('Please enter some text to search on!');
+            }
+        }
+    </script>
+</apex:component>

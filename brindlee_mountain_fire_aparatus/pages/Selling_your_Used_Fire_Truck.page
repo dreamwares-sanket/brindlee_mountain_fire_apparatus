@@ -1,0 +1,219 @@
+<apex:page sidebar="false" showheader="false" applyBodyTag="false">
+    <head>
+        <title>Sell Your Used Fire Truck</title>
+        <meta id="meta_description" name="Description" content="Sell Your Used Fire Truck" />
+        <meta id="meta_keywords" name="Keywords" content="fire truck, used fire trucks, fire rescue trucks, used fire apparatus, used fire engines for sale, fire apparatus for sale, fire truck sale, used rescue trucks, old fire trucks for sale, used, used pumpers, pumpers, used aerials, aerials, used tanker" />
+        <meta id="meta_robots" name="Robots" content="index,follow" />
+        <link id="canonical_url" rel="canonical" href="http://www.firetruckmall.com/Selling-your-Used-Fire-Truck" />
+
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="{!URLFOR($RESOURCE.WebResourceShortcut,'/images/favicon.ico')}" />
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/defaultStyle.css')}"/>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.WebportalResources,'/css/webportalStyle.css')}"/>
+        
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/jqueryMin.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/html5.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/VisualWebsiteOptimizer.js')}"/>
+        <script src="{!URLFOR($Resource.WebportalResources,'/scripts/HotjarTrackingCode.js')}"/>
+        <style>
+            .ddlField { font-size:20px !important; }
+            .ddlFieldText { font-size:18px !important; }
+            .boldred { font-size: 12px !important; }
+            .boldblackmain {  font-size: 24px !important; }
+            #contactinfodiv p{ font-size: 13px; }
+        </style>
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NR3M5H"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-NR3M5H');</script>
+        <!-- End Google Tag Manager -->
+    
+        <!-- Header-->
+        <c:BrindleeMountainHeader />
+        <!--Menu-->
+        <c:BrindleeMountainMenu />
+        
+        <!--Body -->
+        <div class="mobile-margin" >
+          <div class="pagebody">
+             <div class="top-left">
+                <div class="top-right">
+                   <div class="pagetop">
+                      <div class="page-banner">
+                         <div class="page-banner-inner">
+                            <div class="page-banner-image">
+                               <img src="{!URLFOR($RESOURCE.WebportalResources,'/banners/banner_deliveries.jpg')}" alt="firetrucks"/>
+                               <div class="bannertitle"> Selling your Used Fire Truck? </div>
+                            </div>
+                         </div>
+                      </div>
+                      <!--  end page-banner  -->
+                      <div class="hometopright">
+                         <c:BrindleeMountainRightSideMenu />
+                      </div>
+                   </div>
+                   <!--  end pagetop  -->
+                </div>
+             </div>
+             <!-- Content -->
+             <div class="page-content" id="contentdiv">
+                <div class="horizontalbar">&nbsp;</div>
+                
+                <div class="contactussales">
+                    <!-- New section created by Matt on 10/15 for Pardot form testing -->
+                    <p>Thank you for your interest in contacting us about selling your used fire truck!</p>
+                    
+                    <p>Please fill out the form below, and a member of our team will be in touch with you as soon as possible to answer what questions you have.</p>
+    
+                    <p>Thank you again for your interest – we look forward to speaking with you soon, and working with you in the sale of your used emergency apparatus!</p>
+                
+                    <iframe src="https://go.pardot.com/l/68872/2015-10-14/2p926v" width="100%" height="1000" type="text/html" frameborder="0" allowTransparency="true" style="border: 0"></iframe>
+                    
+                    <!--
+                    <p style="font-size:2em; font-weight:bold; text-decoration:underline;">Taking Pictures of your Apparatus:</p>
+                    
+                    <p class="">Pictures of your apparatus are the most descriptive element of the advertising process! The pictures you submit to BMFA are the photos that will show up with the listingof your fire apparatus online and in print advertising.</p>
+                    
+                    <p class="">Agent/Owner agrees to notify Brindlee, at the time of sale, as to the sale price and the name and address of the buyer. Either party may terminate at any time by notifying the other party in writing. If any sale takes place subsequent to termination, to a party previously referred by Brindlee, the same commission will be paid as if the agreement were still in effect.</p>
+                        
+                    <p style="font-size:1.5em; font-weight:bold; text-decoration:underline;">The following are types of photos that will be beneficial in advertising your vehicle:</p>
+                        
+                    <p class=""><strong>1.</strong> Overall shots of your truck from every side. These are best taken outside in an open area to get a full view of each side.</p>
+                        
+                    <p class=""><strong>2.</strong> Photos of special features on the truck – i.e. the pump panel, opened compartment doors, interior layout, light tower, hydraulic ladder racks,etc.</p>
+                        
+                    <table class="table16">
+                        <tr>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck01.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck02.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck03.png')}" alt="truck" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck04.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck05.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck06.png')}" alt="truck" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck07.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck08.png')}" alt="truck" />
+                            </td>
+                            <td>
+                                <img src="{!URLFOR($RESOURCE.SellingUsedTruckResources,'truck09.png')}" alt="truck" />
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="font-size:1.5em; font-weight:bold; padding-top:20px;">Thank you for allowing us the opportunity to work with you!</p>
+                    <p style="font-size:2em; font-weight:bold;">If you have any questions, <br />please call us toll-free at 866-285-9305</p>
+                    -->
+                </div>
+                <!--
+                <div class="pageleft">
+                    <p class="choose">Choose the item below which best describes you and your department!</p>
+                    <span class="ddlField">1: </span>
+                    <a onclick="displayForm('1');" class="ddlFieldText">I have a truck to sell. I’d like to send
+                    you some information about my truck, then discuss with a representative how to sell it;
+                    what price to ask, how the process works, etc.?</a><br/>
+                    <span class="ddlField">2: </span>
+                    <a onclick="displayForm('2');" class="ddlFieldText">I have a truck to sell. I’d like to send
+                    you some information about my truck, and get it advertised for sale right away!</a><br/>
+                    <span class="ddlField">3: </span>
+                    <a onclick="displayForm('3');" class="ddlFieldText">I may have a truck to sell, but would 
+                    really just like someone to call me to talk through the process.</a><br/><br/>
+                    
+                    <!--Div for link 2 Brokerage info--><!--
+                    <div id="brokerageinfodiv" style="display:none;">
+                        <p class="boldblackmain">Brokerage Offer</p>
+                        <p class="nsize">
+                            This is an agreement between the seller and Brindlee Mountain Fire Apparatus. If
+                            Brindlee Mountain is unable to provide the seller with a buyer for the apparatus,
+                            <u>no payment will be owed to Brindlee Mountain.</u> We are only paid if we provide
+                            a buyer for your apparatus. Brindlee will refer to Agent/Owner all qualified inquires
+                            we receive regarding the specified apparatus. Brindlee Mountain may market the apparatus
+                            through various channels of websites, auctions, ads, and direct sales. If Agent/Owner
+                            sells the marketed apparatus or any other apparatus to the customer referred by
+                            Brindlee, or anyone acting on behalf of the referred customer, the Agent/Owner will
+                            pay the agreed commission to Brindlee within 10 days of the sale.</p>
+                        <p class="nsize">
+                            Agent/Owner agrees to notify Brindlee, at the time of sale, as to the sale price
+                            and the name and address of the buyer. Agent/Owner acknowledges failure to provide
+                            this information will result in fees payable to Brindlee as if the lead was referred
+                            by Brindlee and sold at the listed price. Either party may terminate at any time
+                            by notifying the other party in writing. If any sale takes place subsequent to termination,
+                            to a party previously referred by Brindlee, the same commission will be paid as
+                            if the agreement were still in effect.</p>
+                    </div>
+                    
+                    <!--Div for link 1--><!--
+                    <div id="truckdetailform" style="display:none;">
+                        <p class="boldred">Please complete this form to the best of your knowledge.</p>
+                        <p class="boldred">The more information you can provide us, the better equipped we will 
+                                           be in marketing your truck!</p>
+                    </div> 
+                    
+                    <!--Div for link 3--><!--
+                    <div id="contactinfodiv" style="display:none;">
+                        <p>Thank you for your interest in contacting us about selling your used fire truck!
+                           We buy more used fire apparatus than any other dealership in the Nation. Please
+                           fill out the form below, and a member of our team will be in touch with you as soon
+                           as possible to answer what questions you have.</p>
+                        <p>Thank you again for your interest – we look forward to speaking with you soon, and
+                           working with you in the sale of your used emergency apparatus!</p>
+                        <strong>CONTACT THE PURCHASING TEAM</strong>
+                    </div>
+                              
+                </div>            
+                -->
+                
+                
+             </div>
+             <div class="bottom-left">
+                <div class="bottom-right"></div>
+             </div>
+          </div>
+          
+        </div>
+        <!--Footer -->
+        <c:BrindleeMountainFooter />
+        <script>
+            function displayForm(linknum){
+                if(linknum=='1'){
+                    document.getElementById('truckdetailform').style.display='inline';
+                    document.getElementById('brokerageinfodiv').style.display='none';
+                    document.getElementById('contactinfodiv').style.display='none';
+                }
+                if(linknum=='2'){
+                    document.getElementById('brokerageinfodiv').style.display='inline';
+                    document.getElementById('truckdetailform').style.display='inline';
+                    document.getElementById('contactinfodiv').style.display='none';
+                }
+                if(linknum=='3'){
+                    document.getElementById('brokerageinfodiv').style.display='none';
+                    document.getElementById('truckdetailform').style.display='none';
+                    document.getElementById('contactinfodiv').style.display='inline';
+                }
+            }
+        </script>
+    </body>
+</apex:page>

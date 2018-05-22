@@ -1,0 +1,24 @@
+<apex:page controller="ViewAllActivityController">
+    <apex:pageBlock title="Activity Details">
+        <apex:outputPanel rendered="{!summary.accountId!=null}">
+            <apex:outputText ><b>&nbsp;Account:&nbsp;</b></apex:outputText>
+            <apex:outputLink value="/{!summary.accountId}" >{!summary.accountName}</apex:outputLink><br />
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!summary.contactId!=null}">
+            <apex:outputText ><b>&nbsp;&nbsp;Contact:&nbsp;</b></apex:outputText>
+            <apex:outputLink value="/{!summary.ContactId}">{!summary.name}</apex:outputLink><br />
+        </apex:outputPanel>
+    </apex:pageBlock>  
+    <apex:pageBlock > 
+        <apex:outputText rendered="{!IF(activityHistories.size = 0, true, false)}">No records to display</apex:outputText>                
+        <apex:pageBlockSection columns="1">
+            <apex:pageBlockTable value="{!activityHistories}" var="ah" rows="{!activityHistories.size}" rendered="{!IF(activityHistories.size > 0, true, false)}">                                                  
+                <apex:column value="{!ah.Subject}" />
+                <apex:column value="{!ah.ActivityDate}" />                       
+                <apex:column value="{!ah.Owner.Name}" headerValue="Assigned To"/>                       
+                <apex:column value="{!ah.Who.Name}" headerValue="Contact"/>
+                <apex:column value="{!ah.Description}" />
+            </apex:pageBlockTable>                    
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

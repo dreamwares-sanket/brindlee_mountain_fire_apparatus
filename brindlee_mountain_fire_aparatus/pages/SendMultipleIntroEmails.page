@@ -1,0 +1,847 @@
+<apex:page controller="SendMultipleIntroEmailsController" sidebar="false" applyBodyTag="false" standardStylesheets="false">
+<head>
+  <script type="text/javascript" src="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/js/jquery_min.js')}"></script>  
+  <script src="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/js/jquery_datatables_min.js')}"></script>
+  <link rel="stylesheet" type="text/css" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/jqueryDT.css')}"/>
+  
+  <link rel="stylesheet" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/jqueryUI.css')}"/>
+  <link rel="stylesheet" href="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/css/pageStyle.css')}"/>
+  <script src="{!URLFOR($RESOURCE.SendMultipleIntroEmails,'/js/jqueryUI.js')}"></script>
+    <style>
+        #notesDiv {display:none;}
+    </style>
+</head>  
+<body>
+
+    <div id="assign-action-spinner-main" style="display:none;" >
+       <div id="assign-action-spinner-content">
+           <img src="{!URLFOR($RESOURCE.WebportalResources,'/images/loadinBlack.gif')}" alt="Processing..." />
+       </div>
+    </div>
+ 
+  <span id="errMsg" style="display:none;"></span>
+  
+  <div id="filterWrapper" style="display:{!IF(ISBLANK($CurrentPage.parameters.id),'none','block')}">
+      
+      <div class="keyword-input">
+          <h3>By Keyword:</h3>
+          <input type="text" id="keywordInput"></input>
+      </div>
+      
+      <div class="keyword-input">
+          <h3>By Stock Numbers:</h3>
+          <textarea rows="1" cols="25" id="stockNumInput"></textarea>
+      </div>
+      
+      <div class="field-input">
+          <h3>By Field Filter:</h3>
+          <table id="filterTable" >
+              <thead>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+              </thead>
+              <tbody id="filterTableBody">
+                  <tr class="filterRow">
+                      <td class="FieldNamesCol"></td>
+                      <td class="FilterOptionsCol"></td>
+                      <td class="FilterValCol"></td>
+                      <td></td>
+                      <td></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+      <button class="ser-btn" onclick="loadActionSpinner(); hideMessage(); initiateSearchAction();">Search</button>
+      
+      <div class="keyword-input" id="notesDiv">
+          <h3>Add Notes:</h3>
+          <textarea rows="5" cols="120" id="notes"></textarea>
+      </div>
+  </div>
+    
+  <div id="productsDiv" style="display:none;">
+      <table id="productsTable" style="width:100%;" class="cell-border compact hover row-border stripe">
+          <thead>
+              <tr>
+                  <th><input type="checkbox" id="selectAllCbox"></input></th>
+                  <th>Stock Number</th>
+                  <th>Name</th>
+                  <th>Type of sale</th>
+                  <th>Status</th>
+                  <th>Apparatus type</th>
+                  <th>FT Main title</th>
+                  <th>FT Pump GPM</th>
+                  <th>FT Water Tank Size</th>
+                  <th>VF Website Price</th>
+                  <th>Retail Price</th>
+                  <th>Earlybird Price</th>
+              </tr>
+          </thead>
+      </table>
+      <div class="footer-data">
+          <span id="selectedRowCount">0 selected</span>
+          <button id="submitbtn" class="sub-btn" onclick="loadActionSpinner(); submitSelectedProductsReq();">Send Intro Emails</button>
+      </div>
+  </div>
+    
+</body>  
+<script>
+  var j$ = jQuery.noConflict();
+  var nullValue = '--None--';
+  var listFieldWrapper, mapFieldLabelToType, mapFieldTypeToFilterOptions, mapFilterOptionsToOperator, productsTable;
+  var customerId = '{!$CurrentPage.parameters.id}';
+  
+  function getCustomerId(){
+      return customerId;
+  }
+  
+  function getListFieldWrappers(){
+      return JSON.parse('{!JSENCODE(fieldWrapperJson)}');
+  }   
+  
+  j$( document ).ready(function(){
+
+      if(!getCustomerId()){
+          displayMessage('Please provide a Contact / Lead Id in the url!','error-msg');
+      }
+      
+      listFieldWrapper = getListFieldWrappers();        // get list of fieldWrapper 
+      listFieldWrapper.sort(sortByFieldLabel);          // sort picklist by label
+      
+       mapFieldLabelToType = createMapFieldLabelToType(); 
+       mapFieldTypeToFilterOptions = createMapFieldTypeToFilterOptions();
+       mapFilterOptionsToOperator = createMapFilterOptionsToOperator();
+       
+       // populate the first picklist value for fields
+      j$('tr:first td:first','#filterTableBody').append(createFieldNamesPicklist());
+      
+      // populate the first filter options picklist row
+      var listFilterOptions = createFilterOptionsFromDatatype('');
+      j$('tr:first td:nth-child(2)','#filterTableBody').append( listFilterOptions );
+      
+      j$('tr:first td:nth-child(3)','#filterTableBody').append( createInputTagForFilterTable() );
+      
+      j$('tr:first td:nth-child(4)','#filterTableBody').append( createSpanTextMarker() );
+      
+      j$('tr:first td:nth-child(5)','#filterTableBody').append( createPlusButton() );
+      
+      j$('.plusBtn','#filterTableBody').click(function(){
+          addNewFilterTableRow();
+      });
+      
+      j$('#filterTableBody').on('change', '.fieldNamesPicklist',function(){
+          var parentRow = j$(this).closest('tr');
+          resetFilterOptions(parentRow);                        // reset operator options for current field
+          
+          createOptionsPicklistForField(parentRow);            // create options if field is picklist/boolean type
+          
+          initializeDatePicker(parentRow);                    // initialize date picker if field type is DATE/DATETIME
+      });
+       
+      j$('#filterTableBody').on('click', '.minusBtn',function(){
+          removeFilterTableRow(this);
+      });
+      
+      // toggle the class of selected row and also the checkbox to show as selected
+      j$('#productsTable').on('click','tr',function(){
+          j$(this).toggleClass('selectedRow');
+          
+          var checkbox = j$(this).find('.cbox');
+          if( j$(this).hasClass('selectedRow') ){
+              j$(checkbox).prop('checked',true);
+          }
+          else{
+              j$(checkbox).prop('checked',false);
+          }
+      });
+      
+      j$('#productsTable').on('click','tr',function(){                // update count of selected rows
+          var rowsSelected = productsTable.$('.selectedRow').length;
+          j$('#selectedRowCount').html(rowsSelected + ' selected');
+      });
+      
+      j$('#productsTable').on('click','.selectedRow',function(){     // uncheck the selectAllcbox when any other checkbox is selected
+          j$('#selectAllCbox').prop('checked',false);
+      });
+  });
+      
+   // sort wrapper picklist values by label
+   function sortByFieldLabel( value1, value2){                       
+      var Name1 = value1.strFieldlabel.toLowerCase();
+      var Name2 = value2.strFieldlabel.toLowerCase(); 
+      return ((Name1 < Name2) ? -1 : ((Name1 > Name2) ? 1 : 0));
+   }
+   
+    // reset filter operations picklist on change of field picklist
+   function resetFilterOptions(parentRow){
+      var filterOptionsCol = j$(parentRow).find('.FilterOptionsCol');
+      j$(filterOptionsCol).find('select').remove();                                                // remove current select list
+      
+      var fieldName = j$(parentRow).find('.FieldNamesCol > select > option:selected').text();      // get the selected field label
+      var fieldType = getFieldTypeFromLabel(fieldName);                                            // map the field type from label
+
+      j$( filterOptionsCol ).append( createFilterOptionsFromDatatype( fieldType ));                // generate select options from type   
+   }
+   
+   // check if the field type for input row is Datetime to initalize datepicker
+   function initializeDatePicker(parentRow){
+          var fieldName = j$(parentRow).find('.FieldNamesCol > select > option:selected').text();
+          var fieldType = getFieldTypeFromLabel(fieldName);
+          
+          var dateType = 'DATETIME';
+          var inputBox = j$(parentRow).find(':input[type=text]');
+          
+          if( dateType.indexOf(fieldType) > -1 ){
+              loadDatePicker(inputBox);
+              makeInputBoxReadOnly(inputBox);
+          }
+          else{
+              unloadDatePicker(inputBox);
+              unmakeInputBoxReadOnly(inputBox);
+          }
+   } 
+   
+   // get picklist values if the selected field is of Picklist type
+   function createOptionsPicklistForField(parentRow){
+      var fieldNameOption = j$(parentRow).find('.FieldNamesCol > select > option:selected');
+      var fieldType = getFieldTypeFromLabel(fieldNameOption.text());
+      var fieldAPIName = fieldNameOption.val();
+      var multilistType = 'MULTIPICKLIST';
+      
+      if( multilistType.indexOf(fieldType) > -1 ){                    // create options for picklist and multipicklist
+          loadActionSpinner();
+          
+          getFieldPickListOptions(fieldAPIName).then(
+              function(result){
+                  if(result){
+                      var selectList = createOptionsPicklist(parentRow, result);
+                      
+                      if(fieldType == multilistType){                // if type is multiselect then add multiple property to select list
+                          j$(selectList).prop('multiple',true);
+                      }
+                      j$(parentRow).find('.inputBox').replaceWith(selectList);
+                  }
+                  else{
+                      displayMessage('Error : Could not fetch picklist options!','error-msg');
+                  }
+                  unloadActionSpinner();
+              }
+          );
+      }
+      else if( 'BOOLEAN'.indexOf(fieldType) > -1 ){                // create list with true/false options
+          var listBoolOptions = ['True','False'];
+          j$(parentRow).find('.inputBox').replaceWith(createOptionsPicklist(parentRow, listBoolOptions));
+      }
+      else{                                                        // replace the existing list with inputbox
+          j$(parentRow).find('.inputBox').replaceWith(createInputTagForFilterTable());
+      }
+   }
+   
+   // create selectList and replace it with the current input box for the relevant row
+   function createOptionsPicklist(parentRow, listOptions){
+       if( parentRow && listOptions && listOptions.length > 0 ){
+          var selectList = j$('<select />').attr('class','inputBox');
+          var unescapedOptionVal;
+          
+          j$.each( listOptions, function(index, option){
+              unescapedOptionVal = html2text(option);
+              selectList.append(j$('<option>').attr('value',unescapedOptionVal).text(unescapedOptionVal));
+          });
+          return selectList;
+       }
+   }
+   
+   // unescape any encoded characters
+   function html2text(html){
+       var tag = document.createElement('div');
+       tag.innerHTML = html;
+       return tag.innerText;
+   }
+
+   // Remote method to get picklist options
+   function getFieldPickListOptions(fieldAPIName){
+       var promise = new j$.Deferred();
+       SendMultipleIntroEmailsController.getPicklistValsFromFieldAPIName(
+              fieldAPIName,
+              function(result,event){
+                  if(event){
+                      if(event.status){
+                          promise.resolve(result);
+                      }
+                      else if(event.type === 'exception'){
+                          promise.reject(event);
+                          displayMessage('An Exception has Occured!','error-msg');
+                      }
+                  }
+                  else{
+                      promise.reject(event);
+                  }
+              },
+              {escape:true}
+       );
+       return promise;
+   }
+   
+   function loadDatePicker(element){
+      j$(element).datepicker({ "dateFormat":"yy-mm-dd", changeMonth: true, changeYear: true});
+   }
+   
+   function unloadDatePicker(element){
+       j$(element).datepicker("destroy");
+   }
+   
+   function makeInputBoxReadOnly(inputBox){
+       j$(inputBox).prop("readonly", true);
+   }
+   
+   function unmakeInputBoxReadOnly(inputBox){
+       j$(inputBox).prop("readonly", false);
+   }
+   
+   // create filter criteria json objects for querying in the server side
+   function initiateSearchAction(){
+      var listCriteriaJson = createJsonFromFilterCriteria();
+      if(listCriteriaJson){
+          var strKeyword = getSearchKeyword();
+          
+          // add search criteria for multiple Stock Numbers from "By Stock Number:" search box
+          var listStockNumbers = getListSearchStockNumbers();
+          var stockNumbersCriteria = createStockNumbersCriteria(listStockNumbers);
+          
+          if(stockNumbersCriteria){
+              listCriteriaJson.push(stockNumbersCriteria);
+          }
+          
+          var listProducts = fetchProducts( strKeyword, listCriteriaJson ).then(
+                                  function(result){
+                                      if( doesErrorExistForResultRecords(result) == false ){
+                                          result = JSON.parse(result);
+                                          createAdditionalFieldsForDisplay(result);
+                                          initalizeProductsTable(result);
+                                          showProductsDiv();
+                                          
+                                          if(result.length > 0){
+                                              showNotesDiv();
+                                              enableSendEmailButton();
+                                          }
+                                          else{
+                                              hideNotesDiv();
+                                              disableSendEmailButton();
+                                          }
+                                      }
+                                      unloadActionSpinner();
+                                  }
+                             );
+     }
+     else{
+         unloadActionSpinner();
+     }
+  }
+  
+  // create list of stock numbers for search
+  function getListSearchStockNumbers(){
+      var strStockNumbers = j$('#stockNumInput').val();
+
+      if( strStockNumbers ){
+          var listStockNumbers = strStockNumbers.replace(/ /g,'').split(',');
+          return listStockNumbers;
+      }
+      return strStockNumbers;
+  }
+  
+  // create criteria to search among multiple stock numbers
+  function createStockNumbersCriteria(listStockNumbers){
+      var sizeOflistStockNumbers = listStockNumbers.length;
+      
+      if( sizeOflistStockNumbers > 0 ){
+          var stockNumbersCriteria = new Object();
+          stockNumbersCriteria.strFieldAPIName = 'Stock_Number__c';
+          stockNumbersCriteria.strOperator= 'IN';
+          
+          var fieldValue = '';
+          var count;
+          for( count=0 ; count < sizeOflistStockNumbers ; count++ ){    // add comma seperated values for "IN" operator clause
+              fieldValue += "'" + listStockNumbers[count] + "',";
+          }
+          fieldValue = '(' + fieldValue.substr( 0, fieldValue.length-1 ) + ')';
+          stockNumbersCriteria.strValue = fieldValue;
+          return stockNumbersCriteria;
+      }
+  }
+  
+  // control "on click" of checkbox having id=selectAllCbox to select all rows
+  j$('#selectAllCbox').on('click',function(){
+      var rows = productsTable.$('tr');
+      if(j$(this).is(':checked')){
+          j$.each( rows, function(index, object){
+              j$(object).find('.cbox').prop('checked',true);
+              j$(object).attr('class','selectedRow');
+          });
+      }
+      else{
+          j$.each( rows, function(index, object){
+              j$(object).find('.cbox').prop('checked',false);
+              j$(object).removeClass('selectedRow');
+          });
+      }
+  });
+  
+  // check if 'error' exists in result
+  function doesErrorExistForResultRecords(result){
+      var error = 'Error';
+      if(result.indexOf(error) > -1){
+          displayMessage(result,'error-msg');
+          return true;
+      }
+      return false;
+  }
+  
+  // get value for search keyword  
+  function getSearchKeyword(){
+      return j$('#keywordInput').val();
+  }
+    
+  // initialize products table with given data source
+  function initalizeProductsTable(listProducts){
+     productsTable = j$('#productsTable').DataTable({
+                      "data":listProducts,
+                      "bDestroy": true,
+                      "columns":[
+                          { "data":"checkBox","bSortable": false},
+                          { "data":"Stock_Number__c", "defaultContent": "" },
+                          { "data":"Name", "defaultContent": "" },
+                          { "data":"typeOfSale__c", "defaultContent": "" },
+                          { "data":"status__c", "defaultContent": "" },
+                          { "data":"apparatusType__c", "defaultContent": "" },
+                          { "data":"FT_Main_Title__c", "defaultContent": "" },
+                          { "data":"FT_Pump_GPM__c", "defaultContent": "" },
+                          { "data":"FT_Water_Tank_Size_only__c", "defaultContent": "" },
+                          { "data":"VF_Website_Price__c", "defaultContent": "" },
+                          { "data":"Retail_Price__c", "defaultContent": "" },
+                          { "data":"Earlybird_Price__c", "defaultContent": "" }
+                      ]
+                  });
+  }
+  
+  // process request for selected rows
+  function submitSelectedProductsReq(){
+    var listProductIds = getIdsFromSelectedRows();
+    if( listProductIds.length > 0 ){
+        invokeMultipleIntroEmailsProcess(listProductIds);
+    }
+    else{
+        unloadActionSpinner();
+        alert('Please select at least one row to proceed!');
+    }
+  }
+  
+  // fetch rows ids of selected rows
+  function getIdsFromSelectedRows(){
+      var selectedProductIds = productsTable.$('.cbox:checked');
+      var listProductIds = new Array();
+      
+      j$.each(selectedProductIds, function(index, checkbox){
+          listProductIds.push(j$(checkbox).closest('tr').attr('id'));
+      });
+      return listProductIds;
+  }
+  
+  // invoke remote method to start multiple intro email functionality
+  function invokeMultipleIntroEmailsProcess(listProductIds){
+      var strMsg;
+      //console.log(getSalesRepNote());
+      SendMultipleIntroEmailsController.initiateMultipleIntroEmailsProcess(         // remoting method to send selected Product Ids to Controller
+          getCustomerId(),
+          JSON.stringify(listProductIds),
+          getSalesRepNote(),    
+          function (result, event){
+              unloadActionSpinner();
+              if( event.status ){
+                  //console.log('successful!');
+                  if(result.length > 0){
+                      strMsg = result;
+                      displayMessage(strMsg, 'error-msg');
+                  }
+                  else{
+                      strMsg = 'Email(s) sent successfully!';
+                      displayMessage(strMsg, 'normal-msg');
+                  }
+              }
+              else if( event.type=="exception" ){
+                  strMsg = 'Sorry, An Exception has occured!';
+                  displayMessage(strMsg, 'error-msg');
+              }
+              
+          },
+          {escape:false});
+  }
+  
+  // add checkbox field and product id as row id to list of products
+  function createAdditionalFieldsForDisplay(listProducts){
+      j$.each(listProducts, function(index, object){
+          object.checkBox = '<input type="checkbox" class="cbox"></input>';
+          object.DT_RowId = object.Id;
+      });
+  }
+  
+  // create json values from filters to criteria objects for wrapper class
+  function createJsonFromFilterCriteria(){
+      var FilterRows = j$('#filterTableBody').find('.filterRow');                // get all filter condition rows
+      
+      var listCriteriaJson = new Array();
+      var objCriteriaWrapper, fieldAPIName, operator, operation, fieldLabel, fieldPicklist, fieldType, fieldValue, operationPicklist;
+      var encodedFieldTypes = 'STRING PICKLIST URL ID REFERENCE';                                // datatypes that require string escaped values in the SOQL query
+      var errors='';
+      
+      j$.each( FilterRows, function( index, currentRow){
+          objCriteriaWrapper = new Object();
+          
+          fieldPicklist = j$(currentRow).find('.FieldNamesCol > select >option:selected');            // get the corresponding field picklist
+          fieldAPIName = fieldPicklist.val();
+          fieldLabel = fieldPicklist.text();
+          fieldType = getFieldTypeFromLabel(fieldLabel);
+                                     
+          operationPicklist = j$(currentRow).find('.FilterOptionsCol > select >option:selected');     // get the corresponding operation picklist
+          operation = operationPicklist.text()
+          operator = operationPicklist.val();
+          
+          if(fieldType == 'MULTIPICKLIST'){                                                            // get the corresponding field value
+              fieldValue = conformMultiListValues(currentRow, operator);
+          }
+          else{
+              fieldValue = j$(currentRow).find('.FilterValCol > .inputBox').val(); 
+          }
+          
+          if( fieldAPIName != nullValue ){
+              if( fieldType == 'DATETIME' ){
+                  fieldAPIName = 'DAY_ONLY(' + fieldAPIName + ')';
+              }
+              if(operator == nullValue){                                                            // check if none operator is selected for a field filter
+                  errors += '<li>No operator selected for field <b>\''
+                            + fieldLabel
+                            + '\'</b>! Please select an operation.</li>';
+              }
+              else{
+                  objCriteriaWrapper.strFieldAPIName = fieldAPIName;
+                  objCriteriaWrapper.strOperator = operator;
+              }
+          } 
+          
+          if( encodedFieldTypes.indexOf(fieldType) > -1 ){
+              fieldValue = getEscapedValues(fieldValue);
+              fieldValue = conformFieldValWithOperation( operation, operator, fieldValue);
+          }
+          errors += getFieldValueError (fieldType, fieldValue, fieldLabel);         
+          objCriteriaWrapper.strValue = fieldValue;
+          listCriteriaJson.push(objCriteriaWrapper);
+      });
+      if(errors){
+          displayMessage('<b>Errors :</b><ul>'+errors+'</ul>','error-msg');
+      }
+      else{
+          return listCriteriaJson;
+      }
+  }
+  
+  // Check if field values are valid for certain field types
+  function getFieldValueError (fieldType, fieldValue, fieldLabel) {
+      var numericfield = 'DOUBLE CURRENCY', dateTimeField = 'DATETIME', errors = '';
+      if( numericfield.indexOf(fieldType) > -1 ){                                   // validate numeric values
+          if(!fieldValue || !isFinite(fieldValue)){
+              errors += '<li>Invalid value for field <b>\''
+                        + fieldLabel 
+                        +'\'</b>! Please enter a valid number.</li>';
+          }
+      }
+      else if( dateTimeField.indexOf(fieldType) > -1 ){
+          if(!fieldValue){
+              errors += '<li>Invalid value for date field <b>\''
+                        + fieldLabel 
+                        +'\'</b>! Please enter a valid date.</li>';
+          }
+      }
+      return errors;
+  }
+  
+  // build values pattern for multiselect picklist query options
+  function conformMultiListValues(currentRow, operator){
+      if(currentRow && operator ){
+          var picklistVal = j$(currentRow).find('.FilterValCol > .inputBox :selected');
+          var selText = '';
+          
+          if( operator == '=' || operator == '!=' ){    // in case of 'equals and 'not equal to'
+              
+              j$(picklistVal).each( function(){
+                  selText += j$(this).text() + ';';
+              });
+              selText = selText.slice(0,-1);
+              selText = '\''+selText+'\'';
+          }
+          else{                                        // in case of 'includes' or 'excludes' operator
+             j$(picklistVal).each( function(){
+                 selText += '\''+ j$(this).text() + '\'' + ',';
+             });
+             selText = selText.slice(0,-1);
+             selText = '('+selText+')';
+          }
+          return selText;
+      }
+  }
+  
+  // get escaped value for string data type
+  function getEscapedValues(fieldValue){
+      return fieldValue.replace(/'/g, "\\'").replace(/"/g, '\\"');    // escape values for inverted comma(s) 
+  }
+  
+  // modify the values accoding to the operators
+  function conformFieldValWithOperation( operation, operator, fieldValue){
+      var inOperator = 'amongst',
+          containsOperation = 'contains',
+          startsWithOperation = 'starts with';
+      
+      if( inOperator.indexOf(operation) > -1 ){    // 'amongst' operation is used for the 'IN' operator for search in the operator picklist
+              
+          var listOptions = fieldValue.split('|');
+          fieldValue = '';
+          var i=0, listSize = listOptions.length;
+          
+          for(i; i < listSize ; i++){
+              fieldValue += '\''+listOptions[i]+'\',';
+          }
+          fieldValue = fieldValue.slice(0,-1);
+          fieldValue = '('+fieldValue+')';
+          //console.log('1. '+fieldValue);
+          return fieldValue;
+      }
+      if( containsOperation.indexOf(operation) > -1 ){
+          fieldValue = '\'%'+fieldValue+'%\'';
+          //console.log('2. '+fieldValue);
+          return fieldValue;
+      }
+      if( startsWithOperation.indexOf(operation) > -1 ){
+          fieldValue = '\''+fieldValue+'%\'';
+          //console.log('3. '+fieldValue);
+          return fieldValue;
+      }
+      return '\''+fieldValue+'\'';
+  }
+  
+  // validate boolean fields for true / false
+  function validateBooleanField(inputValue){
+      inputValue = inputValue.toLowerCase();
+      if( inputValue === 'true' || inputValue === 'false' ){
+          return true;
+      }
+      else{
+          return false;
+      }
+  }
+  
+  // remote method to fetch product records with required criteria
+  function fetchProducts( strKeyword, listCriteriaJson ){
+      var promise = new j$.Deferred();
+      
+      SendMultipleIntroEmailsController.processCriteriaAndFetchProducts(            // remoting method
+          strKeyword,
+          JSON.stringify(listCriteriaJson),    
+          function (result, event){
+              if( event.status ){
+                  promise.resolve(result);
+              }
+              else if( event.type=="exception" ){
+                  promise.reject(event);
+              }
+          },
+          {escape:false});
+          
+      return promise;
+  }
+    
+  // Add new row for the filter criteria table
+  function addNewFilterTableRow(){
+      var col1 = j$('<td />').attr('class','FieldNamesCol').append( createFieldNamesPicklist() );
+      var col2 = j$('<td />').attr('class','FilterOptionsCol').append( createFilterOptionsFromDatatype('STRING'));
+      var col3 = j$('<td />').attr('class','FilterValCol').append( createInputTagForFilterTable() );
+      var col4 = j$('<td />').append( createSpanTextMarker() );
+      var col5 = j$('<td />').append( createMinusButton() );
+      
+      var row = j$('<tr />').attr('class','filterRow');
+      row.append(col1).append(col2).append(col3).append(col4).append(col5);
+      j$('tbody','#filterTable').append(row);
+  }
+  
+  // delete the filter row closest to the input button 
+  function removeFilterTableRow(btn){
+      j$(btn).closest('tr').remove();
+  }
+  
+  // create input text type element
+  function createInputTagForFilterTable(){
+      return j$('<input />').attr('type','text').attr('class','inputBox');
+  }
+  
+  // create span element
+  function createSpanTextMarker(){
+      return j$('<span />').attr('class','spanMarker').text('AND');
+  }
+  
+  // create plus button elemnt
+  function createPlusButton(){
+      return j$('<button />').attr('class','plusBtn');
+  }
+  
+  // create minus button elemnt
+  function createMinusButton(){
+      return j$('<button />').attr('class','minusBtn');
+  }
+  
+  // Create Select list for Product Field names
+  function createFieldNamesPicklist(){
+      var selectList = j$('<select />').attr('class','fieldNamesPicklist');
+      selectList.append(addNullPicklistOption());
+      
+      j$.each( listFieldWrapper, function(index, object){
+          selectList.append(j$('<option>').attr('value',object.strFieldAPIName).text(object.strFieldlabel));
+      });
+      return selectList;
+  }
+  
+  // create map of Field API name to Data type
+  function createMapFieldLabelToType(){
+      mapFieldLabelToType = new Object();
+      
+      j$.each( listFieldWrapper, function(index, object){
+          mapFieldLabelToType[ object.strFieldlabel ] = object.strFieldDataType;
+      });
+      return mapFieldLabelToType;
+  }
+  
+  function createFilterOptionsFromDatatype( dataType ){
+      return createFilterOptionsPicklist( mapFieldTypeToFilterOptions[dataType] );
+  }
+  
+  function getFieldTypeFromLabel(fieldName){
+      return mapFieldLabelToType[fieldName];
+  }
+  
+  // Create Select list for Filter criteria options
+  function createFilterOptionsPicklist( listOptions ){
+      var selectList = j$('<select />');
+      selectList.append(addNullPicklistOption());
+      
+      j$.each( listOptions, function(index, operation ){
+          selectList.append(j$('<option>').attr('value', mapFilterOptionsToOperator[operation]).text(operation));
+      });   
+      return selectList;
+  }
+  
+  // Create map of Field Datatype to list of relevant operations
+  function createMapFieldTypeToFilterOptions(){
+  
+      var equals = 'equals',
+          notEqualTo = 'not equal to',
+          contains = 'contains',
+          startsWith = 'starts with',
+          amongst = 'amongst',
+          lessThan = 'less than',
+          greaterThan = 'greater than',
+          lessOrEqual ='less or equal',
+          greaterOrEqual ='greater or equal';
+  
+      var mapFieldTypeToFilterOptions = new Object();
+      
+      // Add String/Url filter options      
+      filterOptions = [ equals, notEqualTo, contains, startsWith, amongst];
+      mapFieldTypeToFilterOptions['STRING'] = filterOptions;
+      mapFieldTypeToFilterOptions['URL'] = filterOptions;
+      
+      // Add Date/Double/Currency filter options
+      filterOptions = [equals, notEqualTo, lessThan, greaterThan, lessOrEqual, greaterOrEqual];
+      mapFieldTypeToFilterOptions['DATE'] = filterOptions;
+      mapFieldTypeToFilterOptions['DATETIME'] = filterOptions;
+      mapFieldTypeToFilterOptions['DOUBLE'] = filterOptions;
+      mapFieldTypeToFilterOptions['CURRENCY'] = filterOptions;
+      
+      //Add Boolean/picklist filter options
+      filterOptions = [equals, notEqualTo];
+      mapFieldTypeToFilterOptions['BOOLEAN'] = filterOptions;
+      mapFieldTypeToFilterOptions['PICKLIST'] = filterOptions;
+      
+      //Add Multi Picklist filter options
+      filterOptions = [equals, notEqualTo, 'includes', 'excludes'];
+      mapFieldTypeToFilterOptions['MULTIPICKLIST'] = filterOptions;
+      
+      //Add Multi Picklist filter options
+      filterOptions = [equals, notEqualTo, amongst];
+      mapFieldTypeToFilterOptions['ID'] = filterOptions;
+      mapFieldTypeToFilterOptions['REFERENCE'] = filterOptions;
+      return mapFieldTypeToFilterOptions;
+  }
+  
+  // Create map of filter criteria operation to relevant symbol (if exists)
+  function createMapFilterOptionsToOperator(){
+      var mapFilterOptionsToOperator = new Object();
+      mapFilterOptionsToOperator['equals'] = '=';
+      mapFilterOptionsToOperator['not equal to'] = '!=';
+      mapFilterOptionsToOperator['less than'] = '<';
+      mapFilterOptionsToOperator['greater than'] = '>';
+      mapFilterOptionsToOperator['less or equal'] = '<=';
+      mapFilterOptionsToOperator['greater or equal'] = '>=';
+      mapFilterOptionsToOperator['contains'] = 'like';
+      mapFilterOptionsToOperator['starts with'] = 'like';
+      mapFilterOptionsToOperator['includes'] = 'includes';
+      mapFilterOptionsToOperator['excludes'] = 'excludes';
+      mapFilterOptionsToOperator['amongst'] = 'in';
+      return mapFilterOptionsToOperator;
+  }
+  
+  function getSalesRepNote(){
+      return document.getElementById('notes').value;
+  }
+  
+  // create a null option for picklist
+  function addNullPicklistOption(){
+      return j$('<option />').attr('value', nullValue).text( nullValue );
+  }
+  
+  function showProductsDiv(){
+      j$('#productsDiv').show();
+  }
+  
+  function showNotesDiv(){
+      document.getElementById('notesDiv').style.display = 'block';
+  }
+  
+  function hideNotesDiv(){
+      document.getElementById('notesDiv').style.display = 'none';
+  }
+  
+  function disableSendEmailButton(){
+      document.getElementById('submitbtn').setAttribute('disabled','disabled');
+  }
+  
+  function enableSendEmailButton(){
+      document.getElementById('submitbtn').removeAttribute('disabled');
+  }
+  
+  function displayMessage(message, cssClass){
+      j$('#errMsg').html(message).css('display','block').removeClass().addClass(cssClass);
+      document.getElementById('errMsg').scrollIntoView();
+  }
+  
+  function hideMessage(){
+      j$('#errMsg').css('display','none');
+  }
+  
+  function loadActionSpinner(){
+      j$('#assign-action-spinner-main').show();
+  }
+  
+  function unloadActionSpinner(){
+      j$('#assign-action-spinner-main').hide();
+  }
+</script>
+</apex:page>

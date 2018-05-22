@@ -1,0 +1,90 @@
+<apex:page id="pg" controller="Time_Tracking_Controller" action="{!checkEmpId}"  standardStylesheets="false" sidebar="false" showHeader="false" cache="false">
+    <link rel="stylesheet" href="{!URLFOR($Resource.Time_Tracking_Style,'style.css')}"/>  
+    <style>
+        #table2{
+            margin-left:50px;
+            text-align:left;
+        }
+        #table2 td{
+            font-size:20px;
+            font-weight:normal !important;
+        }
+        .note-title {
+            color: black;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .note-input{
+            font-family: "proxima-nova",Helvetica,Arial,sans-serif;
+            font-size: 16px;
+            height: 100px;
+            width: 78%;
+        }      
+        
+    </style>
+    <apex:form id="frm" >
+        <div class="main">
+            <div class="container">                    
+                <center>
+                    <div class="heading">
+                        <img src="{!URLFOR($Resource.Time_Tracking_Style,'logo.png')}"/>
+                        <h3>Stop Task</h3>
+                    </div>
+                    <apex:pageMessages ></apex:pageMessages>                  
+                </center>
+                <div class="body">
+                   <table id="table2">
+                        <tr>
+                            <td>
+                                <apex:outputPanel rendered="{!!tte.Is_Internal_Task__c}">
+                                    {!tte.Project_Task__r.AcctSeed__Project__r.name}
+                                </apex:outputPanel>
+                            </td>
+                        </tr>
+                        <tr>
+                           <td>
+                               <apex:outputPanel rendered="{!!tte.Is_Internal_Task__c}">
+                                   {!tte.Project_Task__r.name}
+                               </apex:outputPanel>
+                               <apex:outputPanel rendered="{!tte.Is_Internal_Task__c}">
+                                   {!tte.Internal_Task__c}
+                               </apex:outputPanel>    
+                           </td>
+                        </tr>
+                        <tr>    
+                            <td>{!taskDuration}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <lable class="note-title">Task Note</lable>  
+                                <div>       
+                                    <apex:inputField value="{!tte.Notes__c}" styleClass="note-input"/>
+                                </div>
+                            </td>
+                        </tr>   
+                        <tr>    
+                            <td>
+                                <apex:outputPanel rendered="{!!tte.Is_Internal_Task__c}">
+                                    <lable class="note-title">Task Status</lable> &nbsp;
+                                    <apex:inputField value="{!empTask.AcctSeed__Status__c}" id="statusPicklist" styleClass="picklist"/>
+                                    <script> 
+                                         // Script to remove --None-- Option
+                                         var selectobject = document.getElementById("pg:frm:statusPicklist")  
+                                         for (var i=0; i<selectobject.length; i++){
+                                             if (selectobject.options[i].value == '' )
+                                                 selectobject.remove(i);
+                                         }
+                                    </script>
+                                </apex:outputPanel>
+                            </td>
+                        </tr>                         
+                    </table>     
+                </div>
+                <div class="footer">
+                    <apex:commandButton value="Stop Task" styleClass="btn first" action="{!stoptask}"/>
+                    <apex:commandButton value="Cancel" styleClass="btn second" action="{!cancelTask}"/>                                        
+                </div>
+            </div>      
+        </div>
+    </apex:form>
+</apex:page>
