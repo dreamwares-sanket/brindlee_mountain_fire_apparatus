@@ -63,8 +63,9 @@ public class AdirondackDetailPageUrlBatch implements Database.Batchable<String>,
 									
 				if( String.isNotBlank( pageBody ) ) {
 					List<String> truckRecordRowList = pageBody.split( '<h2 class="entry-title">' );
+                    System.debug( 'truckRecordRowList\n' + JSON.serialize( truckRecordRowList ) );
+                    
 					if( truckRecordRowList != NULL && !truckRecordRowList.isEmpty() ) {
-						
 						String link;
 						for( String truckRecord : truckRecordRowList ) {
 							link = truckRecord.subStringBetween( 'href="', '"' );

@@ -69,14 +69,16 @@ public class AdirondackListViewBatch implements Database.Batchable<String>, Data
 				if( String.isNotBlank( pageBody ) ) {
 					substringList = pageBody.split( '</a>' );
 					System.debug( 'substringList\n' + JSON.serialize( substringList ) );
-            
-					String link;
-					for( String menu : substringList ) {
-						link = menu.substringAfterLast( 'href="' ).substringBefore( '"' );
-						if( String.isNotBlank( link ) ) {
-							urlSet.add( link );
-						}
-					}
+                    
+                    if( substringList != NULL && !substringList.isEmpty() ) {
+                        String link;
+                        for( String menu : substringList ) {
+                            link = menu.substringAfterLast( 'href="' ).substringBefore( '"' );
+                            if( String.isNotBlank( link ) ) {
+                                urlSet.add( link );
+                            }
+                        }
+                    }
 				}
 			}
         }
