@@ -1,6 +1,7 @@
 /**
-    @ Purpose : Tests the functionality of classes related to
+    @ Purpose : Tests the mock response for AdirondackTest class.
 */
+
 @isTest
 global class MockResponseAdirondack implements HttpCalloutMock {
     

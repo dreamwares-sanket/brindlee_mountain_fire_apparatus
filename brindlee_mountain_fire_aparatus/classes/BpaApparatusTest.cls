@@ -1,11 +1,11 @@
 /**
-    @ Purpose : Tests the functionality of AdirondackListViewBatch class.
+    @ Purpose : Tests the functionality of BPAapparatusListViewBatch class.
 */
 
 @isTest
-public class AdirondackTest {
+public class BpaApparatusTest {
     
-    private static final String SITE_URL = 'http://adirondackfire.com';
+    private static final String SITE_URL = 'http://bpapparatus.com';
     
     @TestSetup static void insertTestData() {
         
@@ -13,17 +13,17 @@ public class AdirondackTest {
                                  (
                                   Site__c = SITE_URL,
                                   Active__c = TRUE,
-                                  Batch_Class__c = 'AdirondackListViewBatch'
+                                  Batch_Class__c = 'BPAapparatusListViewBatch'
                                  );
         INSERT site;
         System.assertEquals( 1, [ SELECT COUNT() FROM CompetitorSite__c WHERE ID =: site.Id ] );
     }
     
-    public static TestMethod void testAdirondackSite() {
+    public static TestMethod void testBpaApparatus() {
         
         Test.startTest();
         
-        Test.setMock( HttpCalloutMock.class, new MockResponseAdirondack() );
+        Test.setMock( HttpCalloutMock.class, new MockResponseBpaApparatus() );
         
         CompetitorSite__c site = [ SELECT ID, Site__c 
                                    FROM CompetitorSite__c 
@@ -31,7 +31,7 @@ public class AdirondackTest {
                                    LIMIT 1 
                                  ];
         
-        Database.executeBatch( new AdirondackListViewBatch( site.Site__c, site.Id ), 1 );
+        Database.executeBatch( new BPAapparatusListViewBatch( site.Site__c, site.Id ), 1 );
 
         Test.stopTest();
         
@@ -40,7 +40,7 @@ public class AdirondackTest {
                                    ] 
                               );
         System.assertNotEquals( NULL, [ SELECT Last_Record_Created_By_Batch__c 
-                                       	FROM CompetitorSite__c
+                                        FROM CompetitorSite__c
                                         WHERE ID =: site.Id
                                         LIMIT 1
                                       ][0].Last_Record_Created_By_Batch__c

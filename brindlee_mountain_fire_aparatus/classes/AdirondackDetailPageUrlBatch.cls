@@ -1,16 +1,25 @@
 /**
-    @ Purpose :
+    @ Purpose : 1. Fetches the anchor links of all trucks from list views of Adirondack website.
+				2. Passes these links to AdirondackDetailInfoBatch class.
 */
 public class AdirondackDetailPageUrlBatch implements Database.Batchable<String>, Database.AllowsCallouts, Database.Stateful {
     
-    public List<String> pageUrlList = new List<String>();
+    public List<String> pageUrlList;
     
-    public List<String> nextPageUrlList = new List<String>();
+    public List<String> nextPageUrlList;
     
-    public String siteId = '';
+    public String siteId;
     
+	public AdirondackDetailPageUrlBatch() {
+		
+		this.pageUrlList = new List<String>();
+		this.nextPageUrlList = new List<String>();
+		this.siteId = '';
+	}
+	
     public AdirondackDetailPageUrlBatch( List<String> pageUrlList, String siteId ) {
 		
+		this();
 		if( pageUrlList != NULL && !pageUrlList.isEmpty() ) {
 			this.pageUrlList.addAll( pageUrlList );
 		}
@@ -19,23 +28,23 @@ public class AdirondackDetailPageUrlBatch implements Database.Batchable<String>,
     
     public Iterable<String> start( Database.BatchableContext BC ) {
         
-        System.debug( 'AdirondackDetailPageUrlBatch-pageUrlList:-\n' + JSON.serialize( pageUrlList ) );
-        return pageUrlList;
+        System.debug( 'AdirondackDetailPageUrlBatch-start-pageUrlList:-\n' + JSON.serialize( this.pageUrlList ) );
+        return this.pageUrlList;
     }
     
     public void execute( Database.BatchableContext bc, List<String> urlList ) {
         
-        for( String endPoint :urlList ) {
-            nextPageUrlList.addAll( parseResponse( SiteCalloutHelper.getHtmlBody( endPoint ) ) );    
+        for( String endPoint : urlList ) {
+            this.nextPageUrlList.addAll( parseResponse( SiteCalloutHelper.getHtmlBody( endPoint ) ) );    
         }
-        System.debug( 'AdirondackDetailPageUrlBatch-nextPageUrlList:-\n' + JSON.serialize( nextPageUrlList ) );
+        System.debug( 'AdirondackDetailPageUrlBatch-nextPageUrlList:-\n' + JSON.serialize( this.nextPageUrlList ) );
     }
     
     public void finish( Database.BatchableContext BC ) {
         
-        System.debug( 'AdirondackDetailPageUrlBatch-finish-nextPageUrlList:-\n' + JSON.serialize( nextPageUrlList ) );
-        if( !nextPageUrlList.isEmpty() ) {                            
-            Database.executeBatch( new AdirondackDetailInfoBatch( nextPageUrlList, siteId ), 1 );
+        System.debug( 'AdirondackDetailPageUrlBatch-finish-nextPageUrlList:-\n' + JSON.serialize( this.nextPageUrlList ) );
+        if( !this.nextPageUrlList.isEmpty() ) {                            
+            Database.executeBatch( new AdirondackDetailInfoBatch( this.nextPageUrlList, siteId ), 1 );
         }
     }
     
@@ -51,20 +60,21 @@ public class AdirondackDetailPageUrlBatch implements Database.Batchable<String>,
 									( '<h1 class="page-title"', 
 									  '<nav class="navigation posts-navigation"' 
 									);
-			}
-			
-            List<String> truckRecordRowList = new List<String>();
-			if( String.isNotBlank( pageBody ) ) {
-				truckRecordRowList = pageBody.split( '<h2 class="entry-title">' );
-			}
-			
-			String link;
-            for( String truckRecord : truckRecordRowList ) {
-				link = truckRecord.subStringBetween( 'href="','"' );
-				if( String.isNotBlank( link ) ) {
-					urlSet.add( link );    
+									
+				if( String.isNotBlank( pageBody ) ) {
+					List<String> truckRecordRowList = pageBody.split( '<h2 class="entry-title">' );
+					if( truckRecordRowList != NULL && !truckRecordRowList.isEmpty() ) {
+						
+						String link;
+						for( String truckRecord : truckRecordRowList ) {
+							link = truckRecord.subStringBetween( 'href="', '"' );
+							if( String.isNotBlank( link ) ) {
+								urlSet.add( link );    
+							}
+						}
+					}
 				}
-            }
+			}
         }
         System.debug( 'AdirondackDetailPageUrlBatch-urlSet:-\n' + JSON.serialize( urlSet ) );
         return urlSet;
